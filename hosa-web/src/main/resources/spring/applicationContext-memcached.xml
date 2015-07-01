@@ -56,5 +56,5 @@
 	<bean name="memcachedClient" factory-bean="memcachedClientBuilder"
 		factory-method="build" destroy-method="shutdown" />
 		
-	<bean name="memcachedManager" class="com.mexp.core.cache.MemcachedManager" />
+	<bean name="memcachedManager" class="com.hosa.core.cache.MemcachedManager" />
 </beans>

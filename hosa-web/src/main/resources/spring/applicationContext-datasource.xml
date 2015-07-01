@@ -41,7 +41,7 @@
     	<constructor-arg ref="db_2" />
   	</bean>
   	
-  	<bean id="dataSource" class="com.mexp.core.support.MultipleDataSource">
+  	<bean id="dataSource" class="com.hosa.core.support.MultipleDataSource">
         <property name="defaultTargetDataSource" ref="proxy_db_1"/>
         <property name="targetDataSources">
             <map>     

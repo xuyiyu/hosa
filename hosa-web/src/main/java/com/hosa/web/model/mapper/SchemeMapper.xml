@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Scheme">
+
+	<resultMap id="Scheme.RM" type="com.hosa.web.model.Scheme">
+        <result property="id" column="id"/>        
+        <result property="departmentId" column="department_id"/>        
+        <result property="name" column="name"/>        
+        <result property="modelLink" column="model_link"/>        
+        <result property="status" column="status"/>        
+        <result property="createDate" column="create_date"/>        
+        <result property="modified" column="modified"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Scheme.columns">
+	    <![CDATA[
+		t_scheme.id,t_scheme.department_id,t_scheme.name,t_scheme.model_link,t_scheme.status,t_scheme.create_date,t_scheme.modified
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Scheme.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_scheme (
+	        	id
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,department_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,name
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modelLink)">
+		        	,model_link
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,status
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createDate)">
+		        	,create_date
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,#{departmentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,#{name}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modelLink)">
+		        	,#{modelLink}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,#{status}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createDate)">
+		        	,#{createDate}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="Scheme.update" >
+    
+        UPDATE t_scheme 
+			<set>
+		        <if test="@Ognl@isNotNull(departmentId)">
+		        		department_id = #{departmentId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(name)">
+		        		name = #{name},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(modelLink)">
+		        		model_link = #{modelLink},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(status)">
+		        		status = #{status},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(createDate)">
+		        		create_date = #{createDate},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="Scheme.delete">
+    <![CDATA[
+        DELETE FROM t_scheme 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="Scheme.deleteMultiple">
+
+        DELETE FROM t_scheme 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="Scheme.getById" resultMap="Scheme.RM">
+		SELECT 
+		<include refid="Scheme.columns" />
+	    <![CDATA[
+		    FROM t_scheme as t_scheme
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="Scheme.getByMultipleId" resultMap="Scheme.RM">
+		SELECT 
+		<include refid="Scheme.columns" />
+		    FROM t_scheme as t_scheme
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="Scheme.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_scheme.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_scheme.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_scheme.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_scheme.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_scheme.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_scheme.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_scheme.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_scheme.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(departmentId)">
+				AND t_scheme.department_id = #{departmentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdNotEq)">
+				AND t_scheme.department_id &lt;&gt; #{departmentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGT)">
+				AND t_scheme.department_id &gt; #{departmentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLT)">
+				AND t_scheme.department_id &lt; #{departmentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGE)">
+				AND t_scheme.department_id &gt;= #{departmentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLE)">
+				AND t_scheme.department_id &lt;= #{departmentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(departmentIdList)">
+				AND t_scheme.department_id in
+				<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(departmentIdNotEqList)">
+				AND t_scheme.department_id not in
+				<foreach collection="departmentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(name)">
+				AND t_scheme.name = #{name}
+			</if>
+			<if test="@Ognl@isNotEmpty(nameLike)">
+				AND t_scheme.name like CONCAT('%', CONVERT(#{nameLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameBeginLike)">
+				AND t_scheme.name like CONCAT('', CONVERT(#{nameBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameEndLike)">
+				AND t_scheme.name like CONCAT('%', CONVERT(#{nameEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(modelLink)">
+				AND t_scheme.model_link = #{modelLink}
+			</if>
+			<if test="@Ognl@isNotEmpty(modelLinkLike)">
+				AND t_scheme.model_link like CONCAT('%', CONVERT(#{modelLinkLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(modelLinkBeginLike)">
+				AND t_scheme.model_link like CONCAT('', CONVERT(#{modelLinkBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(modelLinkEndLike)">
+				AND t_scheme.model_link like CONCAT('%', CONVERT(#{modelLinkEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(status)">
+				AND t_scheme.status = #{status}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLike)">
+				AND t_scheme.status like CONCAT('%', CONVERT(#{statusLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(statusBeginLike)">
+				AND t_scheme.status like CONCAT('', CONVERT(#{statusBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(statusEndLike)">
+				AND t_scheme.status like CONCAT('%', CONVERT(#{statusEndLike}, char) ,'') 
+			</if>
+	       <if test="@Ognl@isNotEmpty(createDateBegin)">
+				AND t_scheme.create_date &gt;= #{createDateBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(createDateEnd)">
+				AND t_scheme.create_date &lt;= #{createDateEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_scheme.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_scheme.modified &lt;= #{modifiedEnd}
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="Scheme.findPage.count" resultType="long">
+        SELECT count(*) FROM t_scheme as t_scheme 
+		<include refid="Scheme.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Scheme.findPage" resultMap="Scheme.RM">
+    	SELECT 
+    	<include refid="Scheme.columns" />
+	    FROM t_scheme as t_scheme 
+		<include refid="Scheme.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="Scheme.findList" resultMap="Scheme.RM">
+    	SELECT 
+    	<include refid="Scheme.columns" />
+	     FROM t_scheme as t_scheme 
+		<include refid="Scheme.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	
+</mapper>
+

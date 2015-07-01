@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="LocationFollowing">
+
+	<resultMap id="LocationFollowing.RM" type="com.hosa.web.model.LocationFollowing">
+        <result property="id" column="id"/>        
+        
+        <result property="locationId" column="location_id"/>        
+        
+        <result property="followerUserId" column="follower_user_id"/>        
+        
+        <result property="createdAt" column="created_at"/>        
+        
+	</resultMap>
+	
+	<sql id="LocationFollowing.get.columns">
+			 t_location_following.id
+			, t_location_following.location_id
+			, t_location_following.follower_user_id
+			, t_location_following.created_at
+	</sql>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="LocationFollowing.query.columns">
+			 t_location_following.id
+			
+			<if test="@Ognl@isTrue(locationIdQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_location_following.location_id
+			</if>
+			<if test="@Ognl@isTrue(followerUserIdQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_location_following.follower_user_id
+			</if>
+			<if test="@Ognl@isTrue(createdAtQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_location_following.created_at
+			</if>
+	</sql>
+	
+	
+	<sql id="LocationFollowing.query.advanced.columns">
+	  
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="LocationFollowing.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_location_following (
+	        	id
+		     	<if test="@Ognl@isNotNull(locationId)">
+		        	,location_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(followerUserId)">
+		        	,follower_user_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,created_at
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(locationId)">
+		        	,#{locationId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(followerUserId)">
+		        	,#{followerUserId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,#{createdAt}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="LocationFollowing.update" >
+    
+        UPDATE t_location_following 
+			<set>
+		        <if test="@Ognl@isNotNull(locationId)">
+		        		location_id = #{locationId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(followerUserId)">
+		        		follower_user_id = #{followerUserId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(createdAt)">
+		        		created_at = #{createdAt},
+		        	</if>
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+   
+	</update>
+
+    <delete id="LocationFollowing.delete">
+    <![CDATA[
+        DELETE FROM t_location_following 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="LocationFollowing.deleteMultiple">
+
+        DELETE FROM t_location_following 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="LocationFollowing.getById" resultMap="LocationFollowing.RM">
+		SELECT 
+		<include refid="LocationFollowing.get.columns" />
+		
+	    <![CDATA[
+		    FROM t_location_following as t_location_following
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="LocationFollowing.getByMultipleId" resultMap="LocationFollowing.RM">
+		SELECT 
+		<include refid="LocationFollowing.get.columns" />
+		
+		    FROM t_location_following as t_location_following
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="LocationFollowing.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_location_following.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_location_following.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_location_following.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_location_following.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_location_following.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_location_following.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_location_following.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_location_following.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+			<if test="@Ognl@isNotEmpty(locationId)">
+				AND t_location_following.location_id = #{locationId}
+			</if>
+			<if test="@Ognl@isNotEmpty(locationIdNotEq)">
+				AND t_location_following.location_id &lt;&gt; #{locationIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(locationIdGT)">
+				AND t_location_following.location_id &gt; #{locationIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(locationIdLT)">
+				AND t_location_following.location_id &lt; #{locationIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(locationIdGE)">
+				AND t_location_following.location_id &gt;= #{locationIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(locationIdLE)">
+				AND t_location_following.location_id &lt;= #{locationIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(locationIdList)">
+				AND t_location_following.location_id in
+				<foreach collection="locationIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(locationIdNotEqList)">
+				AND t_location_following.location_id not in
+				<foreach collection="locationIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+			<if test="@Ognl@isNotEmpty(followerUserId)">
+				AND t_location_following.follower_user_id = #{followerUserId}
+			</if>
+			<if test="@Ognl@isNotEmpty(followerUserIdNotEq)">
+				AND t_location_following.follower_user_id &lt;&gt; #{followerUserIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(followerUserIdGT)">
+				AND t_location_following.follower_user_id &gt; #{followerUserIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(followerUserIdLT)">
+				AND t_location_following.follower_user_id &lt; #{followerUserIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(followerUserIdGE)">
+				AND t_location_following.follower_user_id &gt;= #{followerUserIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(followerUserIdLE)">
+				AND t_location_following.follower_user_id &lt;= #{followerUserIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(followerUserIdList)">
+				AND t_location_following.follower_user_id in
+				<foreach collection="followerUserIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(followerUserIdNotEqList)">
+				AND t_location_following.follower_user_id not in
+				<foreach collection="followerUserIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+	       <if test="@Ognl@isNotEmpty(createdAtBegin)">
+				AND t_location_following.created_at &gt;= #{createdAtBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(createdAtEnd)">
+				AND t_location_following.created_at &lt;= #{createdAtEnd}
+		   </if>
+
+		</where>
+	</sql>
+		
+    <select id="LocationFollowing.findPage.count" resultType="long">
+        SELECT count(*) FROM t_location_following as t_location_following 
+		<include refid="LocationFollowing.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="LocationFollowing.findPage" resultMap="LocationFollowing.RM">
+    	SELECT 
+    	<include refid="LocationFollowing.query.columns" />
+    	<include refid="LocationFollowing.query.advanced.columns" />
+    	
+	    FROM t_location_following as t_location_following 
+		<include refid="LocationFollowing.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="LocationFollowing.findList" resultMap="LocationFollowing.RM">
+    	SELECT 
+    	<include refid="LocationFollowing.query.columns" />
+    	<include refid="LocationFollowing.query.advanced.columns" />
+    	
+	     FROM t_location_following as t_location_following 
+		<include refid="LocationFollowing.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	
+	
+	
+	
+</mapper>
+

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Material">
+
+	<resultMap id="Material.RM" type="com.hosa.web.model.Material">
+        <result property="id" column="id"/>        
+        <result property="departmentId" column="department_id"/>        
+        <result property="name" column="name"/>        
+        <result property="type" column="type"/>        
+        <result property="description" column="description"/>        
+        <result property="modified" column="modified"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Material.columns">
+	    <![CDATA[
+		t_material.id,t_material.department_id,t_material.name,t_material.type,t_material.description,t_material.modified
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Material.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_material (
+	        	id
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,department_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,name
+		      	</if>
+		     	<if test="@Ognl@isNotNull(type)">
+		        	,type
+		      	</if>
+		     	<if test="@Ognl@isNotNull(description)">
+		        	,description
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,#{departmentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,#{name}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(type)">
+		        	,#{type}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(description)">
+		        	,#{description}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="Material.update" >
+    
+        UPDATE t_material 
+			<set>
+		        <if test="@Ognl@isNotNull(departmentId)">
+		        		department_id = #{departmentId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(name)">
+		        		name = #{name},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(type)">
+		        		type = #{type},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(description)">
+		        		description = #{description},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="Material.delete">
+    <![CDATA[
+        DELETE FROM t_material 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="Material.deleteMultiple">
+
+        DELETE FROM t_material 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="Material.getById" resultMap="Material.RM">
+		SELECT 
+		<include refid="Material.columns" />
+	    <![CDATA[
+		    FROM t_material as t_material
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="Material.getByMultipleId" resultMap="Material.RM">
+		SELECT 
+		<include refid="Material.columns" />
+		    FROM t_material as t_material
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="Material.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_material.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_material.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_material.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_material.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_material.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_material.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_material.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_material.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(departmentId)">
+				AND t_material.department_id = #{departmentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdNotEq)">
+				AND t_material.department_id &lt;&gt; #{departmentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGT)">
+				AND t_material.department_id &gt; #{departmentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLT)">
+				AND t_material.department_id &lt; #{departmentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGE)">
+				AND t_material.department_id &gt;= #{departmentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLE)">
+				AND t_material.department_id &lt;= #{departmentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(departmentIdList)">
+				AND t_material.department_id in
+				<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(departmentIdNotEqList)">
+				AND t_material.department_id not in
+				<foreach collection="departmentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(name)">
+				AND t_material.name = #{name}
+			</if>
+			<if test="@Ognl@isNotEmpty(nameLike)">
+				AND t_material.name like CONCAT('%', CONVERT(#{nameLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameBeginLike)">
+				AND t_material.name like CONCAT('', CONVERT(#{nameBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameEndLike)">
+				AND t_material.name like CONCAT('%', CONVERT(#{nameEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(type)">
+				AND t_material.type = #{type}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeNotEq)">
+				AND t_material.type &lt;&gt; #{typeNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeGT)">
+				AND t_material.type &gt; #{typeGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeLT)">
+				AND t_material.type &lt; #{typeLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeGE)">
+				AND t_material.type &gt;= #{typeGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeLE)">
+				AND t_material.type &lt;= #{typeLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(typeList)">
+				AND t_material.type in
+				<foreach collection="typeList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(typeNotEqList)">
+				AND t_material.type not in
+				<foreach collection="typeNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(description)">
+				AND t_material.description = #{description}
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionLike)">
+				AND t_material.description like CONCAT('%', CONVERT(#{descriptionLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionBeginLike)">
+				AND t_material.description like CONCAT('', CONVERT(#{descriptionBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionEndLike)">
+				AND t_material.description like CONCAT('%', CONVERT(#{descriptionEndLike}, char) ,'') 
+			</if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_material.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_material.modified &lt;= #{modifiedEnd}
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="Material.findPage.count" resultType="long">
+        SELECT count(*) FROM t_material as t_material 
+		<include refid="Material.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Material.findPage" resultMap="Material.RM">
+    	SELECT 
+    	<include refid="Material.columns" />
+	    FROM t_material as t_material 
+		<include refid="Material.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="Material.findList" resultMap="Material.RM">
+    	SELECT 
+    	<include refid="Material.columns" />
+	     FROM t_material as t_material 
+		<include refid="Material.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	<select id="Material.findDepartmentIdByMultipleId" resultType="java.lang.Long" >
+	    SELECT 
+	    t_material.department_id
+	  
+	        FROM t_material as t_material  where t_material.id in 
+	        <foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+	   
+    </select>
+    
+    <select id="Material.getDepartmentIdById" resultType="java.lang.Long">
+	    SELECT 
+	    t_material.department_id
+	    <![CDATA[
+	        FROM t_material as t_material  where t_material.id = #{id}
+	    ]]>
+    </select>
+</mapper>
+

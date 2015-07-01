@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="ActivityCategory">
+
+	<resultMap id="ActivityCategory.RM" type="com.hosa.web.model.ActivityCategory">
+        <result property="id" column="id"/>        
+        <result property="departmentId" column="department_id"/>        
+        <result property="type" column="type"/>        
+        <result property="name" column="name"/>        
+        <result property="iconUrl" column="icon_url"/>        
+        <result property="iconStoragePath" column="icon_storage_path"/>        
+        <result property="description" column="description"/>        
+        <result property="modified" column="modified"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="ActivityCategory.columns">
+	    <![CDATA[
+		t_activity_category.id,t_activity_category.department_id,t_activity_category.type,t_activity_category.name,t_activity_category.icon_url,t_activity_category.icon_storage_path,t_activity_category.description,t_activity_category.modified
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="ActivityCategory.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_activity_category (
+	        	id
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,department_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(type)">
+		        	,type
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,name
+		      	</if>
+		     	<if test="@Ognl@isNotNull(iconUrl)">
+		        	,icon_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(iconStoragePath)">
+		        	,icon_storage_path
+		      	</if>
+		     	<if test="@Ognl@isNotNull(description)">
+		        	,description
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,#{departmentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(type)">
+		        	,#{type}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,#{name}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(iconUrl)">
+		        	,#{iconUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(iconStoragePath)">
+		        	,#{iconStoragePath}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(description)">
+		        	,#{description}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="ActivityCategory.update" >
+    
+        UPDATE t_activity_category 
+			<set>
+		        <if test="@Ognl@isNotNull(departmentId)">
+		        		department_id = #{departmentId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(type)">
+		        		type = #{type},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(name)">
+		        		name = #{name},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(iconUrl)">
+		        		icon_url = #{iconUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(iconStoragePath)">
+		        		icon_storage_path = #{iconStoragePath},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(description)">
+		        		description = #{description},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="ActivityCategory.delete">
+    <![CDATA[
+        DELETE FROM t_activity_category 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="ActivityCategory.deleteMultiple">
+
+        DELETE FROM t_activity_category 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="ActivityCategory.getById" resultMap="ActivityCategory.RM">
+		SELECT 
+		<include refid="ActivityCategory.columns" />
+	    <![CDATA[
+		    FROM t_activity_category as t_activity_category
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="ActivityCategory.getByMultipleId" resultMap="ActivityCategory.RM">
+		SELECT 
+		<include refid="ActivityCategory.columns" />
+		    FROM t_activity_category as t_activity_category
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="ActivityCategory.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_activity_category.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_activity_category.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_activity_category.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_activity_category.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_activity_category.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_activity_category.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_activity_category.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_activity_category.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(departmentId)">
+				AND t_activity_category.department_id = #{departmentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdNotEq)">
+				AND t_activity_category.department_id &lt;&gt; #{departmentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGT)">
+				AND t_activity_category.department_id &gt; #{departmentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLT)">
+				AND t_activity_category.department_id &lt; #{departmentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGE)">
+				AND t_activity_category.department_id &gt;= #{departmentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLE)">
+				AND t_activity_category.department_id &lt;= #{departmentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(departmentIdList)">
+				AND t_activity_category.department_id in
+				<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(departmentIdNotEqList)">
+				AND t_activity_category.department_id not in
+				<foreach collection="departmentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(type)">
+				AND t_activity_category.type = #{type}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeNotEq)">
+				AND t_activity_category.type &lt;&gt; #{typeNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeGT)">
+				AND t_activity_category.type &gt; #{typeGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeLT)">
+				AND t_activity_category.type &lt; #{typeLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeGE)">
+				AND t_activity_category.type &gt;= #{typeGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeLE)">
+				AND t_activity_category.type &lt;= #{typeLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(typeList)">
+				AND t_activity_category.type in
+				<foreach collection="typeList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(typeNotEqList)">
+				AND t_activity_category.type not in
+				<foreach collection="typeNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(name)">
+				AND t_activity_category.name = #{name}
+			</if>
+			<if test="@Ognl@isNotEmpty(nameLike)">
+				AND t_activity_category.name like CONCAT('%', CONVERT(#{nameLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameBeginLike)">
+				AND t_activity_category.name like CONCAT('', CONVERT(#{nameBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameEndLike)">
+				AND t_activity_category.name like CONCAT('%', CONVERT(#{nameEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(iconUrl)">
+				AND t_activity_category.icon_url = #{iconUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(iconUrlLike)">
+				AND t_activity_category.icon_url like CONCAT('%', CONVERT(#{iconUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(iconUrlBeginLike)">
+				AND t_activity_category.icon_url like CONCAT('', CONVERT(#{iconUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(iconUrlEndLike)">
+				AND t_activity_category.icon_url like CONCAT('%', CONVERT(#{iconUrlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(iconStoragePath)">
+				AND t_activity_category.icon_storage_path = #{iconStoragePath}
+			</if>
+			<if test="@Ognl@isNotEmpty(iconStoragePathLike)">
+				AND t_activity_category.icon_storage_path like CONCAT('%', CONVERT(#{iconStoragePathLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(iconStoragePathBeginLike)">
+				AND t_activity_category.icon_storage_path like CONCAT('', CONVERT(#{iconStoragePathBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(iconStoragePathEndLike)">
+				AND t_activity_category.icon_storage_path like CONCAT('%', CONVERT(#{iconStoragePathEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(description)">
+				AND t_activity_category.description = #{description}
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionLike)">
+				AND t_activity_category.description like CONCAT('%', CONVERT(#{descriptionLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionBeginLike)">
+				AND t_activity_category.description like CONCAT('', CONVERT(#{descriptionBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionEndLike)">
+				AND t_activity_category.description like CONCAT('%', CONVERT(#{descriptionEndLike}, char) ,'') 
+			</if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_activity_category.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_activity_category.modified &lt;= #{modifiedEnd}
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="ActivityCategory.findPage.count" resultType="long">
+        SELECT count(*) FROM t_activity_category as t_activity_category 
+		<include refid="ActivityCategory.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="ActivityCategory.findPage" resultMap="ActivityCategory.RM">
+    	SELECT 
+    	<include refid="ActivityCategory.columns" />
+	    FROM t_activity_category as t_activity_category 
+		<include refid="ActivityCategory.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="ActivityCategory.findList" resultMap="ActivityCategory.RM">
+    	SELECT 
+    	<include refid="ActivityCategory.columns" />
+	     FROM t_activity_category as t_activity_category 
+		<include refid="ActivityCategory.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	
+</mapper>
+

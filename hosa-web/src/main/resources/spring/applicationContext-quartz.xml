@@ -24,7 +24,7 @@
 	</bean>
 
 
-<bean name="quartzManager" class="com.mexp.web.schedule.QuartzManager"/>
+<bean name="quartzManager" class="com.hosa.web.schedule.QuartzManager"/>
 
 
 </beans>

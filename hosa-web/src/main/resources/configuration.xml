@@ -5,8 +5,8 @@ PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN"
 <configuration>
 	<plugins>
 		<!-- 指定数据库分页方言Dialect, 其它方言:OracleDialect,SQLServerDialect,SybaseDialect,DB2Dialect,PostgreSQLDialect,MySQLDialect,DerbyDialect,HSQLDialect-->
-		<plugin interceptor="com.mexp.core.mybatis.plugin.OffsetLimitInterceptor">
-			<property name="dialectClass" value="com.mexp.core.jdbc.dialect.mysql.MySQLDialect"/>
+		<plugin interceptor="com.hosa.core.mybatis.plugin.OffsetLimitInterceptor">
+			<property name="dialectClass" value="com.hosa.core.jdbc.dialect.mysql.MySQLDialect"/>
 		</plugin>
 	</plugins>
 

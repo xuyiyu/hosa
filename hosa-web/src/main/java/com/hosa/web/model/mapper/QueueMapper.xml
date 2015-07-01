@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Queue">
+
+	<resultMap id="Queue.RM" type="com.hosa.web.model.Queue">
+        <result property="id" column="id"/>        
+        <result property="name" column="name"/>        
+        <result property="description" column="description"/>        
+        <result property="departmentId" column="department_id"/>        
+        <result property="businessName" column="business_name"/>        
+        <result property="businessUrl" column="business_url"/>        
+        <result property="urlParam" column="url_param"/>        
+        <result property="ivrKey" column="ivr_key"/>        
+        <result property="status" column="status"/>        
+        <result property="lastTime" column="last_time"/>        
+        <result property="openfireKey" column="openfire_key"/>        
+        <result property="parentId" column="parent_id"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Queue.columns">
+	    <![CDATA[
+		t_queue.id,t_queue.name,t_queue.description,t_queue.department_id,t_queue.business_name,t_queue.business_url,t_queue.url_param,t_queue.ivr_key,t_queue.status,t_queue.last_time,t_queue.openfire_key,t_queue.parent_id
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Queue.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_queue (
+	        	id
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,name
+		      	</if>
+		     	<if test="@Ognl@isNotNull(description)">
+		        	,description
+		      	</if>
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,department_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(businessName)">
+		        	,business_name
+		      	</if>
+		     	<if test="@Ognl@isNotNull(businessUrl)">
+		        	,business_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(urlParam)">
+		        	,url_param
+		      	</if>
+		     	<if test="@Ognl@isNotNull(ivrKey)">
+		        	,ivr_key
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,status
+		      	</if>
+		     	<if test="@Ognl@isNotNull(lastTime)">
+		        	,last_time
+		      	</if>
+		     	<if test="@Ognl@isNotNull(openfireKey)">
+		        	,openfire_key
+		      	</if>
+		     	<if test="@Ognl@isNotNull(parentId)">
+		        	,parent_id
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,#{name}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(description)">
+		        	,#{description}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,#{departmentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(businessName)">
+		        	,#{businessName}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(businessUrl)">
+		        	,#{businessUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(urlParam)">
+		        	,#{urlParam}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(ivrKey)">
+		        	,#{ivrKey}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,#{status}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(lastTime)">
+		        	,#{lastTime}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(openfireKey)">
+		        	,#{openfireKey}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(parentId)">
+		        	,#{parentId}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="Queue.update" >
+    
+        UPDATE t_queue 
+			<set>
+		        <if test="@Ognl@isNotNull(name)">
+		        		name = #{name},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(description)">
+		        		description = #{description},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(departmentId)">
+		        		department_id = #{departmentId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(businessName)">
+		        		business_name = #{businessName},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(businessUrl)">
+		        		business_url = #{businessUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(urlParam)">
+		        		url_param = #{urlParam},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(ivrKey)">
+		        		ivr_key = #{ivrKey},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(status)">
+		        		status = #{status},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(lastTime)">
+		        		last_time = #{lastTime},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(openfireKey)">
+		        		openfire_key = #{openfireKey},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(parentId)">
+		        		parent_id = #{parentId},
+		        	</if>
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+   
+	</update>
+
+    <delete id="Queue.delete">
+    <![CDATA[
+        DELETE FROM t_queue 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="Queue.deleteMultiple">
+
+        DELETE FROM t_queue 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="Queue.getById" resultMap="Queue.RM">
+		SELECT 
+		<include refid="Queue.columns" />
+	    <![CDATA[
+		    FROM t_queue as t_queue
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="Queue.getByMultipleId" resultMap="Queue.RM">
+		SELECT 
+		<include refid="Queue.columns" />
+		    FROM t_queue as t_queue
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="Queue.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_queue.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_queue.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_queue.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_queue.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_queue.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_queue.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_queue.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_queue.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(name)">
+				AND t_queue.name = #{name}
+			</if>
+			<if test="@Ognl@isNotEmpty(nameLike)">
+				AND t_queue.name like CONCAT('%', CONVERT(#{nameLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameBeginLike)">
+				AND t_queue.name like CONCAT('', CONVERT(#{nameBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameEndLike)">
+				AND t_queue.name like CONCAT('%', CONVERT(#{nameEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(description)">
+				AND t_queue.description = #{description}
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionLike)">
+				AND t_queue.description like CONCAT('%', CONVERT(#{descriptionLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionBeginLike)">
+				AND t_queue.description like CONCAT('', CONVERT(#{descriptionBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionEndLike)">
+				AND t_queue.description like CONCAT('%', CONVERT(#{descriptionEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentId)">
+				AND t_queue.department_id = #{departmentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdNotEq)">
+				AND t_queue.department_id &lt;&gt; #{departmentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGT)">
+				AND t_queue.department_id &gt; #{departmentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLT)">
+				AND t_queue.department_id &lt; #{departmentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGE)">
+				AND t_queue.department_id &gt;= #{departmentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLE)">
+				AND t_queue.department_id &lt;= #{departmentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(departmentIdList)">
+				AND t_queue.department_id in
+				<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(departmentIdNotEqList)">
+				AND t_queue.department_id not in
+				<foreach collection="departmentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(businessName)">
+				AND t_queue.business_name = #{businessName}
+			</if>
+			<if test="@Ognl@isNotEmpty(businessNameLike)">
+				AND t_queue.business_name like CONCAT('%', CONVERT(#{businessNameLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(businessNameBeginLike)">
+				AND t_queue.business_name like CONCAT('', CONVERT(#{businessNameBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(businessNameEndLike)">
+				AND t_queue.business_name like CONCAT('%', CONVERT(#{businessNameEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(businessUrl)">
+				AND t_queue.business_url = #{businessUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(businessUrlLike)">
+				AND t_queue.business_url like CONCAT('%', CONVERT(#{businessUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(businessUrlBeginLike)">
+				AND t_queue.business_url like CONCAT('', CONVERT(#{businessUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(businessUrlEndLike)">
+				AND t_queue.business_url like CONCAT('%', CONVERT(#{businessUrlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(urlParam)">
+				AND t_queue.url_param = #{urlParam}
+			</if>
+			<if test="@Ognl@isNotEmpty(urlParamLike)">
+				AND t_queue.url_param like CONCAT('%', CONVERT(#{urlParamLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(urlParamBeginLike)">
+				AND t_queue.url_param like CONCAT('', CONVERT(#{urlParamBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(urlParamEndLike)">
+				AND t_queue.url_param like CONCAT('%', CONVERT(#{urlParamEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(ivrKey)">
+				AND t_queue.ivr_key = #{ivrKey}
+			</if>
+			<if test="@Ognl@isNotEmpty(ivrKeyLike)">
+				AND t_queue.ivr_key like CONCAT('%', CONVERT(#{ivrKeyLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(ivrKeyBeginLike)">
+				AND t_queue.ivr_key like CONCAT('', CONVERT(#{ivrKeyBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(ivrKeyEndLike)">
+				AND t_queue.ivr_key like CONCAT('%', CONVERT(#{ivrKeyEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(status)">
+				AND t_queue.status = #{status}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusNotEq)">
+				AND t_queue.status &lt;&gt; #{statusNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGT)">
+				AND t_queue.status &gt; #{statusGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLT)">
+				AND t_queue.status &lt; #{statusLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGE)">
+				AND t_queue.status &gt;= #{statusGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLE)">
+				AND t_queue.status &lt;= #{statusLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(statusList)">
+				AND t_queue.status in
+				<foreach collection="statusList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(statusNotEqList)">
+				AND t_queue.status not in
+				<foreach collection="statusNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(lastTimeBegin)">
+				AND t_queue.last_time &gt;= #{lastTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(lastTimeEnd)">
+				AND t_queue.last_time &lt;= #{lastTimeEnd}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(openfireKey)">
+				AND t_queue.openfire_key = #{openfireKey}
+			</if>
+			<if test="@Ognl@isNotEmpty(openfireKeyLike)">
+				AND t_queue.openfire_key like CONCAT('%', CONVERT(#{openfireKeyLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(openfireKeyBeginLike)">
+				AND t_queue.openfire_key like CONCAT('', CONVERT(#{openfireKeyBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(openfireKeyEndLike)">
+				AND t_queue.openfire_key like CONCAT('%', CONVERT(#{openfireKeyEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(parentId)">
+				AND t_queue.parent_id = #{parentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(parentIdNotEq)">
+				AND t_queue.parent_id &lt;&gt; #{parentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(parentIdGT)">
+				AND t_queue.parent_id &gt; #{parentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(parentIdLT)">
+				AND t_queue.parent_id &lt; #{parentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(parentIdGE)">
+				AND t_queue.parent_id &gt;= #{parentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(parentIdLE)">
+				AND t_queue.parent_id &lt;= #{parentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(parentIdList)">
+				AND t_queue.parent_id in
+				<foreach collection="parentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(parentIdNotEqList)">
+				AND t_queue.parent_id not in
+				<foreach collection="parentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="Queue.findPage.count" resultType="long">
+        SELECT count(*) FROM t_queue as t_queue 
+		<include refid="Queue.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Queue.findPage" resultMap="Queue.RM">
+    	SELECT 
+    	<include refid="Queue.columns" />
+	    FROM t_queue as t_queue 
+		<include refid="Queue.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="Queue.findList" resultMap="Queue.RM">
+    	SELECT 
+    	<include refid="Queue.columns" />
+	     FROM t_queue as t_queue 
+		<include refid="Queue.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	
+</mapper>
+

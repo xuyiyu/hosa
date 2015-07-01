@@ -1,47 +1,47 @@
 
-<bean id="favoriteManager" class="com.gaojiaoyuan.service.FavoriteManager"/>
-<bean id="favoriteDao" class="com.gaojiaoyuan.dao.FavoriteDao"/>
+<bean id="favoriteManager" class="com.hosa.service.FavoriteManager"/>
+<bean id="favoriteDao" class="com.hosa.dao.FavoriteDao"/>
 <!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
 <!--  generator-insert-location -->
 
-<bean id="userFollowingManager" class="com.gaojiaoyuan.service.UserFollowingManager"/>
-<bean id="userFollowingDao" class="com.gaojiaoyuan.dao.UserFollowingDao"/>
-<!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
-<!--  generator-insert-location -->
-
-
-<bean id="userFavoriteRelationManager" class="com.gaojiaoyuan.service.UserFavoriteRelationManager"/>
-<bean id="userFavoriteRelationDao" class="com.gaojiaoyuan.dao.UserFavoriteRelationDao"/>
+<bean id="userFollowingManager" class="com.hosa.service.UserFollowingManager"/>
+<bean id="userFollowingDao" class="com.hosa.dao.UserFollowingDao"/>
 <!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
 <!--  generator-insert-location -->
 
 
-<bean id="userManager" class="com.gaojiaoyuan.service.UserManager"/>
-<bean id="userDao" class="com.gaojiaoyuan.dao.UserDao"/>
+<bean id="userFavoriteRelationManager" class="com.hosa.service.UserFavoriteRelationManager"/>
+<bean id="userFavoriteRelationDao" class="com.hosa.dao.UserFavoriteRelationDao"/>
 <!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
 <!--  generator-insert-location -->
 
 
-<bean id="locationFollowingManager" class="com.gaojiaoyuan.service.LocationFollowingManager"/>
-<bean id="locationFollowingDao" class="com.gaojiaoyuan.dao.LocationFollowingDao"/>
+<bean id="userManager" class="com.hosa.service.UserManager"/>
+<bean id="userDao" class="com.hosa.dao.UserDao"/>
 <!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
 <!--  generator-insert-location -->
 
 
-<bean id="locationManager" class="com.gaojiaoyuan.service.LocationManager"/>
-<bean id="locationDao" class="com.gaojiaoyuan.dao.LocationDao"/>
+<bean id="locationFollowingManager" class="com.hosa.service.LocationFollowingManager"/>
+<bean id="locationFollowingDao" class="com.hosa.dao.LocationFollowingDao"/>
 <!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
 <!--  generator-insert-location -->
 
 
-<bean id="imageManager" class="com.gaojiaoyuan.service.ImageManager"/>
-<bean id="imageDao" class="com.gaojiaoyuan.dao.ImageDao"/>
+<bean id="locationManager" class="com.hosa.service.LocationManager"/>
+<bean id="locationDao" class="com.hosa.dao.LocationDao"/>
 <!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
 <!--  generator-insert-location -->
 
 
-<bean id="favoriteListManager" class="com.gaojiaoyuan.service.FavoriteListManager"/>
-<bean id="favoriteListDao" class="com.gaojiaoyuan.dao.FavoriteListDao"/>
+<bean id="imageManager" class="com.hosa.service.ImageManager"/>
+<bean id="imageDao" class="com.hosa.dao.ImageDao"/>
+<!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
+<!--  generator-insert-location -->
+
+
+<bean id="favoriteListManager" class="com.hosa.service.FavoriteListManager"/>
+<bean id="favoriteListDao" class="com.hosa.dao.FavoriteListDao"/>
 <!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
 <!--  generator-insert-location -->
 

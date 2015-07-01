@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Department">
+
+	<resultMap id="Department.RM" type="com.hosa.web.model.Department">
+        <result property="id" column="id"/>        
+        <result property="name" column="name"/>        
+        <result property="parentId" column="parent_id"/>        
+        <result property="simpleCode" column="simple_code"/>        
+        <result property="level" column="level"/>        
+        <result property="description" column="description"/>        
+        <result property="createdAt" column="created_at"/>        
+        <result property="modified" column="modified"/>  
+        
+        <result property="parentDepartment.id" column="parent_id"/>       
+        <result property="parentDepartment.name" column="parent_name"/>       
+	      
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Department.columns">
+	    <![CDATA[
+		t_department.id,t_department.name,t_department.parent_id,t_department.simple_code,t_department.level,t_department.description,t_department.created_at,t_department.modified
+	    ]]>
+	</sql>
+	
+	<sql id="Department.Department.columns">
+	    <![CDATA[
+		t_parent_department.name as parent_name
+	    ]]>
+	</sql>
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Department.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_department (
+	        	id
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,name
+		      	</if>
+		     	<if test="@Ognl@isNotNull(parentId)">
+		        	,parent_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(simpleCode)">
+		        	,simple_code
+		      	</if>
+		     	<if test="@Ognl@isNotNull(level)">
+		        	,level
+		      	</if>
+		     	<if test="@Ognl@isNotNull(description)">
+		        	,description
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,created_at
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,#{name}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(parentId)">
+		        	,#{parentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(simpleCode)">
+		        	,#{simpleCode}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(level)">
+		        	,#{level}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(description)">
+		        	,#{description}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,#{createdAt}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="Department.update" >
+    
+        UPDATE t_department 
+			<set>
+		        <if test="@Ognl@isNotNull(name)">
+		        		name = #{name},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(parentId)">
+		        		parent_id = #{parentId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(simpleCode)">
+		        		simple_code = #{simpleCode},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(level)">
+		        		level = #{level},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(description)">
+		        		description = #{description},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(createdAt)">
+		        		created_at = #{createdAt},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="Department.delete">
+    <![CDATA[
+        DELETE FROM t_department 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="Department.deleteMultiple">
+
+        DELETE FROM t_department 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="Department.getById" resultMap="Department.RM">
+		SELECT 
+		<include refid="Department.columns" />
+	    <![CDATA[
+		    FROM t_department as t_department
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="Department.getByMultipleId" resultMap="Department.RM">
+		SELECT 
+		<include refid="Department.columns" />
+		    FROM t_department as t_department
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="Department.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_department.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_department.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_department.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_department.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_department.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_department.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_department.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_department.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(name)">
+				AND t_department.name = #{name}
+			</if>
+			<if test="@Ognl@isNotEmpty(nameLike)">
+				AND t_department.name like CONCAT('%', CONVERT(#{nameLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameBeginLike)">
+				AND t_department.name like CONCAT('', CONVERT(#{nameBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameEndLike)">
+				AND t_department.name like CONCAT('%', CONVERT(#{nameEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(parentId)">
+				AND t_department.parent_id = #{parentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(parentIdNotEq)">
+				AND t_department.parent_id &lt;&gt; #{parentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(parentIdGT)">
+				AND t_department.parent_id &gt; #{parentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(parentIdLT)">
+				AND t_department.parent_id &lt; #{parentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(parentIdGE)">
+				AND t_department.parent_id &gt;= #{parentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(parentIdLE)">
+				AND t_department.parent_id &lt;= #{parentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(parentIdList)">
+				AND t_department.parent_id in
+				<foreach collection="parentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(parentIdNotEqList)">
+				AND t_department.parent_id not in
+				<foreach collection="parentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(simpleCode)">
+				AND t_department.simple_code = #{simpleCode}
+			</if>
+			<if test="@Ognl@isNotEmpty(simpleCodeLike)">
+				AND t_department.simple_code like CONCAT('%', CONVERT(#{simpleCodeLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(simpleCodeBeginLike)">
+				AND t_department.simple_code like CONCAT('', CONVERT(#{simpleCodeBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(simpleCodeEndLike)">
+				AND t_department.simple_code like CONCAT('%', CONVERT(#{simpleCodeEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(level)">
+				AND t_department.level = #{level}
+			</if>
+			<if test="@Ognl@isNotEmpty(levelLike)">
+				AND t_department.level like CONCAT('%', CONVERT(#{levelLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(levelBeginLike)">
+				AND t_department.level like CONCAT('', CONVERT(#{levelBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(levelEndLike)">
+				AND t_department.level like CONCAT('%', CONVERT(#{levelEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(description)">
+				AND t_department.description = #{description}
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionLike)">
+				AND t_department.description like CONCAT('%', CONVERT(#{descriptionLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionBeginLike)">
+				AND t_department.description like CONCAT('', CONVERT(#{descriptionBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionEndLike)">
+				AND t_department.description like CONCAT('%', CONVERT(#{descriptionEndLike}, char) ,'') 
+			</if>
+	       <if test="@Ognl@isNotEmpty(createdAtBegin)">
+				AND t_department.created_at &gt;= #{createdAtBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(createdAtEnd)">
+				AND t_department.created_at &lt;= #{createdAtEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_department.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_department.modified &lt;= #{modifiedEnd}
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="Department.findPage.count" resultType="long">
+        SELECT count(*) FROM t_department as t_department 
+		<include refid="Department.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Department.findPage" resultMap="Department.RM">
+    	SELECT 
+    	<include refid="Department.columns" />
+	    FROM t_department as t_department 
+		<include refid="Department.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="Department.findList" resultMap="Department.RM">
+    	SELECT 
+    	<include refid="Department.columns" />
+    	,<include refid="Department.Department.columns" />
+	     FROM t_department as t_department 
+	     left join
+	     t_department as t_parent_department
+	     on
+	     	t_department.parent_id = t_parent_department.id
+		<include refid="Department.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+    <select id="Department.getByLevel" resultMap="Department.RM" parameterType="java.lang.String">
+	    SELECT 
+	    <include refid="Department.columns"/>
+	    <![CDATA[
+	        FROM t_department as t_department  where t_department.level = #{level}
+	    ]]>
+    </select>
+    
+	
+	<select id="Department.getByNameAndParentId" resultMap="Department.RM" >
+	    SELECT 
+	    <include refid="Department.columns"/>
+	    <![CDATA[
+	        FROM t_department as t_department  
+	        where 
+	        t_department.name = #{name}
+	        and 
+	        t_department.parent_id = #{parentId}
+	    ]]>
+    </select>
+</mapper>
+

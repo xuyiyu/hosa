@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Article">
+
+	<resultMap id="Article.RM" type="com.hosa.web.model.Article">
+        <result property="id" column="id"/>        
+        <result property="tenantId" column="tenant_id"/>        
+        <result property="keyword" column="keyword"/>        
+        <result property="keywordType" column="keyword_type"/>        
+        <result property="title" column="title"/>        
+        <result property="summary" column="summary"/>        
+        <result property="categoryId" column="category_id"/>        
+        <result property="picTitle" column="pic_title"/>        
+        <result property="picUrl" column="pic_url"/>        
+        <result property="picLink" column="pic_link"/>        
+        <result property="logoUrl" column="logo_url"/>        
+        <result property="content" column="content"/>        
+        <result property="defaultFlag" column="default_flag"/>        
+        <result property="createDate" column="create_date"/>        
+        <result property="modified" column="modified"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Article.columns">
+	    <![CDATA[
+		t_article.id,t_article.tenant_id,t_article.keyword,t_article.keyword_type,t_article.title,t_article.summary,t_article.category_id,t_article.pic_title,t_article.pic_url,t_article.pic_link,t_article.logo_url,t_article.content,t_article.default_flag,t_article.create_date,t_article.modified
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Article.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_article (
+	        	id
+		     	<if test="@Ognl@isNotNull(tenantId)">
+		        	,tenant_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(keyword)">
+		        	,keyword
+		      	</if>
+		     	<if test="@Ognl@isNotNull(keywordType)">
+		        	,keyword_type
+		      	</if>
+		     	<if test="@Ognl@isNotNull(title)">
+		        	,title
+		      	</if>
+		     	<if test="@Ognl@isNotNull(summary)">
+		        	,summary
+		      	</if>
+		     	<if test="@Ognl@isNotNull(categoryId)">
+		        	,category_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picTitle)">
+		        	,pic_title
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picUrl)">
+		        	,pic_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picLink)">
+		        	,pic_link
+		      	</if>
+		     	<if test="@Ognl@isNotNull(logoUrl)">
+		        	,logo_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(content)">
+		        	,content
+		      	</if>
+		     	<if test="@Ognl@isNotNull(defaultFlag)">
+		        	,default_flag
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createDate)">
+		        	,create_date
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(tenantId)">
+		        	,#{tenantId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(keyword)">
+		        	,#{keyword}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(keywordType)">
+		        	,#{keywordType}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(title)">
+		        	,#{title}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(summary)">
+		        	,#{summary}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(categoryId)">
+		        	,#{categoryId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picTitle)">
+		        	,#{picTitle}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picUrl)">
+		        	,#{picUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picLink)">
+		        	,#{picLink}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(logoUrl)">
+		        	,#{logoUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(content)">
+		        	,#{content}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(defaultFlag)">
+		        	,#{defaultFlag}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createDate)">
+		        	,#{createDate}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="Article.update" >
+    
+        UPDATE t_article 
+			<set>
+		        <if test="@Ognl@isNotNull(tenantId)">
+		        		tenant_id = #{tenantId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(keyword)">
+		        		keyword = #{keyword},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(keywordType)">
+		        		keyword_type = #{keywordType},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(title)">
+		        		title = #{title},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(summary)">
+		        		summary = #{summary},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(categoryId)">
+		        		category_id = #{categoryId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(picTitle)">
+		        		pic_title = #{picTitle},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(picUrl)">
+		        		pic_url = #{picUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(picLink)">
+		        		pic_link = #{picLink},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(logoUrl)">
+		        		logo_url = #{logoUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(content)">
+		        		content = #{content},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(defaultFlag)">
+		        		default_flag = #{defaultFlag},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(createDate)">
+		        		create_date = #{createDate},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="Article.delete">
+    <![CDATA[
+        DELETE FROM t_article 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="Article.deleteMultiple">
+
+        DELETE FROM t_article 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="Article.getById" resultMap="Article.RM">
+		SELECT 
+		<include refid="Article.columns" />
+	    <![CDATA[
+		    FROM t_article as t_article
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="Article.getByMultipleId" resultMap="Article.RM">
+		SELECT 
+		<include refid="Article.columns" />
+		    FROM t_article as t_article
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="Article.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_article.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_article.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_article.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_article.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_article.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_article.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_article.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_article.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(tenantId)">
+				AND t_article.tenant_id = #{tenantId}
+			</if>
+			<if test="@Ognl@isNotEmpty(tenantIdNotEq)">
+				AND t_article.tenant_id &lt;&gt; #{tenantIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(tenantIdGT)">
+				AND t_article.tenant_id &gt; #{tenantIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(tenantIdLT)">
+				AND t_article.tenant_id &lt; #{tenantIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(tenantIdGE)">
+				AND t_article.tenant_id &gt;= #{tenantIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(tenantIdLE)">
+				AND t_article.tenant_id &lt;= #{tenantIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(tenantIdList)">
+				AND t_article.tenant_id in
+				<foreach collection="tenantIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(tenantIdNotEqList)">
+				AND t_article.tenant_id not in
+				<foreach collection="tenantIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(keyword)">
+				AND t_article.keyword = #{keyword}
+			</if>
+			<if test="@Ognl@isNotEmpty(keywordLike)">
+				AND t_article.keyword like CONCAT('%', CONVERT(#{keywordLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(keywordBeginLike)">
+				AND t_article.keyword like CONCAT('', CONVERT(#{keywordBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(keywordEndLike)">
+				AND t_article.keyword like CONCAT('%', CONVERT(#{keywordEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(keywordType)">
+				AND t_article.keyword_type = #{keywordType}
+			</if>
+			<if test="@Ognl@isNotEmpty(keywordTypeNotEq)">
+				AND t_article.keyword_type &lt;&gt; #{keywordTypeNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(keywordTypeGT)">
+				AND t_article.keyword_type &gt; #{keywordTypeGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(keywordTypeLT)">
+				AND t_article.keyword_type &lt; #{keywordTypeLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(keywordTypeGE)">
+				AND t_article.keyword_type &gt;= #{keywordTypeGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(keywordTypeLE)">
+				AND t_article.keyword_type &lt;= #{keywordTypeLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(keywordTypeList)">
+				AND t_article.keyword_type in
+				<foreach collection="keywordTypeList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(keywordTypeNotEqList)">
+				AND t_article.keyword_type not in
+				<foreach collection="keywordTypeNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(title)">
+				AND t_article.title = #{title}
+			</if>
+			<if test="@Ognl@isNotEmpty(titleLike)">
+				AND t_article.title like CONCAT('%', CONVERT(#{titleLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(titleBeginLike)">
+				AND t_article.title like CONCAT('', CONVERT(#{titleBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(titleEndLike)">
+				AND t_article.title like CONCAT('%', CONVERT(#{titleEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(summary)">
+				AND t_article.summary = #{summary}
+			</if>
+			<if test="@Ognl@isNotEmpty(summaryLike)">
+				AND t_article.summary like CONCAT('%', CONVERT(#{summaryLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(summaryBeginLike)">
+				AND t_article.summary like CONCAT('', CONVERT(#{summaryBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(summaryEndLike)">
+				AND t_article.summary like CONCAT('%', CONVERT(#{summaryEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryId)">
+				AND t_article.category_id = #{categoryId}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdNotEq)">
+				AND t_article.category_id &lt;&gt; #{categoryIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdGT)">
+				AND t_article.category_id &gt; #{categoryIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdLT)">
+				AND t_article.category_id &lt; #{categoryIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdGE)">
+				AND t_article.category_id &gt;= #{categoryIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdLE)">
+				AND t_article.category_id &lt;= #{categoryIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(categoryIdList)">
+				AND t_article.category_id in
+				<foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(categoryIdNotEqList)">
+				AND t_article.category_id not in
+				<foreach collection="categoryIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(picTitle)">
+				AND t_article.pic_title = #{picTitle}
+			</if>
+			<if test="@Ognl@isNotEmpty(picTitleLike)">
+				AND t_article.pic_title like CONCAT('%', CONVERT(#{picTitleLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picTitleBeginLike)">
+				AND t_article.pic_title like CONCAT('', CONVERT(#{picTitleBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picTitleEndLike)">
+				AND t_article.pic_title like CONCAT('%', CONVERT(#{picTitleEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(picUrl)">
+				AND t_article.pic_url = #{picUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(picUrlLike)">
+				AND t_article.pic_url like CONCAT('%', CONVERT(#{picUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picUrlBeginLike)">
+				AND t_article.pic_url like CONCAT('', CONVERT(#{picUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picUrlEndLike)">
+				AND t_article.pic_url like CONCAT('%', CONVERT(#{picUrlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(picLink)">
+				AND t_article.pic_link = #{picLink}
+			</if>
+			<if test="@Ognl@isNotEmpty(picLinkLike)">
+				AND t_article.pic_link like CONCAT('%', CONVERT(#{picLinkLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picLinkBeginLike)">
+				AND t_article.pic_link like CONCAT('', CONVERT(#{picLinkBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picLinkEndLike)">
+				AND t_article.pic_link like CONCAT('%', CONVERT(#{picLinkEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(logoUrl)">
+				AND t_article.logo_url = #{logoUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(logoUrlLike)">
+				AND t_article.logo_url like CONCAT('%', CONVERT(#{logoUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(logoUrlBeginLike)">
+				AND t_article.logo_url like CONCAT('', CONVERT(#{logoUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(logoUrlEndLike)">
+				AND t_article.logo_url like CONCAT('%', CONVERT(#{logoUrlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(content)">
+				AND t_article.content = #{content}
+			</if>
+			<if test="@Ognl@isNotEmpty(contentLike)">
+				AND t_article.content like CONCAT('%', CONVERT(#{contentLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(contentBeginLike)">
+				AND t_article.content like CONCAT('', CONVERT(#{contentBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(contentEndLike)">
+				AND t_article.content like CONCAT('%', CONVERT(#{contentEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(defaultFlag)">
+				AND t_article.default_flag = #{defaultFlag}
+			</if>
+			<if test="@Ognl@isNotEmpty(defaultFlagNotEq)">
+				AND t_article.default_flag &lt;&gt; #{defaultFlagNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(defaultFlagGT)">
+				AND t_article.default_flag &gt; #{defaultFlagGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(defaultFlagLT)">
+				AND t_article.default_flag &lt; #{defaultFlagLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(defaultFlagGE)">
+				AND t_article.default_flag &gt;= #{defaultFlagGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(defaultFlagLE)">
+				AND t_article.default_flag &lt;= #{defaultFlagLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(defaultFlagList)">
+				AND t_article.default_flag in
+				<foreach collection="defaultFlagList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(defaultFlagNotEqList)">
+				AND t_article.default_flag not in
+				<foreach collection="defaultFlagNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(createDateBegin)">
+				AND t_article.create_date &gt;= #{createDateBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(createDateEnd)">
+				AND t_article.create_date &lt;= #{createDateEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_article.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_article.modified &lt;= #{modifiedEnd}
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="Article.findPage.count" resultType="long">
+        SELECT count(*) FROM t_article as t_article 
+		<include refid="Article.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Article.findPage" resultMap="Article.RM">
+    	SELECT 
+    	<include refid="Article.columns" />
+	    FROM t_article as t_article 
+		<include refid="Article.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="Article.findList" resultMap="Article.RM">
+    	SELECT 
+    	<include refid="Article.columns" />
+	     FROM t_article as t_article 
+		<include refid="Article.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	
+</mapper>
+

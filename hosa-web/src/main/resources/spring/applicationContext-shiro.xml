@@ -7,7 +7,7 @@
 	
 	
 
-	<bean id="shiroFilter" class="com.mexp.web.service.security.ShiroFilterFactory" >
+	<bean id="shiroFilter" class="com.hosa.web.service.security.ShiroFilterFactory" >
 	    <property name="securityManager" ref="securityManager"/>
 	    
 	   <property name="loginUrl" value="/webadmin/adminlogin.htm"/>
@@ -42,9 +42,9 @@
 	    <property name="authorityFilter" ref="authorityFilter"/>
 	</bean>
 	<!-- -->
-	<bean id="rolesFilter" class="com.mexp.web.service.security.filter.RolesAuthFilter"/>
+	<bean id="rolesFilter" class="com.hosa.web.service.security.filter.RolesAuthFilter"/>
 	
-	<bean id="authorityFilter" class="com.mexp.web.service.security.filter.AuthorityFilter"/>
+	<bean id="authorityFilter" class="com.hosa.web.service.security.filter.AuthorityFilter"/>
 	
 	 
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
@@ -53,7 +53,7 @@
 	  	<property name="cacheManager" ref="shiroCacheManager"/>
 	</bean>
 
-    <bean id="authRealm" class="com.mexp.web.service.security.realm.AuthRealm" >
+    <bean id="authRealm" class="com.hosa.web.service.security.realm.AuthRealm" >
         <property name="name" value="authRealm"/>
         <property name="credentialsMatcher" ref="authCredentialsMatcher"/>
         <property name="authorizationCacheName" value="agent.shiro.authorizationCache"/>
@@ -62,7 +62,7 @@
          <property name="authenticationCachingEnabled" value="false"/>
     </bean>
     
-    <bean id="authCredentialsMatcher" class="com.mexp.web.service.security.realm.AuthCredentialsMatcher"/>
+    <bean id="authCredentialsMatcher" class="com.hosa.web.service.security.realm.AuthCredentialsMatcher"/>
     
     <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
 		<property name="interval" value="1800000"/>
@@ -81,7 +81,7 @@
      <bean id="sessionDAO" class="com.lps.webagent.security.MemCachedSessionDAO">
     </bean>
     -->
-    <bean id="shiroCacheManager" class="com.mexp.web.service.security.cache.ShiroMemcachedManager"/>
+    <bean id="shiroCacheManager" class="com.hosa.web.service.security.cache.ShiroMemcachedManager"/>
 
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 	<!-- Define the Shiro Realm implementation you want to use to connect to your back-end -->

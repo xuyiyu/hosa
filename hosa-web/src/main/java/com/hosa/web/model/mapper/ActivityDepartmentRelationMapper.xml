@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="ActivityDepartmentRelation">
+
+	<resultMap id="ActivityDepartmentRelation.RM" type="com.hosa.web.model.ActivityDepartmentRelation">
+        <result property="id" column="id"/>        
+        <result property="activityId" column="activity_id"/>        
+        <result property="departmentId" column="department_id"/>        
+        <result property="modified" column="modified"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="ActivityDepartmentRelation.columns">
+	    <![CDATA[
+		t_activity_department_relation.id,t_activity_department_relation.activity_id,t_activity_department_relation.department_id,t_activity_department_relation.modified
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="ActivityDepartmentRelation.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_activity_department_relation (
+	        	id
+		     	<if test="@Ognl@isNotNull(activityId)">
+		        	,activity_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,department_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(activityId)">
+		        	,#{activityId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,#{departmentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="ActivityDepartmentRelation.update" >
+    
+        UPDATE t_activity_department_relation 
+			<set>
+		        <if test="@Ognl@isNotNull(activityId)">
+		        		activity_id = #{activityId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(departmentId)">
+		        		department_id = #{departmentId},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="ActivityDepartmentRelation.delete">
+    <![CDATA[
+        DELETE FROM t_activity_department_relation 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="ActivityDepartmentRelation.deleteMultiple">
+
+        DELETE FROM t_activity_department_relation 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="ActivityDepartmentRelation.getById" resultMap="ActivityDepartmentRelation.RM">
+		SELECT 
+		<include refid="ActivityDepartmentRelation.columns" />
+	    <![CDATA[
+		    FROM t_activity_department_relation as t_activity_department_relation
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="ActivityDepartmentRelation.getByMultipleId" resultMap="ActivityDepartmentRelation.RM">
+		SELECT 
+		<include refid="ActivityDepartmentRelation.columns" />
+		    FROM t_activity_department_relation as t_activity_department_relation
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="ActivityDepartmentRelation.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_activity_department_relation.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_activity_department_relation.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_activity_department_relation.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_activity_department_relation.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_activity_department_relation.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_activity_department_relation.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_activity_department_relation.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_activity_department_relation.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(activityId)">
+				AND t_activity_department_relation.activity_id = #{activityId}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityIdNotEq)">
+				AND t_activity_department_relation.activity_id &lt;&gt; #{activityIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityIdGT)">
+				AND t_activity_department_relation.activity_id &gt; #{activityIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityIdLT)">
+				AND t_activity_department_relation.activity_id &lt; #{activityIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityIdGE)">
+				AND t_activity_department_relation.activity_id &gt;= #{activityIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityIdLE)">
+				AND t_activity_department_relation.activity_id &lt;= #{activityIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(activityIdList)">
+				AND t_activity_department_relation.activity_id in
+				<foreach collection="activityIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(activityIdNotEqList)">
+				AND t_activity_department_relation.activity_id not in
+				<foreach collection="activityIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(departmentId)">
+				AND t_activity_department_relation.department_id = #{departmentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdNotEq)">
+				AND t_activity_department_relation.department_id &lt;&gt; #{departmentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGT)">
+				AND t_activity_department_relation.department_id &gt; #{departmentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLT)">
+				AND t_activity_department_relation.department_id &lt; #{departmentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGE)">
+				AND t_activity_department_relation.department_id &gt;= #{departmentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLE)">
+				AND t_activity_department_relation.department_id &lt;= #{departmentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(departmentIdList)">
+				AND t_activity_department_relation.department_id in
+				<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(departmentIdNotEqList)">
+				AND t_activity_department_relation.department_id not in
+				<foreach collection="departmentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_activity_department_relation.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_activity_department_relation.modified &lt;= #{modifiedEnd}
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="ActivityDepartmentRelation.findPage.count" resultType="long">
+        SELECT count(*) FROM t_activity_department_relation as t_activity_department_relation 
+		<include refid="ActivityDepartmentRelation.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="ActivityDepartmentRelation.findPage" resultMap="ActivityDepartmentRelation.RM">
+    	SELECT 
+    	<include refid="ActivityDepartmentRelation.columns" />
+	    FROM t_activity_department_relation as t_activity_department_relation 
+		<include refid="ActivityDepartmentRelation.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="ActivityDepartmentRelation.findList" resultMap="ActivityDepartmentRelation.RM">
+    	SELECT 
+    	<include refid="ActivityDepartmentRelation.columns" />
+	     FROM t_activity_department_relation as t_activity_department_relation 
+		<include refid="ActivityDepartmentRelation.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	
+</mapper>
+

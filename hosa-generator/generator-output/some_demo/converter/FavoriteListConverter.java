@@ -1,8 +1,8 @@
 
-package com.gaojiaoyuan.repository.converter;
+package com.hosa.repository.converter;
 
-import com.gaojiaoyuan.dal.dataobject.FavoriteListDO;
-import com.gaojiaoyuan.repository.model.FavoriteList;
+import com.hosa.dal.dataobject.FavoriteListDO;
+import com.hosa.repository.model.FavoriteList;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="hosa-api"
+  id="myeclipse.1435732569037"
+  context-root="/hosa-api"
+  j2ee-spec="6.0"
+  archive="hosa-api.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+

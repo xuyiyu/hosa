@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="CouponCategoryRelation">
+
+	<resultMap id="CouponCategoryRelation.RM" type="com.hosa.web.model.CouponCategoryRelation">
+        <result property="id" column="id"/>        
+        <result property="categoryId" column="category_id"/>        
+        <result property="couponId" column="coupon_id"/>        
+        <result property="modified" column="modified"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CouponCategoryRelation.columns">
+	    <![CDATA[
+		t_coupon_category_relation.id,t_coupon_category_relation.category_id,t_coupon_category_relation.coupon_id,t_coupon_category_relation.modified
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="CouponCategoryRelation.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_coupon_category_relation (
+	        	id
+		     	<if test="@Ognl@isNotNull(categoryId)">
+		        	,category_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(couponId)">
+		        	,coupon_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(categoryId)">
+		        	,#{categoryId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(couponId)">
+		        	,#{couponId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="CouponCategoryRelation.update" >
+    
+        UPDATE t_coupon_category_relation 
+			<set>
+		        <if test="@Ognl@isNotNull(categoryId)">
+		        		category_id = #{categoryId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(couponId)">
+		        		coupon_id = #{couponId},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="CouponCategoryRelation.delete">
+    <![CDATA[
+        DELETE FROM t_coupon_category_relation 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="CouponCategoryRelation.deleteMultiple">
+
+        DELETE FROM t_coupon_category_relation 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="CouponCategoryRelation.getById" resultMap="CouponCategoryRelation.RM">
+		SELECT 
+		<include refid="CouponCategoryRelation.columns" />
+	    <![CDATA[
+		    FROM t_coupon_category_relation as t_coupon_category_relation
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="CouponCategoryRelation.getByMultipleId" resultMap="CouponCategoryRelation.RM">
+		SELECT 
+		<include refid="CouponCategoryRelation.columns" />
+		    FROM t_coupon_category_relation as t_coupon_category_relation
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="CouponCategoryRelation.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_coupon_category_relation.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_coupon_category_relation.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_coupon_category_relation.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_coupon_category_relation.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_coupon_category_relation.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_coupon_category_relation.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_coupon_category_relation.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_coupon_category_relation.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(categoryId)">
+				AND t_coupon_category_relation.category_id = #{categoryId}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdNotEq)">
+				AND t_coupon_category_relation.category_id &lt;&gt; #{categoryIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdGT)">
+				AND t_coupon_category_relation.category_id &gt; #{categoryIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdLT)">
+				AND t_coupon_category_relation.category_id &lt; #{categoryIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdGE)">
+				AND t_coupon_category_relation.category_id &gt;= #{categoryIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdLE)">
+				AND t_coupon_category_relation.category_id &lt;= #{categoryIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(categoryIdList)">
+				AND t_coupon_category_relation.category_id in
+				<foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(categoryIdNotEqList)">
+				AND t_coupon_category_relation.category_id not in
+				<foreach collection="categoryIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(couponId)">
+				AND t_coupon_category_relation.coupon_id = #{couponId}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdNotEq)">
+				AND t_coupon_category_relation.coupon_id &lt;&gt; #{couponIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdGT)">
+				AND t_coupon_category_relation.coupon_id &gt; #{couponIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdLT)">
+				AND t_coupon_category_relation.coupon_id &lt; #{couponIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdGE)">
+				AND t_coupon_category_relation.coupon_id &gt;= #{couponIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdLE)">
+				AND t_coupon_category_relation.coupon_id &lt;= #{couponIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(couponIdList)">
+				AND t_coupon_category_relation.coupon_id in
+				<foreach collection="couponIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(couponIdNotEqList)">
+				AND t_coupon_category_relation.coupon_id not in
+				<foreach collection="couponIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_coupon_category_relation.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_coupon_category_relation.modified &lt;= #{modifiedEnd}
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="CouponCategoryRelation.findPage.count" resultType="long">
+        SELECT count(*) FROM t_coupon_category_relation as t_coupon_category_relation 
+		<include refid="CouponCategoryRelation.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="CouponCategoryRelation.findPage" resultMap="CouponCategoryRelation.RM">
+    	SELECT 
+    	<include refid="CouponCategoryRelation.columns" />
+	    FROM t_coupon_category_relation as t_coupon_category_relation 
+		<include refid="CouponCategoryRelation.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="CouponCategoryRelation.findList" resultMap="CouponCategoryRelation.RM">
+    	SELECT 
+    	<include refid="CouponCategoryRelation.columns" />
+	     FROM t_coupon_category_relation as t_coupon_category_relation 
+		<include refid="CouponCategoryRelation.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	
+</mapper>
+

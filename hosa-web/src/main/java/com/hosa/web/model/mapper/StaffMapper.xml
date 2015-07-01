@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Staff">
+
+	<resultMap id="Staff.RM" type="com.hosa.web.model.Staff">
+        <result property="id" column="id"/>        
+        <result property="name" column="name"/>        
+        <result property="simpleCode" column="simple_code"/>        
+        <result property="departmentId" column="department_id"/>        
+        <result property="gender" column="gender"/>        
+        <result property="mobile" column="mobile"/>        
+        <result property="loginId" column="login_id"/>        
+        <result property="password" column="password"/>        
+        <result property="isAvailable" column="is_available"/>        
+        <result property="headImageUrl" column="head_image_url"/>        
+        <result property="headImageStoragePath" column="head_image_storage_path"/>        
+        <result property="lastAccess" column="last_access"/>        
+        <result property="createdAt" column="created_at"/>        
+        <result property="modified" column="modified"/>   
+        
+        <result property="department.id" column="department_id"/>        
+        <result property="department.name" column="department_name"/>        
+	     
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Staff.columns">
+	    <![CDATA[
+		t_staff.id,t_staff.name,t_staff.simple_code,t_staff.department_id,t_staff.gender,t_staff.mobile,t_staff.login_id,t_staff.password,t_staff.is_available,t_staff.head_image_url,t_staff.head_image_storage_path,t_staff.last_access,t_staff.created_at,t_staff.modified
+	    ]]>
+	</sql>
+
+<sql id="Staff.Department.columns">
+	    <![CDATA[
+		t_department.id as department_id,t_department.name as department_name
+	    ]]>
+	</sql>
+
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Staff.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_staff (
+	        	id
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,name
+		      	</if>
+		     	<if test="@Ognl@isNotNull(simpleCode)">
+		        	,simple_code
+		      	</if>
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,department_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(gender)">
+		        	,gender
+		      	</if>
+		     	<if test="@Ognl@isNotNull(mobile)">
+		        	,mobile
+		      	</if>
+		     	<if test="@Ognl@isNotNull(loginId)">
+		        	,login_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(password)">
+		        	,password
+		      	</if>
+		     	<if test="@Ognl@isNotNull(isAvailable)">
+		        	,is_available
+		      	</if>
+		     	<if test="@Ognl@isNotNull(headImageUrl)">
+		        	,head_image_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(headImageStoragePath)">
+		        	,head_image_storage_path
+		      	</if>
+		     	<if test="@Ognl@isNotNull(lastAccess)">
+		        	,last_access
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,created_at
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,#{name}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(simpleCode)">
+		        	,#{simpleCode}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,#{departmentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(gender)">
+		        	,#{gender}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(mobile)">
+		        	,#{mobile}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(loginId)">
+		        	,#{loginId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(password)">
+		        	,#{password}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(isAvailable)">
+		        	,#{isAvailable}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(headImageUrl)">
+		        	,#{headImageUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(headImageStoragePath)">
+		        	,#{headImageStoragePath}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(lastAccess)">
+		        	,#{lastAccess}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,#{createdAt}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="Staff.update" >
+    
+        UPDATE t_staff 
+			<set>
+		        <if test="@Ognl@isNotNull(name)">
+		        		name = #{name},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(simpleCode)">
+		        		simple_code = #{simpleCode},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(departmentId)">
+		        		department_id = #{departmentId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(gender)">
+		        		gender = #{gender},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(mobile)">
+		        		mobile = #{mobile},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(loginId)">
+		        		login_id = #{loginId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(password)">
+		        		password = #{password},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(isAvailable)">
+		        		is_available = #{isAvailable},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(headImageUrl)">
+		        		head_image_url = #{headImageUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(headImageStoragePath)">
+		        		head_image_storage_path = #{headImageStoragePath},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(lastAccess)">
+		        		last_access = #{lastAccess},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(createdAt)">
+		        		created_at = #{createdAt},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="Staff.delete">
+    <![CDATA[
+        DELETE FROM t_staff 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="Staff.deleteMultiple">
+
+        DELETE FROM t_staff 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="Staff.getById" resultMap="Staff.RM">
+		SELECT 
+		<include refid="Staff.columns" />
+	    <![CDATA[
+		    FROM t_staff as t_staff
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="Staff.getByMultipleId" resultMap="Staff.RM">
+		SELECT 
+		<include refid="Staff.columns" />
+		    FROM t_staff as t_staff
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="Staff.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_staff.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_staff.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_staff.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_staff.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_staff.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_staff.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_staff.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_staff.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(name)">
+				AND t_staff.name = #{name}
+			</if>
+			<if test="@Ognl@isNotEmpty(nameLike)">
+				AND t_staff.name like CONCAT('%', CONVERT(#{nameLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameBeginLike)">
+				AND t_staff.name like CONCAT('', CONVERT(#{nameBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameEndLike)">
+				AND t_staff.name like CONCAT('%', CONVERT(#{nameEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(simpleCode)">
+				AND t_staff.simple_code = #{simpleCode}
+			</if>
+			<if test="@Ognl@isNotEmpty(simpleCodeLike)">
+				AND t_staff.simple_code like CONCAT('%', CONVERT(#{simpleCodeLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(simpleCodeBeginLike)">
+				AND t_staff.simple_code like CONCAT('', CONVERT(#{simpleCodeBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(simpleCodeEndLike)">
+				AND t_staff.simple_code like CONCAT('%', CONVERT(#{simpleCodeEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentId)">
+				AND t_staff.department_id = #{departmentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdNotEq)">
+				AND t_staff.department_id &lt;&gt; #{departmentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGT)">
+				AND t_staff.department_id &gt; #{departmentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLT)">
+				AND t_staff.department_id &lt; #{departmentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGE)">
+				AND t_staff.department_id &gt;= #{departmentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLE)">
+				AND t_staff.department_id &lt;= #{departmentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(departmentIdList)">
+				AND t_staff.department_id in
+				<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(departmentIdNotEqList)">
+				AND t_staff.department_id not in
+				<foreach collection="departmentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(gender)">
+				AND t_staff.gender = #{gender}
+			</if>
+			<if test="@Ognl@isNotEmpty(genderNotEq)">
+				AND t_staff.gender &lt;&gt; #{genderNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(genderGT)">
+				AND t_staff.gender &gt; #{genderGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(genderLT)">
+				AND t_staff.gender &lt; #{genderLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(genderGE)">
+				AND t_staff.gender &gt;= #{genderGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(genderLE)">
+				AND t_staff.gender &lt;= #{genderLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(genderList)">
+				AND t_staff.gender in
+				<foreach collection="genderList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(genderNotEqList)">
+				AND t_staff.gender not in
+				<foreach collection="genderNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(mobile)">
+				AND t_staff.mobile = #{mobile}
+			</if>
+			<if test="@Ognl@isNotEmpty(mobileLike)">
+				AND t_staff.mobile like CONCAT('%', CONVERT(#{mobileLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(mobileBeginLike)">
+				AND t_staff.mobile like CONCAT('', CONVERT(#{mobileBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(mobileEndLike)">
+				AND t_staff.mobile like CONCAT('%', CONVERT(#{mobileEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(loginId)">
+				AND t_staff.login_id = #{loginId}
+			</if>
+			<if test="@Ognl@isNotEmpty(loginIdLike)">
+				AND t_staff.login_id like CONCAT('%', CONVERT(#{loginIdLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(loginIdBeginLike)">
+				AND t_staff.login_id like CONCAT('', CONVERT(#{loginIdBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(loginIdEndLike)">
+				AND t_staff.login_id like CONCAT('%', CONVERT(#{loginIdEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(password)">
+				AND t_staff.password = #{password}
+			</if>
+			<if test="@Ognl@isNotEmpty(passwordLike)">
+				AND t_staff.password like CONCAT('%', CONVERT(#{passwordLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(passwordBeginLike)">
+				AND t_staff.password like CONCAT('', CONVERT(#{passwordBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(passwordEndLike)">
+				AND t_staff.password like CONCAT('%', CONVERT(#{passwordEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(isAvailable)">
+				AND t_staff.is_available = #{isAvailable}
+			</if>
+			<if test="@Ognl@isNotEmpty(isAvailableNotEq)">
+				AND t_staff.is_available &lt;&gt; #{isAvailableNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(isAvailableGT)">
+				AND t_staff.is_available &gt; #{isAvailableGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(isAvailableLT)">
+				AND t_staff.is_available &lt; #{isAvailableLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(isAvailableGE)">
+				AND t_staff.is_available &gt;= #{isAvailableGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(isAvailableLE)">
+				AND t_staff.is_available &lt;= #{isAvailableLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(isAvailableList)">
+				AND t_staff.is_available in
+				<foreach collection="isAvailableList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(isAvailableNotEqList)">
+				AND t_staff.is_available not in
+				<foreach collection="isAvailableNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(headImageUrl)">
+				AND t_staff.head_image_url = #{headImageUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(headImageUrlLike)">
+				AND t_staff.head_image_url like CONCAT('%', CONVERT(#{headImageUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(headImageUrlBeginLike)">
+				AND t_staff.head_image_url like CONCAT('', CONVERT(#{headImageUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(headImageUrlEndLike)">
+				AND t_staff.head_image_url like CONCAT('%', CONVERT(#{headImageUrlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(headImageStoragePath)">
+				AND t_staff.head_image_storage_path = #{headImageStoragePath}
+			</if>
+			<if test="@Ognl@isNotEmpty(headImageStoragePathLike)">
+				AND t_staff.head_image_storage_path like CONCAT('%', CONVERT(#{headImageStoragePathLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(headImageStoragePathBeginLike)">
+				AND t_staff.head_image_storage_path like CONCAT('', CONVERT(#{headImageStoragePathBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(headImageStoragePathEndLike)">
+				AND t_staff.head_image_storage_path like CONCAT('%', CONVERT(#{headImageStoragePathEndLike}, char) ,'') 
+			</if>
+	       <if test="@Ognl@isNotEmpty(lastAccessBegin)">
+				AND t_staff.last_access &gt;= #{lastAccessBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(lastAccessEnd)">
+				AND t_staff.last_access &lt;= #{lastAccessEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(createdAtBegin)">
+				AND t_staff.created_at &gt;= #{createdAtBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(createdAtEnd)">
+				AND t_staff.created_at &lt;= #{createdAtEnd}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(extendsQuery)">
+				AND ${extendsQuery}
+		   </if>
+		   
+		   <if test="@Ognl@isNotEmpty(orStaffId)">
+				OR t_staff.id = #{orStaffId}
+		   </if>
+		   
+		   
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_staff.modified &gt;= #{modifiedBegin}
+		   </if>
+		  
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_staff.modified &lt;= #{modifiedEnd}
+		   </if>
+		   
+		</where>
+	</sql>
+		
+    <select id="Staff.findPage.count" resultType="long">
+        SELECT count(*) FROM t_staff as t_staff 
+		<include refid="Staff.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Staff.findPage" resultMap="Staff.RM">
+    	SELECT 
+    	<include refid="Staff.columns" />, <include refid="Staff.Department.columns" />
+	    FROM t_staff as t_staff 
+	    left join
+	    t_department as t_department
+	    on 
+	    t_staff.department_id = t_department.id
+		<include refid="Staff.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="Staff.findList" resultMap="Staff.RM">
+    	SELECT 
+    	<include refid="Staff.columns" />
+	     FROM t_staff as t_staff 
+		<include refid="Staff.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+    <select id="Staff.getByMobile" resultMap="Staff.RM" parameterType="java.lang.String">
+	    SELECT 
+	    <include refid="Staff.columns"/>
+	    <![CDATA[
+	        FROM t_staff as t_staff  where t_staff.mobile = #{mobile}
+	    ]]>
+    </select>
+    
+    <select id="Staff.getByLoginId" resultMap="Staff.RM" parameterType="java.lang.String">
+	    SELECT 
+	    <include refid="Staff.columns"/>
+	    <![CDATA[
+	        FROM t_staff as t_staff  where t_staff.login_id = #{loginId}
+	    ]]>
+    </select>
+    
+	<select id="Staff.findDepartmentIdByMultipleId" resultType="java.lang.Long" >
+	    SELECT 
+	    t_staff.department_id
+	  
+	        FROM t_staff as t_staff  where t_staff.id in 
+	        <foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+	   
+    </select>
+    
+    <select id="Staff.getDepartmentIdById" resultType="java.lang.Long">
+	    SELECT 
+	    t_staff.department_id
+	    <![CDATA[
+	        FROM t_staff as t_staff  where t_staff.id = #{id}
+	    ]]>
+    </select>
+	
+</mapper>
+

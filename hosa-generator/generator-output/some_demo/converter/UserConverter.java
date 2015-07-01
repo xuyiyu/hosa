@@ -1,8 +1,8 @@
 
-package com.gaojiaoyuan.repository.converter;
+package com.hosa.repository.converter;
 
-import com.gaojiaoyuan.dal.dataobject.UserDO;
-import com.gaojiaoyuan.repository.model.User;
+import com.hosa.dal.dataobject.UserDO;
+import com.hosa.repository.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

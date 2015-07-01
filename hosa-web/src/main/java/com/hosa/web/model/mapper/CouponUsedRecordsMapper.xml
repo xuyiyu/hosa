@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="CouponUsedRecords">
+
+	<resultMap id="CouponUsedRecords.RM" type="com.hosa.web.model.CouponUsedRecords">
+        <result property="id" column="id"/>        
+        <result property="userId" column="user_id"/>        
+        <result property="couponId" column="coupon_id"/>        
+        <result property="code" column="code"/>        
+        <result property="collectTime" column="collect_time"/>        
+        <result property="usedTime" column="used_time"/>        
+        <result property="status" column="status"/>        
+        <result property="modified" column="modified"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="CouponUsedRecords.columns">
+	    <![CDATA[
+		t_coupon_used_records.id,t_coupon_used_records.user_id,t_coupon_used_records.coupon_id,t_coupon_used_records.code,t_coupon_used_records.collect_time,t_coupon_used_records.used_time,t_coupon_used_records.status,t_coupon_used_records.modified
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="CouponUsedRecords.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_coupon_used_records (
+	        	id
+		     	<if test="@Ognl@isNotNull(userId)">
+		        	,user_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(couponId)">
+		        	,coupon_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(code)">
+		        	,code
+		      	</if>
+		     	<if test="@Ognl@isNotNull(collectTime)">
+		        	,collect_time
+		      	</if>
+		     	<if test="@Ognl@isNotNull(usedTime)">
+		        	,used_time
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,status
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(userId)">
+		        	,#{userId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(couponId)">
+		        	,#{couponId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(code)">
+		        	,#{code}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(collectTime)">
+		        	,#{collectTime}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(usedTime)">
+		        	,#{usedTime}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,#{status}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="CouponUsedRecords.update" >
+    
+        UPDATE t_coupon_used_records 
+			<set>
+		        <if test="@Ognl@isNotNull(userId)">
+		        		user_id = #{userId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(couponId)">
+		        		coupon_id = #{couponId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(code)">
+		        		code = #{code},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(collectTime)">
+		        		collect_time = #{collectTime},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(usedTime)">
+		        		used_time = #{usedTime},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(status)">
+		        		status = #{status},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="CouponUsedRecords.delete">
+    <![CDATA[
+        DELETE FROM t_coupon_used_records 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="CouponUsedRecords.deleteMultiple">
+
+        DELETE FROM t_coupon_used_records 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="CouponUsedRecords.getById" resultMap="CouponUsedRecords.RM">
+		SELECT 
+		<include refid="CouponUsedRecords.columns" />
+	    <![CDATA[
+		    FROM t_coupon_used_records as t_coupon_used_records
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="CouponUsedRecords.getByMultipleId" resultMap="CouponUsedRecords.RM">
+		SELECT 
+		<include refid="CouponUsedRecords.columns" />
+		    FROM t_coupon_used_records as t_coupon_used_records
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="CouponUsedRecords.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_coupon_used_records.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_coupon_used_records.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_coupon_used_records.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_coupon_used_records.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_coupon_used_records.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_coupon_used_records.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_coupon_used_records.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_coupon_used_records.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(userId)">
+				AND t_coupon_used_records.user_id = #{userId}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdNotEq)">
+				AND t_coupon_used_records.user_id &lt;&gt; #{userIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdGT)">
+				AND t_coupon_used_records.user_id &gt; #{userIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdLT)">
+				AND t_coupon_used_records.user_id &lt; #{userIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdGE)">
+				AND t_coupon_used_records.user_id &gt;= #{userIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdLE)">
+				AND t_coupon_used_records.user_id &lt;= #{userIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(userIdList)">
+				AND t_coupon_used_records.user_id in
+				<foreach collection="userIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(userIdNotEqList)">
+				AND t_coupon_used_records.user_id not in
+				<foreach collection="userIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(couponId)">
+				AND t_coupon_used_records.coupon_id = #{couponId}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdNotEq)">
+				AND t_coupon_used_records.coupon_id &lt;&gt; #{couponIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdGT)">
+				AND t_coupon_used_records.coupon_id &gt; #{couponIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdLT)">
+				AND t_coupon_used_records.coupon_id &lt; #{couponIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdGE)">
+				AND t_coupon_used_records.coupon_id &gt;= #{couponIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdLE)">
+				AND t_coupon_used_records.coupon_id &lt;= #{couponIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(couponIdList)">
+				AND t_coupon_used_records.coupon_id in
+				<foreach collection="couponIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(couponIdNotEqList)">
+				AND t_coupon_used_records.coupon_id not in
+				<foreach collection="couponIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(code)">
+				AND t_coupon_used_records.code = #{code}
+			</if>
+			<if test="@Ognl@isNotEmpty(codeLike)">
+				AND t_coupon_used_records.code like CONCAT('%', CONVERT(#{codeLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(codeBeginLike)">
+				AND t_coupon_used_records.code like CONCAT('', CONVERT(#{codeBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(codeEndLike)">
+				AND t_coupon_used_records.code like CONCAT('%', CONVERT(#{codeEndLike}, char) ,'') 
+			</if>
+	       <if test="@Ognl@isNotEmpty(collectTimeBegin)">
+				AND t_coupon_used_records.collect_time &gt;= #{collectTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(collectTimeEnd)">
+				AND t_coupon_used_records.collect_time &lt;= #{collectTimeEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(usedTimeBegin)">
+				AND t_coupon_used_records.used_time &gt;= #{usedTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(usedTimeEnd)">
+				AND t_coupon_used_records.used_time &lt;= #{usedTimeEnd}
+		   </if>
+			<if test="@Ognl@isNotEmpty(status)">
+				AND t_coupon_used_records.status = #{status}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusNotEq)">
+				AND t_coupon_used_records.status &lt;&gt; #{statusNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGT)">
+				AND t_coupon_used_records.status &gt; #{statusGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLT)">
+				AND t_coupon_used_records.status &lt; #{statusLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGE)">
+				AND t_coupon_used_records.status &gt;= #{statusGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLE)">
+				AND t_coupon_used_records.status &lt;= #{statusLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(statusList)">
+				AND t_coupon_used_records.status in
+				<foreach collection="statusList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(statusNotEqList)">
+				AND t_coupon_used_records.status not in
+				<foreach collection="statusNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_coupon_used_records.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_coupon_used_records.modified &lt;= #{modifiedEnd}
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="CouponUsedRecords.findPage.count" resultType="long">
+        SELECT count(*) FROM t_coupon_used_records as t_coupon_used_records 
+		<include refid="CouponUsedRecords.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="CouponUsedRecords.findPage" resultMap="CouponUsedRecords.RM">
+    	SELECT 
+    	<include refid="CouponUsedRecords.columns" />
+	    FROM t_coupon_used_records as t_coupon_used_records 
+		<include refid="CouponUsedRecords.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="CouponUsedRecords.findList" resultMap="CouponUsedRecords.RM">
+    	SELECT 
+    	<include refid="CouponUsedRecords.columns" />
+	     FROM t_coupon_used_records as t_coupon_used_records 
+		<include refid="CouponUsedRecords.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+    <select id="CouponUsedRecords.getByCode" resultMap="CouponUsedRecords.RM" parameterType="java.lang.String">
+	    SELECT 
+	    <include refid="CouponUsedRecords.columns"/>
+	    <![CDATA[
+	        FROM t_coupon_used_records as t_coupon_used_records  where t_coupon_used_records.code = #{code}
+	    ]]>
+    </select>
+    
+	<update id="CouponUsedRecords.apartRecordsLimit">
+		update t_coupon_used_records set status=0 where status=1 and coupon_id=#{id} limit ${limit}
+	</update>
+	
+	<update id="CouponUsedRecords.updateReceiveStatus">
+		update t_coupon_used_records 
+		set 
+		status=2 ,
+		collect_time=#{collectTime} ,
+		user_id = #{userId}
+		where status=1 and coupon_id=#{id} 
+		limit 1
+	</update>
+	
+	
+	
+</mapper>
+

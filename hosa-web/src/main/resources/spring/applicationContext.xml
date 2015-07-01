@@ -16,7 +16,7 @@
 		</property>
 	</bean>
 	
-	<context:component-scan base-package="com.mexp.**.service, com.mexp.**.dao, com.mexp.**.listener, com.mexp.**.component,com.mexp.**.internal" />
+	<context:component-scan base-package="com.hosa.**.service, com.hosa.**.dao, com.hosa.**.listener, com.hosa.**.component,com.hosa.**.internal" />
 	<!--  激活 @Required @Autowired,JSR 250's @PostConstruct, @PreDestroy and @Resource 等标注 
 	<context:annotation-config />
 	-->

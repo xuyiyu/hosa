@@ -1,8 +1,8 @@
 
-package com.gaojiaoyuan.repository.converter;
+package com.hosa.repository.converter;
 
-import com.gaojiaoyuan.dal.dataobject.ImageDO;
-import com.gaojiaoyuan.repository.model.Image;
+import com.hosa.dal.dataobject.ImageDO;
+import com.hosa.repository.model.Image;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
 
-package com.gaojiaoyuan.repository.converter;
+package com.hosa.repository.converter;
 
-import com.gaojiaoyuan.dal.dataobject.LocationFollowingDO;
-import com.gaojiaoyuan.repository.model.LocationFollowing;
+import com.hosa.dal.dataobject.LocationFollowingDO;
+import com.hosa.repository.model.LocationFollowing;
 
 import java.util.ArrayList;
 import java.util.List;
