@@ -1,0 +1,47 @@
+
+<bean id="favoriteManager" class="com.gaojiaoyuan.service.FavoriteManager"/>
+<bean id="favoriteDao" class="com.gaojiaoyuan.dao.FavoriteDao"/>
+<!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
+<!--  generator-insert-location -->
+
+<bean id="userFollowingManager" class="com.gaojiaoyuan.service.UserFollowingManager"/>
+<bean id="userFollowingDao" class="com.gaojiaoyuan.dao.UserFollowingDao"/>
+<!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
+<!--  generator-insert-location -->
+
+
+<bean id="userFavoriteRelationManager" class="com.gaojiaoyuan.service.UserFavoriteRelationManager"/>
+<bean id="userFavoriteRelationDao" class="com.gaojiaoyuan.dao.UserFavoriteRelationDao"/>
+<!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
+<!--  generator-insert-location -->
+
+
+<bean id="userManager" class="com.gaojiaoyuan.service.UserManager"/>
+<bean id="userDao" class="com.gaojiaoyuan.dao.UserDao"/>
+<!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
+<!--  generator-insert-location -->
+
+
+<bean id="locationFollowingManager" class="com.gaojiaoyuan.service.LocationFollowingManager"/>
+<bean id="locationFollowingDao" class="com.gaojiaoyuan.dao.LocationFollowingDao"/>
+<!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
+<!--  generator-insert-location -->
+
+
+<bean id="locationManager" class="com.gaojiaoyuan.service.LocationManager"/>
+<bean id="locationDao" class="com.gaojiaoyuan.dao.LocationDao"/>
+<!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
+<!--  generator-insert-location -->
+
+
+<bean id="imageManager" class="com.gaojiaoyuan.service.ImageManager"/>
+<bean id="imageDao" class="com.gaojiaoyuan.dao.ImageDao"/>
+<!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
+<!--  generator-insert-location -->
+
+
+<bean id="favoriteListManager" class="com.gaojiaoyuan.service.FavoriteListManager"/>
+<bean id="favoriteListDao" class="com.gaojiaoyuan.dao.FavoriteListDao"/>
+<!-- 文件包含后面的这段字符: generator-...-location,则在模板输出的地方,如果发现同名文件,则可将生成内容插入在该标记之后 -->
+<!--  generator-insert-location -->
+

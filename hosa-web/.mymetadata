@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="hosa-web"
+  id="myeclipse.1401264390093"
+  context-root="/mexp-web"
+  j2ee-spec="6.0"
+  archive="hosa-web.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+

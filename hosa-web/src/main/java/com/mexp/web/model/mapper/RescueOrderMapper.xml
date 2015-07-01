@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="RescueOrder">
+
+	<resultMap id="RescueOrder.RM" type="com.mexp.web.model.RescueOrder">
+        <result property="id" column="id"/>        
+        <result property="userId" column="user_id"/>        
+        <result property="appointmentTime" column="appointment_time"/>        
+        <result property="location" column="location"/>        
+        <result property="description" column="description"/>        
+        <result property="status" column="status"/>        
+        <result property="modified" column="modified"/>        
+        <result property="accidentDescription" column="accident_description"/>        
+        <result property="accidentImgStoragePath" column="accident_img_storage_path"/>        
+        <result property="accidentImgUrl" column="accident_img_url"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="RescueOrder.columns">
+	    <![CDATA[
+		t_rescue_order.id,t_rescue_order.user_id,t_rescue_order.appointment_time,t_rescue_order.location,t_rescue_order.description,t_rescue_order.status,t_rescue_order.modified,t_rescue_order.accident_description,t_rescue_order.accident_img_storage_path,t_rescue_order.accident_img_url
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="RescueOrder.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_rescue_order (
+	        	id
+		     	<if test="@Ognl@isNotNull(userId)">
+		        	,user_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(appointmentTime)">
+		        	,appointment_time
+		      	</if>
+		     	<if test="@Ognl@isNotNull(location)">
+		        	,location
+		      	</if>
+		     	<if test="@Ognl@isNotNull(description)">
+		        	,description
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,status
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+		     	<if test="@Ognl@isNotNull(accidentDescription)">
+		        	,accident_description
+		      	</if>
+		     	<if test="@Ognl@isNotNull(accidentImgStoragePath)">
+		        	,accident_img_storage_path
+		      	</if>
+		     	<if test="@Ognl@isNotNull(accidentImgUrl)">
+		        	,accident_img_url
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(userId)">
+		        	,#{userId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(appointmentTime)">
+		        	,#{appointmentTime}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(location)">
+		        	,#{location}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(description)">
+		        	,#{description}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,#{status}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(accidentDescription)">
+		        	,#{accidentDescription}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(accidentImgStoragePath)">
+		        	,#{accidentImgStoragePath}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(accidentImgUrl)">
+		        	,#{accidentImgUrl}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="RescueOrder.update" >
+    
+        UPDATE t_rescue_order 
+			<set>
+		        <if test="@Ognl@isNotNull(userId)">
+		        		user_id = #{userId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(appointmentTime)">
+		        		appointment_time = #{appointmentTime},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(location)">
+		        		location = #{location},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(description)">
+		        		description = #{description},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(status)">
+		        		status = #{status},
+		        	</if>
+		        	
+		        	
+		        <if test="@Ognl@isNotNull(accidentDescription)">
+		        		accident_description = #{accidentDescription},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(accidentImgStoragePath)">
+		        		accident_img_storage_path = #{accidentImgStoragePath},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(accidentImgUrl)">
+		        		accident_img_url = #{accidentImgUrl},
+		        	</if>
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="RescueOrder.delete">
+    <![CDATA[
+        DELETE FROM t_rescue_order 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="RescueOrder.deleteMultiple">
+
+        DELETE FROM t_rescue_order 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="RescueOrder.getById" resultMap="RescueOrder.RM">
+		SELECT 
+		<include refid="RescueOrder.columns" />
+	    <![CDATA[
+		    FROM t_rescue_order as t_rescue_order
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="RescueOrder.getByMultipleId" resultMap="RescueOrder.RM">
+		SELECT 
+		<include refid="RescueOrder.columns" />
+		    FROM t_rescue_order as t_rescue_order
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="RescueOrder.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_rescue_order.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_rescue_order.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_rescue_order.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_rescue_order.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_rescue_order.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_rescue_order.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_rescue_order.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_rescue_order.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(userId)">
+				AND t_rescue_order.user_id = #{userId}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdNotEq)">
+				AND t_rescue_order.user_id &lt;&gt; #{userIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdGT)">
+				AND t_rescue_order.user_id &gt; #{userIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdLT)">
+				AND t_rescue_order.user_id &lt; #{userIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdGE)">
+				AND t_rescue_order.user_id &gt;= #{userIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdLE)">
+				AND t_rescue_order.user_id &lt;= #{userIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(userIdList)">
+				AND t_rescue_order.user_id in
+				<foreach collection="userIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(userIdNotEqList)">
+				AND t_rescue_order.user_id not in
+				<foreach collection="userIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(appointmentTimeBegin)">
+				AND t_rescue_order.appointment_time &gt;= #{appointmentTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(appointmentTimeEnd)">
+				AND t_rescue_order.appointment_time &lt;= #{appointmentTimeEnd}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(location)">
+				AND t_rescue_order.location = #{location}
+			</if>
+			<if test="@Ognl@isNotEmpty(locationLike)">
+				AND t_rescue_order.location like CONCAT('%', CONVERT(#{locationLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(locationBeginLike)">
+				AND t_rescue_order.location like CONCAT('', CONVERT(#{locationBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(locationEndLike)">
+				AND t_rescue_order.location like CONCAT('%', CONVERT(#{locationEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(description)">
+				AND t_rescue_order.description = #{description}
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionLike)">
+				AND t_rescue_order.description like CONCAT('%', CONVERT(#{descriptionLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionBeginLike)">
+				AND t_rescue_order.description like CONCAT('', CONVERT(#{descriptionBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(descriptionEndLike)">
+				AND t_rescue_order.description like CONCAT('%', CONVERT(#{descriptionEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(status)">
+				AND t_rescue_order.status = #{status}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusNotEq)">
+				AND t_rescue_order.status &lt;&gt; #{statusNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGT)">
+				AND t_rescue_order.status &gt; #{statusGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLT)">
+				AND t_rescue_order.status &lt; #{statusLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGE)">
+				AND t_rescue_order.status &gt;= #{statusGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLE)">
+				AND t_rescue_order.status &lt;= #{statusLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(statusList)">
+				AND t_rescue_order.status in
+				<foreach collection="statusList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(statusNotEqList)">
+				AND t_rescue_order.status not in
+				<foreach collection="statusNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_rescue_order.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_rescue_order.modified &lt;= #{modifiedEnd}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(accidentDescription)">
+				AND t_rescue_order.accident_description = #{accidentDescription}
+			</if>
+			<if test="@Ognl@isNotEmpty(accidentDescriptionLike)">
+				AND t_rescue_order.accident_description like CONCAT('%', CONVERT(#{accidentDescriptionLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(accidentDescriptionBeginLike)">
+				AND t_rescue_order.accident_description like CONCAT('', CONVERT(#{accidentDescriptionBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(accidentDescriptionEndLike)">
+				AND t_rescue_order.accident_description like CONCAT('%', CONVERT(#{accidentDescriptionEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(accidentImgStoragePath)">
+				AND t_rescue_order.accident_img_storage_path = #{accidentImgStoragePath}
+			</if>
+			<if test="@Ognl@isNotEmpty(accidentImgStoragePathLike)">
+				AND t_rescue_order.accident_img_storage_path like CONCAT('%', CONVERT(#{accidentImgStoragePathLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(accidentImgStoragePathBeginLike)">
+				AND t_rescue_order.accident_img_storage_path like CONCAT('', CONVERT(#{accidentImgStoragePathBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(accidentImgStoragePathEndLike)">
+				AND t_rescue_order.accident_img_storage_path like CONCAT('%', CONVERT(#{accidentImgStoragePathEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(accidentImgUrl)">
+				AND t_rescue_order.accident_img_url = #{accidentImgUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(accidentImgUrlLike)">
+				AND t_rescue_order.accident_img_url like CONCAT('%', CONVERT(#{accidentImgUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(accidentImgUrlBeginLike)">
+				AND t_rescue_order.accident_img_url like CONCAT('', CONVERT(#{accidentImgUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(accidentImgUrlEndLike)">
+				AND t_rescue_order.accident_img_url like CONCAT('%', CONVERT(#{accidentImgUrlEndLike}, char) ,'') 
+			</if>
+		</where>
+	</sql>
+		
+    <select id="RescueOrder.findPage.count" resultType="long">
+        SELECT count(*) FROM t_rescue_order as t_rescue_order 
+		<include refid="RescueOrder.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="RescueOrder.findPage" resultMap="RescueOrder.RM">
+    	SELECT 
+    	<include refid="RescueOrder.columns" />
+	    FROM t_rescue_order as t_rescue_order 
+		<include refid="RescueOrder.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="RescueOrder.findList" resultMap="RescueOrder.RM">
+    	SELECT 
+    	<include refid="RescueOrder.columns" />
+	     FROM t_rescue_order as t_rescue_order 
+		<include refid="RescueOrder.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+	<select id="RescueOrder.loadOrderDayList" resultType="java.lang.String">
+		select appointment_time from t_rescue_order where user_id=#{userId} group by appointment_time 
+	
+	</select>
+
+	
+	<select id="RescueOrder.getByDate" resultMap="RescueOrder.RM">
+		SELECT 
+    	<include refid="RescueOrder.columns" />
+	     FROM t_rescue_order as t_rescue_order 
+		where appointment_time = #{date} limit 1;
+	
+	</select>
+	
+	
+</mapper>
+

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- DBUnit flatXml DataFile -->
+<dataset>
+
+
+	  <t_user 
+			id='752' 
+			nick='Nick189' 
+			portrait_url='PortraitUrl179' 
+			follower='309' 
+			user_following='563' 
+			location_following='750' 
+			brief_description='BriefDescription522' 
+			image_cnt='600' 
+			praising_cnt='234' 
+			praised_cnt='463' 
+			notifiy_cnt='321' 
+			created_at='2015-06-30 16:12:18.798' 
+	  />	
+  
+</dataset>

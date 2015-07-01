@@ -1,0 +1,377 @@
+<#include "/macro.include"/>
+<#assign className = table.className>   
+<#assign classNameFirstLower = table.classNameFirstLower>   
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<#macro mapperEl value>${r"#{"}${value}}</#macro>
+
+<#macro namespace>${className}.</#macro>
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="${className}">
+
+	<resultMap id="${className}.RM" type="${basepackage}${projectpackage}.model.${className}">
+        <#list table.columns as column>
+        <result property="${column.columnNameLower}" column="${column.sqlName}"/>        
+        
+		</#list>
+	</resultMap>
+	
+	<sql id="<@namespace/>get.columns">
+		<#list table.columns as column>
+			<#if column_index gt 0>,</#if> ${table.sqlName}.${column.sqlName}
+		</#list>
+	</sql>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="<@namespace/>query.columns">
+		<#list table.columns as column>
+			<#if column_index gt 0><if test="@Ognl@isTrue(${column.columnNameLower}QueryShow)  or @Ognl@isTrue(queryShowAll)">
+			,</#if> ${table.sqlName}.${column.sqlName}
+			<#if column_index gt 0></if></#if>
+		</#list>
+	</sql>
+	
+	
+	<sql id="<@namespace/>query.advanced.columns">
+	 <#list table.columns as column>
+	  <#if column.isStringColumn>
+	   <if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}ListOr)">
+				
+				<foreach collection="${column.columnNameFirstLower}ListOr" item="${column.columnNameFirstLower}ListOrId" index="index" open=",(" close=")" separator="+" >
+				if(locate(<@mapperEl "${column.columnNameFirstLower}ListOrId"/>, ${table.sqlName}.${column.sqlName}), 1, 0)
+				</foreach>
+				 as ${column.sqlName}_advanced_score
+		</if>
+		<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}LikeListOr)">
+			
+				<foreach collection="${column.columnNameFirstLower}LikeListOr" item="${column.columnNameFirstLower}LikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(<@mapperEl "${column.columnNameFirstLower}LikeListOrId"/>, ${table.sqlName}.${column.sqlName}), 1, 0)
+				</foreach>
+				as ${column.sqlName}_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}BeginLikeListOr)">
+			
+				<foreach collection="${column.columnNameFirstLower}BeginLikeListOr" item="${column.columnNameFirstLower}BeginLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(<@mapperEl "${column.columnNameFirstLower}BeginLikeListOrId"/>, ${table.sqlName}.${column.sqlName}), 1, 0)
+				</foreach>
+				 as ${column.sqlName}_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}EndLikeListOr)">
+				
+				<foreach collection="${column.columnNameFirstLower}EndLikeListOr" item="${column.columnNameFirstLower}EndLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(<@mapperEl "${column.columnNameFirstLower}EndLikeListOrId"/>, ${table.sqlName}.${column.sqlName}), 1, 0)
+				</foreach>
+				 as ${column.sqlName}_advanced_score
+			</if>
+	   </#if>
+	   </#list>	
+	  
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="<@namespace/>insert" useGeneratedKeys="true" keyProperty="${table.idColumn.columnNameFirstLower}">
+   
+        INSERT INTO ${table.sqlName} (
+        	<#list table.compositeIdColumns as column>
+	        	${column.sqlName}<#if column_has_next>, </#if>
+	     	</#list>
+	     	<#list table.notPkColumns as column>
+		     	<if test="@Ognl@isNotNull(${column.columnNameFirstLower})">
+		        	,${column.sqlName}
+		      	</if>
+		 	</#list>   
+        
+        ) VALUES (
+        	<#list table.compositeIdColumns as column>
+	        	<@mapperEl column.columnNameLower/><#if column_has_next>, </#if>
+	     	</#list>
+	     	<#list table.notPkColumns as column>
+		     	<if test="@Ognl@isNotNull(${column.columnNameFirstLower})">
+		        	,<@mapperEl column.columnNameFirstLower/>
+		      	</if>
+		 	</#list>       
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="<@namespace/>update" >
+    
+        UPDATE ${table.sqlName} 
+			<set>
+		        <#list table.notPkColumns as column>
+		        <#if column != "modified">
+		        <if test="@Ognl@isNotNull(${column.columnNameFirstLower})">
+		        		${column.sqlName} = <@mapperEl column.columnNameFirstLower/>,
+		        	</if>
+		        </#if>
+		        	
+		        </#list>
+	        </set>
+        WHERE 
+        	<#list table.compositeIdColumns as column>
+	        ${column.sqlName} = <@mapperEl column.columnNameLower/> <#if column_has_next> AND </#if>
+	        </#list>
+	        <#list table.notPkColumns as column>
+					<#if column.isDateTimeColumn && column == "modified">
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = <@mapperEl "modified"/>
+		    </if>
+					</#if>
+		     </#list>	        
+   
+	</update>
+
+    <delete id="<@namespace/>delete">
+    <![CDATA[
+        DELETE FROM ${table.sqlName} 
+        WHERE
+        <#list table.compositeIdColumns as column>
+        ${column.sqlName} = <@mapperEl 'id'/> <#if column_has_next> AND </#if>
+		</#list>
+    ]]>
+    </delete>
+    <delete id="<@namespace/>deleteMultiple">
+
+        DELETE FROM ${table.sqlName} 
+        WHERE
+        <#list table.compositeIdColumns as column>
+        	${column.sqlName} in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+				<@mapperEl 'id'/>
+			</foreach>
+          <#if column_has_next> AND </#if>
+		</#list>
+   
+    </delete>
+    <select id="<@namespace/>getById" resultMap="${className}.RM">
+		SELECT 
+		<include refid="<@namespace/>get.columns" />
+		
+	    <![CDATA[
+		    FROM ${table.sqlName} as ${table.sqlName}
+	        WHERE 
+				<#list table.compositeIdColumns as column>
+		        ${column.sqlName} = <@mapperEl 'id'/> <#if column_has_next> AND </#if>
+		        </#list>    
+	    ]]>
+	</select>
+	
+	<select id="<@namespace/>getByMultipleId" resultMap="${className}.RM">
+		SELECT 
+		<include refid="<@namespace/>get.columns" />
+		
+		    FROM ${table.sqlName} as ${table.sqlName}
+	        WHERE 
+	        <#list table.compositeIdColumns as column>
+		       ${column.sqlName} in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+				<@mapperEl 'id'/>
+			</foreach>
+          <#if column_has_next> AND </#if>
+		    </#list>    
+	</select>
+	
+	<sql id="<@namespace/>findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+	       <#list table.columns as column>
+	       <#if column.isDateTimeColumn>
+	       <if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}Begin)">
+				AND ${table.sqlName}.${column.sqlName} &gt;= <@mapperEl column.columnNameFirstLower+"Begin"/>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}End)">
+				AND ${table.sqlName}.${column.sqlName} &lt;= <@mapperEl column.columnNameFirstLower+"End"/>
+		   </if>
+
+		   <#elseif column.isStringColumn>
+		   <if test="@Ognl@isNotEmpty(${column.columnNameFirstLower})">
+				AND ${table.sqlName}.${column.sqlName} = <@mapperEl column.columnNameFirstLower/>
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}Like)">
+				AND ${table.sqlName}.${column.sqlName} like CONCAT('%', CONVERT(<@mapperEl column.columnNameFirstLower+"Like"/>, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}BeginLike)">
+				AND ${table.sqlName}.${column.sqlName} like CONCAT('', CONVERT(<@mapperEl column.columnNameFirstLower+"BeginLike"/>, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}EndLike)">
+				AND ${table.sqlName}.${column.sqlName} like CONCAT('%', CONVERT(<@mapperEl column.columnNameFirstLower+"EndLike"/>, char) ,'') 
+			</if>
+			
+			
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}ListAnd)">
+				AND 
+				<foreach collection="${column.columnNameFirstLower}ListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				${table.sqlName}.${column.sqlName} = <@mapperEl "id"/>
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}LikeListAnd)">
+				AND 
+				<foreach collection="${column.columnNameFirstLower}LikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				${table.sqlName}.${column.sqlName} like CONCAT('%', CONVERT(<@mapperEl "id"/>, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}BeginLikeListAnd)">
+				AND 
+				<foreach collection="${column.columnNameFirstLower}BeginLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				${table.sqlName}.${column.sqlName} like CONCAT('', CONVERT(<@mapperEl "id"/>, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}EndLikeListAnd)">
+				AND 
+				<foreach collection="${column.columnNameFirstLower}EndLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				${table.sqlName}.${column.sqlName} like CONCAT('%', CONVERT(<@mapperEl "id"/>, char) ,'') 
+				</foreach>
+				 
+			</if>
+			
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}ListOr)">
+				AND 
+				<foreach collection="${column.columnNameFirstLower}ListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				${table.sqlName}.${column.sqlName} = <@mapperEl "id"/>
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}LikeListOr)">
+				AND 
+				<foreach collection="${column.columnNameFirstLower}LikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				${table.sqlName}.${column.sqlName} like CONCAT('%', CONVERT(<@mapperEl "id"/>, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}BeginLikeListOr)">
+				AND 
+				<foreach collection="${column.columnNameFirstLower}BeginLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				${table.sqlName}.${column.sqlName} like CONCAT('', CONVERT(<@mapperEl "id"/>, char) ,'%') 
+				</foreach>
+				 
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}EndLikeListOr)">
+				AND 
+				<foreach collection="${column.columnNameFirstLower}EndLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				${table.sqlName}.${column.sqlName} like CONCAT('%', CONVERT(<@mapperEl "id"/>, char) ,'') 
+				</foreach>
+				 
+			</if>
+			<#elseif column.isNumberColumn>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower})">
+				AND ${table.sqlName}.${column.sqlName} = <@mapperEl column.columnNameFirstLower/>
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}NotEq)">
+				AND ${table.sqlName}.${column.sqlName} &lt;&gt; <@mapperEl column.columnNameFirstLower + "NotEq"/>
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}GT)">
+				AND ${table.sqlName}.${column.sqlName} &gt; <@mapperEl column.columnNameFirstLower  +"GT"/>
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}LT)">
+				AND ${table.sqlName}.${column.sqlName} &lt; <@mapperEl column.columnNameFirstLower + "LT"/>
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}GE)">
+				AND ${table.sqlName}.${column.sqlName} &gt;= <@mapperEl column.columnNameFirstLower  +"GE"/>
+			</if>
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}LE)">
+				AND ${table.sqlName}.${column.sqlName} &lt;= <@mapperEl column.columnNameFirstLower + "LE"/>
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}List)">
+				AND ${table.sqlName}.${column.sqlName} in
+				<foreach collection="${column.columnNameFirstLower}List" item="id" index="index" open="(" close=")" separator="," >
+				<@mapperEl "id"/>	
+				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(${column.columnNameFirstLower}NotEqList)">
+				AND ${table.sqlName}.${column.sqlName} not in
+				<foreach collection="${column.columnNameFirstLower}NotEqList" item="id" index="index" open="(" close=")" separator="," >
+				<@mapperEl "id"/>	
+				</foreach>
+		   </if>
+
+	       <#else>
+	       <if test="@Ognl@isNotEmpty(${column.columnNameFirstLower})">
+				AND ${table.sqlName}.${column.sqlName} = <@mapperEl column.columnNameFirstLower/>
+			</if>
+	       </#if>
+	       </#list>			
+		</where>
+	</sql>
+		
+    <select id="<@namespace/>findPage.count" resultType="long">
+        SELECT count(*) FROM ${table.sqlName} as ${table.sqlName} 
+		<include refid="<@namespace/>findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="<@namespace/>findPage" resultMap="${className}.RM">
+    	SELECT 
+    	<include refid="<@namespace/>query.columns" />
+    	<include refid="<@namespace/>query.advanced.columns" />
+    	
+	    FROM ${table.sqlName} as ${table.sqlName} 
+		<include refid="<@namespace/>findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY <@jspEl 'sortColumns'/>
+		</if>
+    </select>
+    
+    <select id="<@namespace/>findList" resultMap="${className}.RM">
+    	SELECT 
+    	<include refid="<@namespace/>query.columns" />
+    	<include refid="<@namespace/>query.advanced.columns" />
+    	
+	     FROM ${table.sqlName} as ${table.sqlName} 
+		<include refid="<@namespace/>findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY <@jspEl 'sortColumns'/>
+		</if>
+    </select>
+
+	
+	<#list table.uniqueIndexList as uniqueIndexs>
+		<#assign methodName="" />
+		<#list uniqueIndexs as uniqueIndex>
+		<#if uniqueIndex_index gt 0>
+			<#assign methodName = methodName+ "And" />
+		</#if>
+		<#assign methodName = methodName + uniqueIndex.columnName />
+		</#list>	
+	
+	<select id="<@namespace/>getBy${methodName}" resultMap="${className}.RM" >
+	    SELECT 
+	    <include refid="<@namespace/>get.columns"/>
+	    
+	    <![CDATA[
+	        FROM ${table.sqlName} as ${table.sqlName}  
+	        WHERE 
+	        <#list uniqueIndexs as uniqueIndex>
+	       <#if uniqueIndex_index gt 0>	AND </#if> ${table.sqlName}.${uniqueIndex.sqlName} = <@mapperEl uniqueIndex.columnNameLower/>
+	        </#list>	
+	    ]]>
+    </select>
+		
+		
+	</#list>
+	
+	
+	
+	
+</mapper>
+

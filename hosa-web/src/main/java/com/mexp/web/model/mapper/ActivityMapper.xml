@@ -1,0 +1,936 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Activity">
+
+	<resultMap id="Activity.RM" type="com.mexp.web.model.Activity">
+        <result property="id" column="id"/>        
+        <result property="name" column="name"/>        
+        <result property="departmentId" column="department_id"/>        
+        <result property="beginTime" column="begin_time"/>        
+        <result property="endTime" column="end_time"/>        
+        <result property="validTimeType" column="valid_time_type"/>        
+        <result property="daysLate" column="days_late"/>        
+        <result property="type" column="type"/>        
+        <result property="couponId" column="coupon_id"/>        
+        <result property="limitNumber" column="limit_number"/>        
+        <result property="beginPicUrl" column="begin_pic_url"/>        
+        <result property="beginPicStoragePath" column="begin_pic_storage_path"/>        
+        <result property="beginDescription" column="begin_description"/>        
+        <result property="endPicUrl" column="end_pic_url"/>        
+        <result property="endPicStoragePath" column="end_pic_storage_path"/>        
+        <result property="endDescription" column="end_description"/>        
+        <result property="minimumNumber" column="minimum_number"/>        
+        <result property="number" column="number"/>        
+        <result property="successInfo" column="success_info"/>        
+        <result property="failureInfo" column="failure_info"/>        
+        <result property="errorInfo" column="error_info"/>        
+        <result property="status" column="status"/>        
+        <result property="modified" column="modified"/>        
+        <result property="limitCoupon" column="limit_coupon"/>        
+        <result property="estimatePerson" column="estimate_person"/>        
+        <result property="collectNumber" column="collect_number"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Activity.columns">
+	    <![CDATA[
+		t_activity.id,t_activity.name,t_activity.department_id,t_activity.begin_time,t_activity.end_time,t_activity.valid_time_type,t_activity.days_late,t_activity.type,t_activity.coupon_id,t_activity.limit_number,t_activity.begin_pic_url,t_activity.begin_pic_storage_path,t_activity.begin_description,t_activity.end_pic_url,t_activity.end_pic_storage_path,t_activity.end_description,t_activity.minimum_number,t_activity.number,t_activity.success_info,t_activity.failure_info,t_activity.error_info,t_activity.status,t_activity.modified,t_activity.limit_coupon,t_activity.estimate_person,t_activity.collect_number
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Activity.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_activity (
+	        	id
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,name
+		      	</if>
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,department_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(beginTime)">
+		        	,begin_time
+		      	</if>
+		     	<if test="@Ognl@isNotNull(endTime)">
+		        	,end_time
+		      	</if>
+		     	<if test="@Ognl@isNotNull(validTimeType)">
+		        	,valid_time_type
+		      	</if>
+		     	<if test="@Ognl@isNotNull(daysLate)">
+		        	,days_late
+		      	</if>
+		     	<if test="@Ognl@isNotNull(type)">
+		        	,type
+		      	</if>
+		     	<if test="@Ognl@isNotNull(couponId)">
+		        	,coupon_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(limitNumber)">
+		        	,limit_number
+		      	</if>
+		     	<if test="@Ognl@isNotNull(beginPicUrl)">
+		        	,begin_pic_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(beginPicStoragePath)">
+		        	,begin_pic_storage_path
+		      	</if>
+		     	<if test="@Ognl@isNotNull(beginDescription)">
+		        	,begin_description
+		      	</if>
+		     	<if test="@Ognl@isNotNull(endPicUrl)">
+		        	,end_pic_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(endPicStoragePath)">
+		        	,end_pic_storage_path
+		      	</if>
+		     	<if test="@Ognl@isNotNull(endDescription)">
+		        	,end_description
+		      	</if>
+		     	<if test="@Ognl@isNotNull(minimumNumber)">
+		        	,minimum_number
+		      	</if>
+		     	<if test="@Ognl@isNotNull(number)">
+		        	,number
+		      	</if>
+		     	<if test="@Ognl@isNotNull(successInfo)">
+		        	,success_info
+		      	</if>
+		     	<if test="@Ognl@isNotNull(failureInfo)">
+		        	,failure_info
+		      	</if>
+		     	<if test="@Ognl@isNotNull(errorInfo)">
+		        	,error_info
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,status
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+		     	<if test="@Ognl@isNotNull(limitCoupon)">
+		        	,limit_coupon
+		      	</if>
+		     	<if test="@Ognl@isNotNull(estimatePerson)">
+		        	,estimate_person
+		      	</if>
+		     	<if test="@Ognl@isNotNull(collectNumber)">
+		        	,collect_number
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,#{name}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,#{departmentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(beginTime)">
+		        	,#{beginTime}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(endTime)">
+		        	,#{endTime}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(validTimeType)">
+		        	,#{validTimeType}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(daysLate)">
+		        	,#{daysLate}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(type)">
+		        	,#{type}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(couponId)">
+		        	,#{couponId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(limitNumber)">
+		        	,#{limitNumber}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(beginPicUrl)">
+		        	,#{beginPicUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(beginPicStoragePath)">
+		        	,#{beginPicStoragePath}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(beginDescription)">
+		        	,#{beginDescription}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(endPicUrl)">
+		        	,#{endPicUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(endPicStoragePath)">
+		        	,#{endPicStoragePath}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(endDescription)">
+		        	,#{endDescription}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(minimumNumber)">
+		        	,#{minimumNumber}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(number)">
+		        	,#{number}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(successInfo)">
+		        	,#{successInfo}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(failureInfo)">
+		        	,#{failureInfo}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(errorInfo)">
+		        	,#{errorInfo}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,#{status}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(limitCoupon)">
+		        	,#{limitCoupon}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(estimatePerson)">
+		        	,#{estimatePerson}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(collectNumber)">
+		        	,#{collectNumber}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="Activity.update" >
+    
+        UPDATE t_activity 
+			<set>
+		        <if test="@Ognl@isNotNull(name)">
+		        		name = #{name},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(departmentId)">
+		        		department_id = #{departmentId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(beginTime)">
+		        		begin_time = #{beginTime},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(endTime)">
+		        		end_time = #{endTime},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(validTimeType)">
+		        		valid_time_type = #{validTimeType},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(daysLate)">
+		        		days_late = #{daysLate},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(type)">
+		        		type = #{type},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(couponId)">
+		        		coupon_id = #{couponId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(limitNumber)">
+		        		limit_number = #{limitNumber},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(beginPicUrl)">
+		        		begin_pic_url = #{beginPicUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(beginPicStoragePath)">
+		        		begin_pic_storage_path = #{beginPicStoragePath},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(beginDescription)">
+		        		begin_description = #{beginDescription},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(endPicUrl)">
+		        		end_pic_url = #{endPicUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(endPicStoragePath)">
+		        		end_pic_storage_path = #{endPicStoragePath},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(endDescription)">
+		        		end_description = #{endDescription},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(minimumNumber)">
+		        		minimum_number = #{minimumNumber},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(number)">
+		        		number = #{number},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(successInfo)">
+		        		success_info = #{successInfo},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(failureInfo)">
+		        		failure_info = #{failureInfo},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(errorInfo)">
+		        		error_info = #{errorInfo},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(status)">
+		        		status = #{status},
+		        	</if>
+		        	
+		        	
+		        <if test="@Ognl@isNotNull(limitCoupon)">
+		        		limit_coupon = #{limitCoupon},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(estimatePerson)">
+		        		estimate_person = #{estimatePerson},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(collectNumber)">
+		        		collect_number = #{collectNumber},
+		        	</if>
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="Activity.delete">
+    <![CDATA[
+        DELETE FROM t_activity 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="Activity.deleteMultiple">
+
+        DELETE FROM t_activity 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="Activity.getById" resultMap="Activity.RM">
+		SELECT 
+		<include refid="Activity.columns" />
+	    <![CDATA[
+		    FROM t_activity as t_activity
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="Activity.getByMultipleId" resultMap="Activity.RM">
+		SELECT 
+		<include refid="Activity.columns" />
+		    FROM t_activity as t_activity
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="Activity.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_activity.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_activity.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_activity.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_activity.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_activity.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_activity.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_activity.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_activity.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(name)">
+				AND t_activity.name = #{name}
+			</if>
+			<if test="@Ognl@isNotEmpty(nameLike)">
+				AND t_activity.name like CONCAT('%', CONVERT(#{nameLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameBeginLike)">
+				AND t_activity.name like CONCAT('', CONVERT(#{nameBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameEndLike)">
+				AND t_activity.name like CONCAT('%', CONVERT(#{nameEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentId)">
+				AND t_activity.department_id = #{departmentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdNotEq)">
+				AND t_activity.department_id &lt;&gt; #{departmentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGT)">
+				AND t_activity.department_id &gt; #{departmentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLT)">
+				AND t_activity.department_id &lt; #{departmentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGE)">
+				AND t_activity.department_id &gt;= #{departmentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLE)">
+				AND t_activity.department_id &lt;= #{departmentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(departmentIdList)">
+				AND t_activity.department_id in
+				<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(departmentIdNotEqList)">
+				AND t_activity.department_id not in
+				<foreach collection="departmentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(beginTimeBegin)">
+				AND t_activity.begin_time &gt;= #{beginTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(beginTimeEnd)">
+				AND t_activity.begin_time &lt;= #{beginTimeEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(endTimeBegin)">
+				AND t_activity.end_time &gt;= #{endTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(endTimeEnd)">
+				AND t_activity.end_time &lt;= #{endTimeEnd}
+		   </if>
+			<if test="@Ognl@isNotEmpty(validTimeType)">
+				AND t_activity.valid_time_type = #{validTimeType}
+			</if>
+			<if test="@Ognl@isNotEmpty(validTimeTypeNotEq)">
+				AND t_activity.valid_time_type &lt;&gt; #{validTimeTypeNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(validTimeTypeGT)">
+				AND t_activity.valid_time_type &gt; #{validTimeTypeGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(validTimeTypeLT)">
+				AND t_activity.valid_time_type &lt; #{validTimeTypeLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(validTimeTypeGE)">
+				AND t_activity.valid_time_type &gt;= #{validTimeTypeGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(validTimeTypeLE)">
+				AND t_activity.valid_time_type &lt;= #{validTimeTypeLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(validTimeTypeList)">
+				AND t_activity.valid_time_type in
+				<foreach collection="validTimeTypeList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(validTimeTypeNotEqList)">
+				AND t_activity.valid_time_type not in
+				<foreach collection="validTimeTypeNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(daysLate)">
+				AND t_activity.days_late = #{daysLate}
+			</if>
+			<if test="@Ognl@isNotEmpty(daysLateNotEq)">
+				AND t_activity.days_late &lt;&gt; #{daysLateNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(daysLateGT)">
+				AND t_activity.days_late &gt; #{daysLateGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(daysLateLT)">
+				AND t_activity.days_late &lt; #{daysLateLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(daysLateGE)">
+				AND t_activity.days_late &gt;= #{daysLateGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(daysLateLE)">
+				AND t_activity.days_late &lt;= #{daysLateLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(daysLateList)">
+				AND t_activity.days_late in
+				<foreach collection="daysLateList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(daysLateNotEqList)">
+				AND t_activity.days_late not in
+				<foreach collection="daysLateNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(type)">
+				AND t_activity.type = #{type}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeNotEq)">
+				AND t_activity.type &lt;&gt; #{typeNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeGT)">
+				AND t_activity.type &gt; #{typeGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeLT)">
+				AND t_activity.type &lt; #{typeLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeGE)">
+				AND t_activity.type &gt;= #{typeGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeLE)">
+				AND t_activity.type &lt;= #{typeLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(typeList)">
+				AND t_activity.type in
+				<foreach collection="typeList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(typeNotEqList)">
+				AND t_activity.type not in
+				<foreach collection="typeNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(couponId)">
+				AND t_activity.coupon_id = #{couponId}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdNotEq)">
+				AND t_activity.coupon_id &lt;&gt; #{couponIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdGT)">
+				AND t_activity.coupon_id &gt; #{couponIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdLT)">
+				AND t_activity.coupon_id &lt; #{couponIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdGE)">
+				AND t_activity.coupon_id &gt;= #{couponIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(couponIdLE)">
+				AND t_activity.coupon_id &lt;= #{couponIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(couponIdList)">
+				AND t_activity.coupon_id in
+				<foreach collection="couponIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(couponIdNotEqList)">
+				AND t_activity.coupon_id not in
+				<foreach collection="couponIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(limitNumber)">
+				AND t_activity.limit_number = #{limitNumber}
+			</if>
+			<if test="@Ognl@isNotEmpty(limitNumberNotEq)">
+				AND t_activity.limit_number &lt;&gt; #{limitNumberNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(limitNumberGT)">
+				AND t_activity.limit_number &gt; #{limitNumberGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(limitNumberLT)">
+				AND t_activity.limit_number &lt; #{limitNumberLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(limitNumberGE)">
+				AND t_activity.limit_number &gt;= #{limitNumberGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(limitNumberLE)">
+				AND t_activity.limit_number &lt;= #{limitNumberLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(limitNumberList)">
+				AND t_activity.limit_number in
+				<foreach collection="limitNumberList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(limitNumberNotEqList)">
+				AND t_activity.limit_number not in
+				<foreach collection="limitNumberNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(beginPicUrl)">
+				AND t_activity.begin_pic_url = #{beginPicUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(beginPicUrlLike)">
+				AND t_activity.begin_pic_url like CONCAT('%', CONVERT(#{beginPicUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(beginPicUrlBeginLike)">
+				AND t_activity.begin_pic_url like CONCAT('', CONVERT(#{beginPicUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(beginPicUrlEndLike)">
+				AND t_activity.begin_pic_url like CONCAT('%', CONVERT(#{beginPicUrlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(beginPicStoragePath)">
+				AND t_activity.begin_pic_storage_path = #{beginPicStoragePath}
+			</if>
+			<if test="@Ognl@isNotEmpty(beginPicStoragePathLike)">
+				AND t_activity.begin_pic_storage_path like CONCAT('%', CONVERT(#{beginPicStoragePathLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(beginPicStoragePathBeginLike)">
+				AND t_activity.begin_pic_storage_path like CONCAT('', CONVERT(#{beginPicStoragePathBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(beginPicStoragePathEndLike)">
+				AND t_activity.begin_pic_storage_path like CONCAT('%', CONVERT(#{beginPicStoragePathEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(beginDescription)">
+				AND t_activity.begin_description = #{beginDescription}
+			</if>
+			<if test="@Ognl@isNotEmpty(beginDescriptionLike)">
+				AND t_activity.begin_description like CONCAT('%', CONVERT(#{beginDescriptionLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(beginDescriptionBeginLike)">
+				AND t_activity.begin_description like CONCAT('', CONVERT(#{beginDescriptionBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(beginDescriptionEndLike)">
+				AND t_activity.begin_description like CONCAT('%', CONVERT(#{beginDescriptionEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(endPicUrl)">
+				AND t_activity.end_pic_url = #{endPicUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(endPicUrlLike)">
+				AND t_activity.end_pic_url like CONCAT('%', CONVERT(#{endPicUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(endPicUrlBeginLike)">
+				AND t_activity.end_pic_url like CONCAT('', CONVERT(#{endPicUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(endPicUrlEndLike)">
+				AND t_activity.end_pic_url like CONCAT('%', CONVERT(#{endPicUrlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(endPicStoragePath)">
+				AND t_activity.end_pic_storage_path = #{endPicStoragePath}
+			</if>
+			<if test="@Ognl@isNotEmpty(endPicStoragePathLike)">
+				AND t_activity.end_pic_storage_path like CONCAT('%', CONVERT(#{endPicStoragePathLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(endPicStoragePathBeginLike)">
+				AND t_activity.end_pic_storage_path like CONCAT('', CONVERT(#{endPicStoragePathBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(endPicStoragePathEndLike)">
+				AND t_activity.end_pic_storage_path like CONCAT('%', CONVERT(#{endPicStoragePathEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(endDescription)">
+				AND t_activity.end_description = #{endDescription}
+			</if>
+			<if test="@Ognl@isNotEmpty(endDescriptionLike)">
+				AND t_activity.end_description like CONCAT('%', CONVERT(#{endDescriptionLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(endDescriptionBeginLike)">
+				AND t_activity.end_description like CONCAT('', CONVERT(#{endDescriptionBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(endDescriptionEndLike)">
+				AND t_activity.end_description like CONCAT('%', CONVERT(#{endDescriptionEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(minimumNumber)">
+				AND t_activity.minimum_number = #{minimumNumber}
+			</if>
+			<if test="@Ognl@isNotEmpty(minimumNumberNotEq)">
+				AND t_activity.minimum_number &lt;&gt; #{minimumNumberNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(minimumNumberGT)">
+				AND t_activity.minimum_number &gt; #{minimumNumberGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(minimumNumberLT)">
+				AND t_activity.minimum_number &lt; #{minimumNumberLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(minimumNumberGE)">
+				AND t_activity.minimum_number &gt;= #{minimumNumberGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(minimumNumberLE)">
+				AND t_activity.minimum_number &lt;= #{minimumNumberLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(minimumNumberList)">
+				AND t_activity.minimum_number in
+				<foreach collection="minimumNumberList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(minimumNumberNotEqList)">
+				AND t_activity.minimum_number not in
+				<foreach collection="minimumNumberNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(number)">
+				AND t_activity.number = #{number}
+			</if>
+			<if test="@Ognl@isNotEmpty(numberNotEq)">
+				AND t_activity.number &lt;&gt; #{numberNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(numberGT)">
+				AND t_activity.number &gt; #{numberGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(numberLT)">
+				AND t_activity.number &lt; #{numberLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(numberGE)">
+				AND t_activity.number &gt;= #{numberGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(numberLE)">
+				AND t_activity.number &lt;= #{numberLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(numberList)">
+				AND t_activity.number in
+				<foreach collection="numberList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(numberNotEqList)">
+				AND t_activity.number not in
+				<foreach collection="numberNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(successInfo)">
+				AND t_activity.success_info = #{successInfo}
+			</if>
+			<if test="@Ognl@isNotEmpty(successInfoLike)">
+				AND t_activity.success_info like CONCAT('%', CONVERT(#{successInfoLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(successInfoBeginLike)">
+				AND t_activity.success_info like CONCAT('', CONVERT(#{successInfoBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(successInfoEndLike)">
+				AND t_activity.success_info like CONCAT('%', CONVERT(#{successInfoEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(failureInfo)">
+				AND t_activity.failure_info = #{failureInfo}
+			</if>
+			<if test="@Ognl@isNotEmpty(failureInfoLike)">
+				AND t_activity.failure_info like CONCAT('%', CONVERT(#{failureInfoLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(failureInfoBeginLike)">
+				AND t_activity.failure_info like CONCAT('', CONVERT(#{failureInfoBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(failureInfoEndLike)">
+				AND t_activity.failure_info like CONCAT('%', CONVERT(#{failureInfoEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(errorInfo)">
+				AND t_activity.error_info = #{errorInfo}
+			</if>
+			<if test="@Ognl@isNotEmpty(errorInfoLike)">
+				AND t_activity.error_info like CONCAT('%', CONVERT(#{errorInfoLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(errorInfoBeginLike)">
+				AND t_activity.error_info like CONCAT('', CONVERT(#{errorInfoBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(errorInfoEndLike)">
+				AND t_activity.error_info like CONCAT('%', CONVERT(#{errorInfoEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(status)">
+				AND t_activity.status = #{status}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusNotEq)">
+				AND t_activity.status &lt;&gt; #{statusNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGT)">
+				AND t_activity.status &gt; #{statusGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLT)">
+				AND t_activity.status &lt; #{statusLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGE)">
+				AND t_activity.status &gt;= #{statusGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLE)">
+				AND t_activity.status &lt;= #{statusLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(statusList)">
+				AND t_activity.status in
+				<foreach collection="statusList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(statusNotEqList)">
+				AND t_activity.status not in
+				<foreach collection="statusNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_activity.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_activity.modified &lt;= #{modifiedEnd}
+		   </if>
+			<if test="@Ognl@isNotEmpty(limitCoupon)">
+				AND t_activity.limit_coupon = #{limitCoupon}
+			</if>
+			<if test="@Ognl@isNotEmpty(limitCouponNotEq)">
+				AND t_activity.limit_coupon &lt;&gt; #{limitCouponNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(limitCouponGT)">
+				AND t_activity.limit_coupon &gt; #{limitCouponGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(limitCouponLT)">
+				AND t_activity.limit_coupon &lt; #{limitCouponLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(limitCouponGE)">
+				AND t_activity.limit_coupon &gt;= #{limitCouponGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(limitCouponLE)">
+				AND t_activity.limit_coupon &lt;= #{limitCouponLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(limitCouponList)">
+				AND t_activity.limit_coupon in
+				<foreach collection="limitCouponList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(limitCouponNotEqList)">
+				AND t_activity.limit_coupon not in
+				<foreach collection="limitCouponNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(estimatePerson)">
+				AND t_activity.estimate_person = #{estimatePerson}
+			</if>
+			<if test="@Ognl@isNotEmpty(estimatePersonNotEq)">
+				AND t_activity.estimate_person &lt;&gt; #{estimatePersonNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(estimatePersonGT)">
+				AND t_activity.estimate_person &gt; #{estimatePersonGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(estimatePersonLT)">
+				AND t_activity.estimate_person &lt; #{estimatePersonLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(estimatePersonGE)">
+				AND t_activity.estimate_person &gt;= #{estimatePersonGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(estimatePersonLE)">
+				AND t_activity.estimate_person &lt;= #{estimatePersonLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(estimatePersonList)">
+				AND t_activity.estimate_person in
+				<foreach collection="estimatePersonList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(estimatePersonNotEqList)">
+				AND t_activity.estimate_person not in
+				<foreach collection="estimatePersonNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(collectNumber)">
+				AND t_activity.collect_number = #{collectNumber}
+			</if>
+			<if test="@Ognl@isNotEmpty(collectNumberNotEq)">
+				AND t_activity.collect_number &lt;&gt; #{collectNumberNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(collectNumberGT)">
+				AND t_activity.collect_number &gt; #{collectNumberGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(collectNumberLT)">
+				AND t_activity.collect_number &lt; #{collectNumberLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(collectNumberGE)">
+				AND t_activity.collect_number &gt;= #{collectNumberGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(collectNumberLE)">
+				AND t_activity.collect_number &lt;= #{collectNumberLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(collectNumberList)">
+				AND t_activity.collect_number in
+				<foreach collection="collectNumberList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(collectNumberNotEqList)">
+				AND t_activity.collect_number not in
+				<foreach collection="collectNumberNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   
+		   <if test="@Ognl@isNotEmpty(categoryId)">
+				AND t_activity.id in (select activity_id from t_activity_category_relation where category_id= #{categoryId})
+			</if>
+		</where>
+	</sql>
+		
+    <select id="Activity.findPage.count" resultType="long">
+        SELECT count(*) FROM t_activity as t_activity 
+		<include refid="Activity.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Activity.findPage" resultMap="Activity.RM">
+    	SELECT 
+    	<include refid="Activity.columns" />
+	    FROM t_activity as t_activity 
+		<include refid="Activity.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="Activity.findList" resultMap="Activity.RM">
+    	SELECT 
+    	<include refid="Activity.columns" />
+	     FROM t_activity as t_activity 
+		<include refid="Activity.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	<update id="Activity.updateJoinStatus" >
+    
+        UPDATE t_activity 
+			set
+			collect_number = collect_number + 1
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+	
+	
+</mapper>
+

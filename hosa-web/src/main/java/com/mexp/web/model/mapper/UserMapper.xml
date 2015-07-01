@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="User">
+
+	<resultMap id="User.RM" type="com.mexp.web.model.User">
+        <result property="id" column="id"/>        
+        <result property="departmentId" column="department_id"/>        
+        <result property="name" column="name"/>        
+        <result property="gender" column="gender"/>        
+        <result property="email" column="email"/>        
+        <result property="mobile" column="mobile"/>        
+        <result property="educationalBackground" column="educational_background"/>        
+        <result property="educationalBackgroundId" column="educational_background_id"/>        
+        <result property="birthday" column="birthday"/>        
+        <result property="areaId" column="area_id"/>        
+        <result property="loginId" column="login_id"/>        
+        <result property="password" column="password"/>        
+        <result property="headImageUrl" column="head_image_url"/>        
+        <result property="headImageStoragePath" column="head_image_storage_path"/>        
+        <result property="videoUrl" column="video_url"/>        
+        <result property="status" column="status"/>        
+        <result property="lastAccess" column="last_access"/>        
+        <result property="createdAt" column="created_at"/>        
+        <result property="modified" column="modified"/>        
+        <result property="source" column="source"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="User.columns">
+	    <![CDATA[
+		t_user.id,t_user.department_id,t_user.name,t_user.gender,t_user.email,t_user.mobile,t_user.educational_background,t_user.educational_background_id,t_user.birthday,t_user.area_id,t_user.login_id,t_user.password,t_user.head_image_url,t_user.head_image_storage_path,t_user.video_url,t_user.status,t_user.last_access,t_user.created_at,t_user.modified,t_user.source
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="User.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_user (
+	        	id
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,department_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,name
+		      	</if>
+		     	<if test="@Ognl@isNotNull(gender)">
+		        	,gender
+		      	</if>
+		     	<if test="@Ognl@isNotNull(email)">
+		        	,email
+		      	</if>
+		     	<if test="@Ognl@isNotNull(mobile)">
+		        	,mobile
+		      	</if>
+		     	<if test="@Ognl@isNotNull(educationalBackground)">
+		        	,educational_background
+		      	</if>
+		     	<if test="@Ognl@isNotNull(educationalBackgroundId)">
+		        	,educational_background_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(birthday)">
+		        	,birthday
+		      	</if>
+		     	<if test="@Ognl@isNotNull(areaId)">
+		        	,area_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(loginId)">
+		        	,login_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(password)">
+		        	,password
+		      	</if>
+		     	<if test="@Ognl@isNotNull(headImageUrl)">
+		        	,head_image_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(headImageStoragePath)">
+		        	,head_image_storage_path
+		      	</if>
+		     	<if test="@Ognl@isNotNull(videoUrl)">
+		        	,video_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,status
+		      	</if>
+		     	<if test="@Ognl@isNotNull(lastAccess)">
+		        	,last_access
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,created_at
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+		     	<if test="@Ognl@isNotNull(source)">
+		        	,source
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,#{departmentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,#{name}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(gender)">
+		        	,#{gender}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(email)">
+		        	,#{email}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(mobile)">
+		        	,#{mobile}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(educationalBackground)">
+		        	,#{educationalBackground}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(educationalBackgroundId)">
+		        	,#{educationalBackgroundId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(birthday)">
+		        	,#{birthday}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(areaId)">
+		        	,#{areaId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(loginId)">
+		        	,#{loginId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(password)">
+		        	,#{password}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(headImageUrl)">
+		        	,#{headImageUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(headImageStoragePath)">
+		        	,#{headImageStoragePath}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(videoUrl)">
+		        	,#{videoUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,#{status}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(lastAccess)">
+		        	,#{lastAccess}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,#{createdAt}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(source)">
+		        	,#{source}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="User.update" >
+    
+        UPDATE t_user 
+			<set>
+		        <if test="@Ognl@isNotNull(departmentId)">
+		        		department_id = #{departmentId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(name)">
+		        		name = #{name},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(gender)">
+		        		gender = #{gender},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(email)">
+		        		email = #{email},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(mobile)">
+		        		mobile = #{mobile},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(educationalBackground)">
+		        		educational_background = #{educationalBackground},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(educationalBackgroundId)">
+		        		educational_background_id = #{educationalBackgroundId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(birthday)">
+		        		birthday = #{birthday},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(areaId)">
+		        		area_id = #{areaId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(loginId)">
+		        		login_id = #{loginId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(password)">
+		        		password = #{password},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(headImageUrl)">
+		        		head_image_url = #{headImageUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(headImageStoragePath)">
+		        		head_image_storage_path = #{headImageStoragePath},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(videoUrl)">
+		        		video_url = #{videoUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(status)">
+		        		status = #{status},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(lastAccess)">
+		        		last_access = #{lastAccess},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(createdAt)">
+		        		created_at = #{createdAt},
+		        	</if>
+		        	
+		        	
+		        <if test="@Ognl@isNotNull(source)">
+		        		source = #{source},
+		        	</if>
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="User.delete">
+    <![CDATA[
+        DELETE FROM t_user 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="User.deleteMultiple">
+
+        DELETE FROM t_user 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="User.getById" resultMap="User.RM">
+		SELECT 
+		<include refid="User.columns" />
+	    <![CDATA[
+		    FROM t_user as t_user
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="User.getByMultipleId" resultMap="User.RM">
+		SELECT 
+		<include refid="User.columns" />
+		    FROM t_user as t_user
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="User.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_user.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_user.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_user.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_user.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_user.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_user.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_user.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_user.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(departmentId)">
+				AND t_user.department_id = #{departmentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdNotEq)">
+				AND t_user.department_id &lt;&gt; #{departmentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGT)">
+				AND t_user.department_id &gt; #{departmentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLT)">
+				AND t_user.department_id &lt; #{departmentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGE)">
+				AND t_user.department_id &gt;= #{departmentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLE)">
+				AND t_user.department_id &lt;= #{departmentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(departmentIdList)">
+				AND t_user.department_id in
+				<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(departmentIdNotEqList)">
+				AND t_user.department_id not in
+				<foreach collection="departmentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(name)">
+				AND t_user.name = #{name}
+			</if>
+			<if test="@Ognl@isNotEmpty(nameLike)">
+				AND t_user.name like CONCAT('%', CONVERT(#{nameLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameBeginLike)">
+				AND t_user.name like CONCAT('', CONVERT(#{nameBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameEndLike)">
+				AND t_user.name like CONCAT('%', CONVERT(#{nameEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(gender)">
+				AND t_user.gender = #{gender}
+			</if>
+			<if test="@Ognl@isNotEmpty(genderNotEq)">
+				AND t_user.gender &lt;&gt; #{genderNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(genderGT)">
+				AND t_user.gender &gt; #{genderGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(genderLT)">
+				AND t_user.gender &lt; #{genderLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(genderGE)">
+				AND t_user.gender &gt;= #{genderGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(genderLE)">
+				AND t_user.gender &lt;= #{genderLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(genderList)">
+				AND t_user.gender in
+				<foreach collection="genderList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(genderNotEqList)">
+				AND t_user.gender not in
+				<foreach collection="genderNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(email)">
+				AND t_user.email = #{email}
+			</if>
+			<if test="@Ognl@isNotEmpty(emailLike)">
+				AND t_user.email like CONCAT('%', CONVERT(#{emailLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(emailBeginLike)">
+				AND t_user.email like CONCAT('', CONVERT(#{emailBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(emailEndLike)">
+				AND t_user.email like CONCAT('%', CONVERT(#{emailEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(mobile)">
+				AND t_user.mobile = #{mobile}
+			</if>
+			<if test="@Ognl@isNotEmpty(mobileLike)">
+				AND t_user.mobile like CONCAT('%', CONVERT(#{mobileLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(mobileBeginLike)">
+				AND t_user.mobile like CONCAT('', CONVERT(#{mobileBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(mobileEndLike)">
+				AND t_user.mobile like CONCAT('%', CONVERT(#{mobileEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(educationalBackground)">
+				AND t_user.educational_background = #{educationalBackground}
+			</if>
+			<if test="@Ognl@isNotEmpty(educationalBackgroundLike)">
+				AND t_user.educational_background like CONCAT('%', CONVERT(#{educationalBackgroundLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(educationalBackgroundBeginLike)">
+				AND t_user.educational_background like CONCAT('', CONVERT(#{educationalBackgroundBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(educationalBackgroundEndLike)">
+				AND t_user.educational_background like CONCAT('%', CONVERT(#{educationalBackgroundEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(educationalBackgroundId)">
+				AND t_user.educational_background_id = #{educationalBackgroundId}
+			</if>
+			<if test="@Ognl@isNotEmpty(educationalBackgroundIdNotEq)">
+				AND t_user.educational_background_id &lt;&gt; #{educationalBackgroundIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(educationalBackgroundIdGT)">
+				AND t_user.educational_background_id &gt; #{educationalBackgroundIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(educationalBackgroundIdLT)">
+				AND t_user.educational_background_id &lt; #{educationalBackgroundIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(educationalBackgroundIdGE)">
+				AND t_user.educational_background_id &gt;= #{educationalBackgroundIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(educationalBackgroundIdLE)">
+				AND t_user.educational_background_id &lt;= #{educationalBackgroundIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(educationalBackgroundIdList)">
+				AND t_user.educational_background_id in
+				<foreach collection="educationalBackgroundIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(educationalBackgroundIdNotEqList)">
+				AND t_user.educational_background_id not in
+				<foreach collection="educationalBackgroundIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(birthdayBegin)">
+				AND t_user.birthday &gt;= #{birthdayBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(birthdayEnd)">
+				AND t_user.birthday &lt;= #{birthdayEnd}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(areaId)">
+				AND t_user.area_id = #{areaId}
+			</if>
+			<if test="@Ognl@isNotEmpty(areaIdLike)">
+				AND t_user.area_id like CONCAT('%', CONVERT(#{areaIdLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(areaIdBeginLike)">
+				AND t_user.area_id like CONCAT('', CONVERT(#{areaIdBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(areaIdEndLike)">
+				AND t_user.area_id like CONCAT('%', CONVERT(#{areaIdEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(loginId)">
+				AND t_user.login_id = #{loginId}
+			</if>
+			<if test="@Ognl@isNotEmpty(loginIdLike)">
+				AND t_user.login_id like CONCAT('%', CONVERT(#{loginIdLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(loginIdBeginLike)">
+				AND t_user.login_id like CONCAT('', CONVERT(#{loginIdBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(loginIdEndLike)">
+				AND t_user.login_id like CONCAT('%', CONVERT(#{loginIdEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(password)">
+				AND t_user.password = #{password}
+			</if>
+			<if test="@Ognl@isNotEmpty(passwordLike)">
+				AND t_user.password like CONCAT('%', CONVERT(#{passwordLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(passwordBeginLike)">
+				AND t_user.password like CONCAT('', CONVERT(#{passwordBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(passwordEndLike)">
+				AND t_user.password like CONCAT('%', CONVERT(#{passwordEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(headImageUrl)">
+				AND t_user.head_image_url = #{headImageUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(headImageUrlLike)">
+				AND t_user.head_image_url like CONCAT('%', CONVERT(#{headImageUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(headImageUrlBeginLike)">
+				AND t_user.head_image_url like CONCAT('', CONVERT(#{headImageUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(headImageUrlEndLike)">
+				AND t_user.head_image_url like CONCAT('%', CONVERT(#{headImageUrlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(headImageStoragePath)">
+				AND t_user.head_image_storage_path = #{headImageStoragePath}
+			</if>
+			<if test="@Ognl@isNotEmpty(headImageStoragePathLike)">
+				AND t_user.head_image_storage_path like CONCAT('%', CONVERT(#{headImageStoragePathLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(headImageStoragePathBeginLike)">
+				AND t_user.head_image_storage_path like CONCAT('', CONVERT(#{headImageStoragePathBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(headImageStoragePathEndLike)">
+				AND t_user.head_image_storage_path like CONCAT('%', CONVERT(#{headImageStoragePathEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(videoUrl)">
+				AND t_user.video_url = #{videoUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(videoUrlLike)">
+				AND t_user.video_url like CONCAT('%', CONVERT(#{videoUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(videoUrlBeginLike)">
+				AND t_user.video_url like CONCAT('', CONVERT(#{videoUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(videoUrlEndLike)">
+				AND t_user.video_url like CONCAT('%', CONVERT(#{videoUrlEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(status)">
+				AND t_user.status = #{status}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusNotEq)">
+				AND t_user.status &lt;&gt; #{statusNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGT)">
+				AND t_user.status &gt; #{statusGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLT)">
+				AND t_user.status &lt; #{statusLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGE)">
+				AND t_user.status &gt;= #{statusGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLE)">
+				AND t_user.status &lt;= #{statusLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(statusList)">
+				AND t_user.status in
+				<foreach collection="statusList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(statusNotEqList)">
+				AND t_user.status not in
+				<foreach collection="statusNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(lastAccessBegin)">
+				AND t_user.last_access &gt;= #{lastAccessBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(lastAccessEnd)">
+				AND t_user.last_access &lt;= #{lastAccessEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(createdAtBegin)">
+				AND t_user.created_at &gt;= #{createdAtBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(createdAtEnd)">
+				AND t_user.created_at &lt;= #{createdAtEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_user.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_user.modified &lt;= #{modifiedEnd}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(source)">
+				AND t_user.source = #{source}
+			</if>
+			<if test="@Ognl@isNotEmpty(sourceLike)">
+				AND t_user.source like CONCAT('%', CONVERT(#{sourceLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(sourceBeginLike)">
+				AND t_user.source like CONCAT('', CONVERT(#{sourceBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(sourceEndLike)">
+				AND t_user.source like CONCAT('%', CONVERT(#{sourceEndLike}, char) ,'') 
+			</if>
+		</where>
+	</sql>
+		
+    <select id="User.findPage.count" resultType="long">
+        SELECT count(*) FROM t_user as t_user 
+		<include refid="User.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="User.findPage" resultMap="User.RM">
+    	SELECT 
+    	<include refid="User.columns" />
+	    FROM t_user as t_user 
+		<include refid="User.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="User.findList" resultMap="User.RM">
+    	SELECT 
+    	<include refid="User.columns" />
+	     FROM t_user as t_user 
+		<include refid="User.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+    <select id="User.getByLoginId" resultMap="User.RM" parameterType="java.lang.String">
+	    SELECT 
+	    <include refid="User.columns"/>
+	    <![CDATA[
+	        FROM t_user as t_user  where t_user.login_id = #{loginId}
+	    ]]>
+    </select>
+    
+	
+	
+</mapper>
+

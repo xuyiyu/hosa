@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	
+	<constant name="struts.convention.default.parent.package" value="crud-default" />
+	<constant name="struts.convention.package.locators" value="action" />
+	<constant name="struts.convention.package.locators.basePackage" value="com.mexp.web" />
+	<constant name="struts.action.extension" value="htm" />
+	<constant name="struts.convention.action.includeJars"
+				value=".*/mexp-*.*?jar(!/)?" />
+	<constant name="struts.custom.i18n.resources" value="i18n/message"/>
+	<constant name= "struts.multipart.maxSize" value="1000000000" />
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" /> 
+	<!-- 用于CRUD Action的parent package -->
+	<package name="crud-default" extends="convention-default,json-default">
+		<!-- 基于paramsPrepareParamsStack,
+			增加store interceptor保证actionMessage在redirect后不会丢失 -->
+		
+		<interceptors>
+			<interceptor name="common"
+				class="com.mexp.web.web.interceptor.CommonInterceptor" />
+			<interceptor-stack name="crudStack">
+				<interceptor-ref name="common"/>		
+				<interceptor-ref name="store">
+					<param name="operationMode">AUTOMATIC</param>
+				</interceptor-ref>
+				<interceptor-ref name="paramsPrepareParamsStack" />
+			</interceptor-stack>
+		</interceptors>
+		
+		
+		<default-interceptor-ref name="crudStack" />
+		
+		<global-results>
+			<result name="error">/common/403.jsp</result>
+			<result name="invalid.token">/common/error.jsp</result>
+			<!-- 
+			<result name="json" type="json">
+				<param name="contentType">text/plain</param>
+				<param name="excludeProperties">
+					^[\w\[\].]*fieldHandler,^[\w\[\].]*session,^[\w\[\].]*hibernateLazyInitializer
+				</param>
+			</result>
+			 -->
+		</global-results>
+	</package>
+
+</struts>

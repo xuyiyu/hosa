@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="DepartmentRoleRelation">
+
+	<resultMap id="DepartmentRoleRelation.RM" type="com.mexp.web.model.DepartmentRoleRelation">
+        <result property="id" column="id"/>        
+        <result property="departmentId" column="department_id"/>        
+        <result property="roleId" column="role_id"/>        
+        <result property="modified" column="modified"/>  
+        
+        <result property="role.id" column="role_id"/>    
+        <result property="role.name" column="role_name"/>    
+        <result property="department.id" column="department_id"/>  
+        <result property="department.name" column="department_name"/>     
+	      
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="DepartmentRoleRelation.columns">
+	    <![CDATA[
+		t_department_role_relation.id,t_department_role_relation.department_id,t_department_role_relation.role_id,t_department_role_relation.modified
+	    ]]>
+	</sql>
+
+
+	<sql id="DepartmentRoleRelation.Department.columns">
+	    <![CDATA[
+		t_department.id as department_id, t_department.name as department_name
+	    ]]>
+	</sql>
+	
+	<sql id="DepartmentRoleRelation.Role.columns">
+	    <![CDATA[
+		t_role.id as role_id, t_role.name as role_name
+	    ]]>
+	</sql>
+	
+	
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="DepartmentRoleRelation.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_department_role_relation (
+	        	id
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,department_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(roleId)">
+		        	,role_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,#{departmentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(roleId)">
+		        	,#{roleId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="DepartmentRoleRelation.update" >
+    
+        UPDATE t_department_role_relation 
+			<set>
+		        <if test="@Ognl@isNotNull(departmentId)">
+		        		department_id = #{departmentId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(roleId)">
+		        		role_id = #{roleId},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="DepartmentRoleRelation.delete">
+    <![CDATA[
+        DELETE FROM t_department_role_relation 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="DepartmentRoleRelation.deleteMultiple">
+
+        DELETE FROM t_department_role_relation 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="DepartmentRoleRelation.getById" resultMap="DepartmentRoleRelation.RM">
+		SELECT 
+		<include refid="DepartmentRoleRelation.columns" />
+	    <![CDATA[
+		    FROM t_department_role_relation as t_department_role_relation
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="DepartmentRoleRelation.getByMultipleId" resultMap="DepartmentRoleRelation.RM">
+		SELECT 
+		<include refid="DepartmentRoleRelation.columns" />
+		    FROM t_department_role_relation as t_department_role_relation
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="DepartmentRoleRelation.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_department_role_relation.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_department_role_relation.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_department_role_relation.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_department_role_relation.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_department_role_relation.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_department_role_relation.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_department_role_relation.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_department_role_relation.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(departmentId)">
+				AND t_department_role_relation.department_id = #{departmentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdNotEq)">
+				AND t_department_role_relation.department_id &lt;&gt; #{departmentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGT)">
+				AND t_department_role_relation.department_id &gt; #{departmentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLT)">
+				AND t_department_role_relation.department_id &lt; #{departmentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGE)">
+				AND t_department_role_relation.department_id &gt;= #{departmentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLE)">
+				AND t_department_role_relation.department_id &lt;= #{departmentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(departmentIdList)">
+				AND t_department_role_relation.department_id in
+				<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(departmentIdNotEqList)">
+				AND t_department_role_relation.department_id not in
+				<foreach collection="departmentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(roleId)">
+				AND t_department_role_relation.role_id = #{roleId}
+			</if>
+			<if test="@Ognl@isNotEmpty(roleIdNotEq)">
+				AND t_department_role_relation.role_id &lt;&gt; #{roleIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(roleIdGT)">
+				AND t_department_role_relation.role_id &gt; #{roleIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(roleIdLT)">
+				AND t_department_role_relation.role_id &lt; #{roleIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(roleIdGE)">
+				AND t_department_role_relation.role_id &gt;= #{roleIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(roleIdLE)">
+				AND t_department_role_relation.role_id &lt;= #{roleIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(roleIdList)">
+				AND t_department_role_relation.role_id in
+				<foreach collection="roleIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(roleIdNotEqList)">
+				AND t_department_role_relation.role_id not in
+				<foreach collection="roleIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_department_role_relation.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_department_role_relation.modified &lt;= #{modifiedEnd}
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="DepartmentRoleRelation.findPage.count" resultType="long">
+        SELECT count(*) FROM t_department_role_relation as t_department_role_relation 
+		<include refid="DepartmentRoleRelation.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="DepartmentRoleRelation.findPage" resultMap="DepartmentRoleRelation.RM">
+    	SELECT 
+    	<include refid="DepartmentRoleRelation.columns" />
+	    FROM t_department_role_relation as t_department_role_relation 
+		<include refid="DepartmentRoleRelation.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="DepartmentRoleRelation.findList" resultMap="DepartmentRoleRelation.RM">
+    	SELECT 
+    	<include refid="DepartmentRoleRelation.columns" />
+    	,<include refid="DepartmentRoleRelation.Department.columns" />
+    	,<include refid="DepartmentRoleRelation.Role.columns" />
+	     FROM 
+	     t_department_role_relation as t_department_role_relation 
+	     inner join
+	     t_department as t_department
+	     on t_department_role_relation.department_id = t_department.id
+	     inner join 
+	     t_role as t_role
+	     on t_department_role_relation.role_id = t_role.id
+		<include refid="DepartmentRoleRelation.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	<delete id="DepartmentRoleRelation.deleteByMultipleDepartmentIdAndMultipleRoleId">
+
+        DELETE FROM t_department_role_relation 
+        WHERE
+        	department_id in
+        	<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+			#{id}			
+			</foreach>
+          and role_id in
+          <foreach collection="roleList" item="id" index="index" open="(" close=")" separator="," >
+			#{id}			
+			</foreach>
+   
+    </delete>
+	
+	<delete id="DepartmentRoleRelation.deleteByMultipleDepartmentId">
+
+        DELETE FROM t_department_role_relation 
+        WHERE
+        	department_id in
+        	<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+			#{id}			
+			</foreach>
+   
+    </delete>
+    
+</mapper>
+

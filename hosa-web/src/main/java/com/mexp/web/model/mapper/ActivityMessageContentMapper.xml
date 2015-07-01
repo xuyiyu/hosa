@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="ActivityMessageContent">
+
+	<resultMap id="ActivityMessageContent.RM" type="com.mexp.web.model.ActivityMessageContent">
+        <result property="id" column="id"/>        
+        <result property="activityMessageId" column="activity_message_id"/>        
+        <result property="activityId" column="activity_id"/>        
+        <result property="title" column="title"/>        
+        <result property="content" column="content"/>        
+        <result property="url" column="url"/>        
+        <result property="linkUrl" column="link_url"/>        
+        <result property="storagePath" column="storage_path"/>        
+        <result property="modified" column="modified"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="ActivityMessageContent.columns">
+	    <![CDATA[
+		t_activity_message_content.id,t_activity_message_content.activity_message_id,t_activity_message_content.activity_id,t_activity_message_content.title,t_activity_message_content.content,t_activity_message_content.url,t_activity_message_content.link_url,t_activity_message_content.storage_path,t_activity_message_content.modified
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="ActivityMessageContent.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_activity_message_content (
+	        	id
+		     	<if test="@Ognl@isNotNull(activityMessageId)">
+		        	,activity_message_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(activityId)">
+		        	,activity_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(title)">
+		        	,title
+		      	</if>
+		     	<if test="@Ognl@isNotNull(content)">
+		        	,content
+		      	</if>
+		     	<if test="@Ognl@isNotNull(url)">
+		        	,url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(linkUrl)">
+		        	,link_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(storagePath)">
+		        	,storage_path
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(activityMessageId)">
+		        	,#{activityMessageId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(activityId)">
+		        	,#{activityId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(title)">
+		        	,#{title}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(content)">
+		        	,#{content}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(url)">
+		        	,#{url}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(linkUrl)">
+		        	,#{linkUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(storagePath)">
+		        	,#{storagePath}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="ActivityMessageContent.update" >
+    
+        UPDATE t_activity_message_content 
+			<set>
+		        <if test="@Ognl@isNotNull(activityMessageId)">
+		        		activity_message_id = #{activityMessageId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(activityId)">
+		        		activity_id = #{activityId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(title)">
+		        		title = #{title},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(content)">
+		        		content = #{content},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(url)">
+		        		url = #{url},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(linkUrl)">
+		        		link_url = #{linkUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(storagePath)">
+		        		storage_path = #{storagePath},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="ActivityMessageContent.delete">
+    <![CDATA[
+        DELETE FROM t_activity_message_content 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="ActivityMessageContent.deleteMultiple">
+
+        DELETE FROM t_activity_message_content 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="ActivityMessageContent.getById" resultMap="ActivityMessageContent.RM">
+		SELECT 
+		<include refid="ActivityMessageContent.columns" />
+	    <![CDATA[
+		    FROM t_activity_message_content as t_activity_message_content
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="ActivityMessageContent.getByMultipleId" resultMap="ActivityMessageContent.RM">
+		SELECT 
+		<include refid="ActivityMessageContent.columns" />
+		    FROM t_activity_message_content as t_activity_message_content
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="ActivityMessageContent.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_activity_message_content.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_activity_message_content.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_activity_message_content.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_activity_message_content.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_activity_message_content.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_activity_message_content.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_activity_message_content.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_activity_message_content.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(activityMessageId)">
+				AND t_activity_message_content.activity_message_id = #{activityMessageId}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityMessageIdNotEq)">
+				AND t_activity_message_content.activity_message_id &lt;&gt; #{activityMessageIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityMessageIdGT)">
+				AND t_activity_message_content.activity_message_id &gt; #{activityMessageIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityMessageIdLT)">
+				AND t_activity_message_content.activity_message_id &lt; #{activityMessageIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityMessageIdGE)">
+				AND t_activity_message_content.activity_message_id &gt;= #{activityMessageIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityMessageIdLE)">
+				AND t_activity_message_content.activity_message_id &lt;= #{activityMessageIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(activityMessageIdList)">
+				AND t_activity_message_content.activity_message_id in
+				<foreach collection="activityMessageIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(activityMessageIdNotEqList)">
+				AND t_activity_message_content.activity_message_id not in
+				<foreach collection="activityMessageIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(activityId)">
+				AND t_activity_message_content.activity_id = #{activityId}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityIdNotEq)">
+				AND t_activity_message_content.activity_id &lt;&gt; #{activityIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityIdGT)">
+				AND t_activity_message_content.activity_id &gt; #{activityIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityIdLT)">
+				AND t_activity_message_content.activity_id &lt; #{activityIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityIdGE)">
+				AND t_activity_message_content.activity_id &gt;= #{activityIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(activityIdLE)">
+				AND t_activity_message_content.activity_id &lt;= #{activityIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(activityIdList)">
+				AND t_activity_message_content.activity_id in
+				<foreach collection="activityIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(activityIdNotEqList)">
+				AND t_activity_message_content.activity_id not in
+				<foreach collection="activityIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(title)">
+				AND t_activity_message_content.title = #{title}
+			</if>
+			<if test="@Ognl@isNotEmpty(titleLike)">
+				AND t_activity_message_content.title like CONCAT('%', CONVERT(#{titleLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(titleBeginLike)">
+				AND t_activity_message_content.title like CONCAT('', CONVERT(#{titleBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(titleEndLike)">
+				AND t_activity_message_content.title like CONCAT('%', CONVERT(#{titleEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(content)">
+				AND t_activity_message_content.content = #{content}
+			</if>
+			<if test="@Ognl@isNotEmpty(contentLike)">
+				AND t_activity_message_content.content like CONCAT('%', CONVERT(#{contentLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(contentBeginLike)">
+				AND t_activity_message_content.content like CONCAT('', CONVERT(#{contentBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(contentEndLike)">
+				AND t_activity_message_content.content like CONCAT('%', CONVERT(#{contentEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(url)">
+				AND t_activity_message_content.url = #{url}
+			</if>
+			<if test="@Ognl@isNotEmpty(urlLike)">
+				AND t_activity_message_content.url like CONCAT('%', CONVERT(#{urlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(urlBeginLike)">
+				AND t_activity_message_content.url like CONCAT('', CONVERT(#{urlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(urlEndLike)">
+				AND t_activity_message_content.url like CONCAT('%', CONVERT(#{urlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(linkUrl)">
+				AND t_activity_message_content.link_url = #{linkUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(linkUrlLike)">
+				AND t_activity_message_content.link_url like CONCAT('%', CONVERT(#{linkUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(linkUrlBeginLike)">
+				AND t_activity_message_content.link_url like CONCAT('', CONVERT(#{linkUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(linkUrlEndLike)">
+				AND t_activity_message_content.link_url like CONCAT('%', CONVERT(#{linkUrlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(storagePath)">
+				AND t_activity_message_content.storage_path = #{storagePath}
+			</if>
+			<if test="@Ognl@isNotEmpty(storagePathLike)">
+				AND t_activity_message_content.storage_path like CONCAT('%', CONVERT(#{storagePathLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(storagePathBeginLike)">
+				AND t_activity_message_content.storage_path like CONCAT('', CONVERT(#{storagePathBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(storagePathEndLike)">
+				AND t_activity_message_content.storage_path like CONCAT('%', CONVERT(#{storagePathEndLike}, char) ,'') 
+			</if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_activity_message_content.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_activity_message_content.modified &lt;= #{modifiedEnd}
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="ActivityMessageContent.findPage.count" resultType="long">
+        SELECT count(*) FROM t_activity_message_content as t_activity_message_content 
+		<include refid="ActivityMessageContent.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="ActivityMessageContent.findPage" resultMap="ActivityMessageContent.RM">
+    	SELECT 
+    	<include refid="ActivityMessageContent.columns" />
+	    FROM t_activity_message_content as t_activity_message_content 
+		<include refid="ActivityMessageContent.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="ActivityMessageContent.findList" resultMap="ActivityMessageContent.RM">
+    	SELECT 
+    	<include refid="ActivityMessageContent.columns" />
+	     FROM t_activity_message_content as t_activity_message_content 
+		<include refid="ActivityMessageContent.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	
+</mapper>
+

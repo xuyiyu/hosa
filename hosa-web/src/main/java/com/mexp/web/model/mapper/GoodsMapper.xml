@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Goods">
+
+	<resultMap id="Goods.RM" type="com.mexp.web.model.Goods">
+        <result property="id" column="id"/>        
+        <result property="categoryId" column="category_id"/>        
+        <result property="code" column="code"/>        
+        <result property="departmentId" column="department_id"/>        
+        <result property="picUrl" column="pic_url"/>        
+        <result property="picStoragePath" column="pic_storage_path"/>        
+        <result property="name" column="name"/>        
+        <result property="specifications" column="specifications"/>        
+        <result property="price" column="price"/>        
+        <result property="discount" column="discount"/>        
+        <result property="onTime" column="on_time"/>        
+        <result property="offTime" column="off_time"/>        
+        <result property="number" column="number"/>        
+        <result property="remainingNumber" column="remaining_number"/>        
+        <result property="status" column="status"/>        
+        <result property="introduction" column="introduction"/>        
+        <result property="createdAt" column="created_at"/>        
+        <result property="modified" column="modified"/>     
+        
+        <result property="goodsCategory.name" column="category_name"/>       
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Goods.columns">
+	    <![CDATA[
+		t_goods.id,t_goods.category_id,t_goods.code,t_goods.department_id,t_goods.pic_url,t_goods.pic_storage_path,t_goods.name,t_goods.specifications,t_goods.price,t_goods.discount,t_goods.on_time,t_goods.off_time,t_goods.number,t_goods.remaining_number,t_goods.status,t_goods.introduction,t_goods.created_at,t_goods.modified
+	    ]]>
+	</sql>
+	
+	<sql id="Goods.GoodsCategory.columns">
+	    <![CDATA[
+		t_goods_category.name as category_name
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Goods.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_goods (
+	        	id
+		     	<if test="@Ognl@isNotNull(categoryId)">
+		        	,category_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(code)">
+		        	,code
+		      	</if>
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,department_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picUrl)">
+		        	,pic_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picStoragePath)">
+		        	,pic_storage_path
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,name
+		      	</if>
+		     	<if test="@Ognl@isNotNull(specifications)">
+		        	,specifications
+		      	</if>
+		     	<if test="@Ognl@isNotNull(price)">
+		        	,price
+		      	</if>
+		     	<if test="@Ognl@isNotNull(discount)">
+		        	,discount
+		      	</if>
+		     	<if test="@Ognl@isNotNull(onTime)">
+		        	,on_time
+		      	</if>
+		     	<if test="@Ognl@isNotNull(offTime)">
+		        	,off_time
+		      	</if>
+		     	<if test="@Ognl@isNotNull(number)">
+		        	,number
+		      	</if>
+		     	<if test="@Ognl@isNotNull(remainingNumber)">
+		        	,remaining_number
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,status
+		      	</if>
+		     	<if test="@Ognl@isNotNull(introduction)">
+		        	,introduction
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,created_at
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(categoryId)">
+		        	,#{categoryId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(code)">
+		        	,#{code}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,#{departmentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picUrl)">
+		        	,#{picUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picStoragePath)">
+		        	,#{picStoragePath}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,#{name}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(specifications)">
+		        	,#{specifications}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(price)">
+		        	,#{price}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(discount)">
+		        	,#{discount}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(onTime)">
+		        	,#{onTime}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(offTime)">
+		        	,#{offTime}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(number)">
+		        	,#{number}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(remainingNumber)">
+		        	,#{remainingNumber}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,#{status}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(introduction)">
+		        	,#{introduction}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,#{createdAt}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="Goods.update" >
+    
+        UPDATE t_goods 
+			<set>
+		        <if test="@Ognl@isNotNull(categoryId)">
+		        		category_id = #{categoryId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(code)">
+		        		code = #{code},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(departmentId)">
+		        		department_id = #{departmentId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(picUrl)">
+		        		pic_url = #{picUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(picStoragePath)">
+		        		pic_storage_path = #{picStoragePath},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(name)">
+		        		name = #{name},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(specifications)">
+		        		specifications = #{specifications},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(price)">
+		        		price = #{price},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(discount)">
+		        		discount = #{discount},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(onTime)">
+		        		on_time = #{onTime},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(offTime)">
+		        		off_time = #{offTime},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(number)">
+		        		number = #{number},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(remainingNumber)">
+		        		remaining_number = #{remainingNumber},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(status)">
+		        		status = #{status},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(introduction)">
+		        		introduction = #{introduction},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(createdAt)">
+		        		created_at = #{createdAt},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="Goods.delete">
+    <![CDATA[
+        DELETE FROM t_goods 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="Goods.deleteMultiple">
+
+        DELETE FROM t_goods 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="Goods.getById" resultMap="Goods.RM">
+		SELECT 
+		<include refid="Goods.columns" />
+		,<include refid="Goods.GoodsCategory.columns" />
+	    <![CDATA[
+		    FROM t_goods as t_goods
+		    left join 
+		    t_goods_category as t_goods_category
+		    on 
+		    t_goods.category_id = t_goods_category.id
+	        WHERE 
+		        t_goods.id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="Goods.getByMultipleId" resultMap="Goods.RM">
+		SELECT 
+		<include refid="Goods.columns" />
+		,<include refid="Goods.GoodsCategory.columns" />
+		    FROM t_goods as t_goods
+		    left join 
+		    t_goods_category as t_goods_category
+		    on 
+		    t_goods.category_id = t_goods_category.id
+	        WHERE 
+		       t_goods.id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="Goods.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_goods.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_goods.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_goods.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_goods.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_goods.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_goods.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_goods.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_goods.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(categoryId)">
+				AND t_goods.category_id = #{categoryId}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdNotEq)">
+				AND t_goods.category_id &lt;&gt; #{categoryIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdGT)">
+				AND t_goods.category_id &gt; #{categoryIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdLT)">
+				AND t_goods.category_id &lt; #{categoryIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdGE)">
+				AND t_goods.category_id &gt;= #{categoryIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(categoryIdLE)">
+				AND t_goods.category_id &lt;= #{categoryIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(categoryIdList)">
+				AND t_goods.category_id in
+				<foreach collection="categoryIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(categoryIdNotEqList)">
+				AND t_goods.category_id not in
+				<foreach collection="categoryIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(code)">
+				AND t_goods.code = #{code}
+			</if>
+			<if test="@Ognl@isNotEmpty(codeLike)">
+				AND t_goods.code like CONCAT('%', CONVERT(#{codeLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(codeBeginLike)">
+				AND t_goods.code like CONCAT('', CONVERT(#{codeBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(codeEndLike)">
+				AND t_goods.code like CONCAT('%', CONVERT(#{codeEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentId)">
+				AND t_goods.department_id = #{departmentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdNotEq)">
+				AND t_goods.department_id &lt;&gt; #{departmentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGT)">
+				AND t_goods.department_id &gt; #{departmentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLT)">
+				AND t_goods.department_id &lt; #{departmentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGE)">
+				AND t_goods.department_id &gt;= #{departmentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLE)">
+				AND t_goods.department_id &lt;= #{departmentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(departmentIdList)">
+				AND t_goods.department_id in
+				<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(departmentIdNotEqList)">
+				AND t_goods.department_id not in
+				<foreach collection="departmentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(picUrl)">
+				AND t_goods.pic_url = #{picUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(picUrlLike)">
+				AND t_goods.pic_url like CONCAT('%', CONVERT(#{picUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picUrlBeginLike)">
+				AND t_goods.pic_url like CONCAT('', CONVERT(#{picUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picUrlEndLike)">
+				AND t_goods.pic_url like CONCAT('%', CONVERT(#{picUrlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(picStoragePath)">
+				AND t_goods.pic_storage_path = #{picStoragePath}
+			</if>
+			<if test="@Ognl@isNotEmpty(picStoragePathLike)">
+				AND t_goods.pic_storage_path like CONCAT('%', CONVERT(#{picStoragePathLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picStoragePathBeginLike)">
+				AND t_goods.pic_storage_path like CONCAT('', CONVERT(#{picStoragePathBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picStoragePathEndLike)">
+				AND t_goods.pic_storage_path like CONCAT('%', CONVERT(#{picStoragePathEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(name)">
+				AND t_goods.name = #{name}
+			</if>
+			<if test="@Ognl@isNotEmpty(nameLike)">
+				AND t_goods.name like CONCAT('%', CONVERT(#{nameLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameBeginLike)">
+				AND t_goods.name like CONCAT('', CONVERT(#{nameBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameEndLike)">
+				AND t_goods.name like CONCAT('%', CONVERT(#{nameEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(specifications)">
+				AND t_goods.specifications = #{specifications}
+			</if>
+			<if test="@Ognl@isNotEmpty(specificationsLike)">
+				AND t_goods.specifications like CONCAT('%', CONVERT(#{specificationsLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(specificationsBeginLike)">
+				AND t_goods.specifications like CONCAT('', CONVERT(#{specificationsBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(specificationsEndLike)">
+				AND t_goods.specifications like CONCAT('%', CONVERT(#{specificationsEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(price)">
+				AND t_goods.price = #{price}
+			</if>
+			<if test="@Ognl@isNotEmpty(priceNotEq)">
+				AND t_goods.price &lt;&gt; #{priceNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(priceGT)">
+				AND t_goods.price &gt; #{priceGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(priceLT)">
+				AND t_goods.price &lt; #{priceLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(priceGE)">
+				AND t_goods.price &gt;= #{priceGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(priceLE)">
+				AND t_goods.price &lt;= #{priceLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(priceList)">
+				AND t_goods.price in
+				<foreach collection="priceList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(priceNotEqList)">
+				AND t_goods.price not in
+				<foreach collection="priceNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(discount)">
+				AND t_goods.discount = #{discount}
+			</if>
+			<if test="@Ognl@isNotEmpty(discountNotEq)">
+				AND t_goods.discount &lt;&gt; #{discountNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(discountGT)">
+				AND t_goods.discount &gt; #{discountGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(discountLT)">
+				AND t_goods.discount &lt; #{discountLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(discountGE)">
+				AND t_goods.discount &gt;= #{discountGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(discountLE)">
+				AND t_goods.discount &lt;= #{discountLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(discountList)">
+				AND t_goods.discount in
+				<foreach collection="discountList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(discountNotEqList)">
+				AND t_goods.discount not in
+				<foreach collection="discountNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(onTimeBegin)">
+				AND t_goods.on_time &gt;= #{onTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(onTimeEnd)">
+				AND t_goods.on_time &lt;= #{onTimeEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(offTimeBegin)">
+				AND t_goods.off_time &gt;= #{offTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(offTimeEnd)">
+				AND t_goods.off_time &lt;= #{offTimeEnd}
+		   </if>
+			<if test="@Ognl@isNotEmpty(number)">
+				AND t_goods.number = #{number}
+			</if>
+			<if test="@Ognl@isNotEmpty(numberNotEq)">
+				AND t_goods.number &lt;&gt; #{numberNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(numberGT)">
+				AND t_goods.number &gt; #{numberGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(numberLT)">
+				AND t_goods.number &lt; #{numberLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(numberGE)">
+				AND t_goods.number &gt;= #{numberGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(numberLE)">
+				AND t_goods.number &lt;= #{numberLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(numberList)">
+				AND t_goods.number in
+				<foreach collection="numberList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(numberNotEqList)">
+				AND t_goods.number not in
+				<foreach collection="numberNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(remainingNumber)">
+				AND t_goods.remaining_number = #{remainingNumber}
+			</if>
+			<if test="@Ognl@isNotEmpty(remainingNumberNotEq)">
+				AND t_goods.remaining_number &lt;&gt; #{remainingNumberNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(remainingNumberGT)">
+				AND t_goods.remaining_number &gt; #{remainingNumberGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(remainingNumberLT)">
+				AND t_goods.remaining_number &lt; #{remainingNumberLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(remainingNumberGE)">
+				AND t_goods.remaining_number &gt;= #{remainingNumberGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(remainingNumberLE)">
+				AND t_goods.remaining_number &lt;= #{remainingNumberLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(remainingNumberList)">
+				AND t_goods.remaining_number in
+				<foreach collection="remainingNumberList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(remainingNumberNotEqList)">
+				AND t_goods.remaining_number not in
+				<foreach collection="remainingNumberNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(status)">
+				AND t_goods.status = #{status}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusNotEq)">
+				AND t_goods.status &lt;&gt; #{statusNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGT)">
+				AND t_goods.status &gt; #{statusGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLT)">
+				AND t_goods.status &lt; #{statusLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGE)">
+				AND t_goods.status &gt;= #{statusGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLE)">
+				AND t_goods.status &lt;= #{statusLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(statusList)">
+				AND t_goods.status in
+				<foreach collection="statusList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(statusNotEqList)">
+				AND t_goods.status not in
+				<foreach collection="statusNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(introduction)">
+				AND t_goods.introduction = #{introduction}
+			</if>
+			<if test="@Ognl@isNotEmpty(introductionLike)">
+				AND t_goods.introduction like CONCAT('%', CONVERT(#{introductionLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(introductionBeginLike)">
+				AND t_goods.introduction like CONCAT('', CONVERT(#{introductionBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(introductionEndLike)">
+				AND t_goods.introduction like CONCAT('%', CONVERT(#{introductionEndLike}, char) ,'') 
+			</if>
+	       <if test="@Ognl@isNotEmpty(createdAtBegin)">
+				AND t_goods.created_at &gt;= #{createdAtBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(createdAtEnd)">
+				AND t_goods.created_at &lt;= #{createdAtEnd}
+		   </if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_goods.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_goods.modified &lt;= #{modifiedEnd}
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="Goods.findPage.count" resultType="long">
+        SELECT count(*) FROM t_goods as t_goods 
+		<include refid="Goods.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Goods.findPage" resultMap="Goods.RM">
+    	SELECT 
+    	<include refid="Goods.columns" />
+    	,<include refid="Goods.GoodsCategory.columns" />
+	    FROM t_goods as t_goods 
+	    		    left join 
+		    t_goods_category as t_goods_category
+		    on 
+		    t_goods.category_id = t_goods_category.id
+		<include refid="Goods.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="Goods.findList" resultMap="Goods.RM">
+    	SELECT 
+    	<include refid="Goods.columns" />
+    	,<include refid="Goods.GoodsCategory.columns" />
+	     FROM t_goods as t_goods 
+	     		    left join 
+		    t_goods_category as t_goods_category
+		    on 
+		    t_goods.category_id = t_goods_category.id
+		<include refid="Goods.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	
+</mapper>
+

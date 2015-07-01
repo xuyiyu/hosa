@@ -1,0 +1,1119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Image">
+
+	<resultMap id="Image.RM" type="com.gaojiaoyuan.web.model.Image">
+        <result property="id" column="id"/>        
+        
+        <result property="bitmapWidth" column="bitmap_width"/>        
+        
+        <result property="bitmapHeight" column="bitmap_height"/>        
+        
+        <result property="originalUrl" column="original_url"/>        
+        
+        <result property="compressUrl" column="compress_url"/>        
+        
+        <result property="locationName" column="location_name"/>        
+        
+        <result property="longitude" column="longitude"/>        
+        
+        <result property="latitude" column="latitude"/>        
+        
+        <result property="content" column="content"/>        
+        
+        <result property="userId" column="user_id"/>        
+        
+        <result property="favoritedCnt" column="favorited_cnt"/>        
+        
+        <result property="commentCnt" column="comment_cnt"/>        
+        
+        <result property="createdAt" column="created_at"/>        
+        
+	</resultMap>
+	
+	<sql id="Image.get.columns">
+			 t_image.id
+			, t_image.bitmap_width
+			, t_image.bitmap_height
+			, t_image.original_url
+			, t_image.compress_url
+			, t_image.location_name
+			, t_image.longitude
+			, t_image.latitude
+			, t_image.content
+			, t_image.user_id
+			, t_image.favorited_cnt
+			, t_image.comment_cnt
+			, t_image.created_at
+	</sql>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Image.query.columns">
+			 t_image.id
+			
+			<if test="@Ognl@isTrue(bitmapWidthQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_image.bitmap_width
+			</if>
+			<if test="@Ognl@isTrue(bitmapHeightQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_image.bitmap_height
+			</if>
+			<if test="@Ognl@isTrue(originalUrlQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_image.original_url
+			</if>
+			<if test="@Ognl@isTrue(compressUrlQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_image.compress_url
+			</if>
+			<if test="@Ognl@isTrue(locationNameQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_image.location_name
+			</if>
+			<if test="@Ognl@isTrue(longitudeQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_image.longitude
+			</if>
+			<if test="@Ognl@isTrue(latitudeQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_image.latitude
+			</if>
+			<if test="@Ognl@isTrue(contentQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_image.content
+			</if>
+			<if test="@Ognl@isTrue(userIdQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_image.user_id
+			</if>
+			<if test="@Ognl@isTrue(favoritedCntQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_image.favorited_cnt
+			</if>
+			<if test="@Ognl@isTrue(commentCntQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_image.comment_cnt
+			</if>
+			<if test="@Ognl@isTrue(createdAtQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_image.created_at
+			</if>
+	</sql>
+	
+	
+	<sql id="Image.query.advanced.columns">
+	   <if test="@Ognl@isNotEmpty(originalUrlListOr)">
+				
+				<foreach collection="originalUrlListOr" item="originalUrlListOrId" index="index" open=",(" close=")" separator="+" >
+				if(locate(#{originalUrlListOrId}, t_image.original_url), 1, 0)
+				</foreach>
+				 as original_url_advanced_score
+		</if>
+		<if test="@Ognl@isNotEmpty(originalUrlLikeListOr)">
+			
+				<foreach collection="originalUrlLikeListOr" item="originalUrlLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{originalUrlLikeListOrId}, t_image.original_url), 1, 0)
+				</foreach>
+				as original_url_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(originalUrlBeginLikeListOr)">
+			
+				<foreach collection="originalUrlBeginLikeListOr" item="originalUrlBeginLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{originalUrlBeginLikeListOrId}, t_image.original_url), 1, 0)
+				</foreach>
+				 as original_url_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(originalUrlEndLikeListOr)">
+				
+				<foreach collection="originalUrlEndLikeListOr" item="originalUrlEndLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{originalUrlEndLikeListOrId}, t_image.original_url), 1, 0)
+				</foreach>
+				 as original_url_advanced_score
+			</if>
+	   <if test="@Ognl@isNotEmpty(compressUrlListOr)">
+				
+				<foreach collection="compressUrlListOr" item="compressUrlListOrId" index="index" open=",(" close=")" separator="+" >
+				if(locate(#{compressUrlListOrId}, t_image.compress_url), 1, 0)
+				</foreach>
+				 as compress_url_advanced_score
+		</if>
+		<if test="@Ognl@isNotEmpty(compressUrlLikeListOr)">
+			
+				<foreach collection="compressUrlLikeListOr" item="compressUrlLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{compressUrlLikeListOrId}, t_image.compress_url), 1, 0)
+				</foreach>
+				as compress_url_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(compressUrlBeginLikeListOr)">
+			
+				<foreach collection="compressUrlBeginLikeListOr" item="compressUrlBeginLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{compressUrlBeginLikeListOrId}, t_image.compress_url), 1, 0)
+				</foreach>
+				 as compress_url_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(compressUrlEndLikeListOr)">
+				
+				<foreach collection="compressUrlEndLikeListOr" item="compressUrlEndLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{compressUrlEndLikeListOrId}, t_image.compress_url), 1, 0)
+				</foreach>
+				 as compress_url_advanced_score
+			</if>
+	   <if test="@Ognl@isNotEmpty(locationNameListOr)">
+				
+				<foreach collection="locationNameListOr" item="locationNameListOrId" index="index" open=",(" close=")" separator="+" >
+				if(locate(#{locationNameListOrId}, t_image.location_name), 1, 0)
+				</foreach>
+				 as location_name_advanced_score
+		</if>
+		<if test="@Ognl@isNotEmpty(locationNameLikeListOr)">
+			
+				<foreach collection="locationNameLikeListOr" item="locationNameLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{locationNameLikeListOrId}, t_image.location_name), 1, 0)
+				</foreach>
+				as location_name_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(locationNameBeginLikeListOr)">
+			
+				<foreach collection="locationNameBeginLikeListOr" item="locationNameBeginLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{locationNameBeginLikeListOrId}, t_image.location_name), 1, 0)
+				</foreach>
+				 as location_name_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(locationNameEndLikeListOr)">
+				
+				<foreach collection="locationNameEndLikeListOr" item="locationNameEndLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{locationNameEndLikeListOrId}, t_image.location_name), 1, 0)
+				</foreach>
+				 as location_name_advanced_score
+			</if>
+	   <if test="@Ognl@isNotEmpty(longitudeListOr)">
+				
+				<foreach collection="longitudeListOr" item="longitudeListOrId" index="index" open=",(" close=")" separator="+" >
+				if(locate(#{longitudeListOrId}, t_image.longitude), 1, 0)
+				</foreach>
+				 as longitude_advanced_score
+		</if>
+		<if test="@Ognl@isNotEmpty(longitudeLikeListOr)">
+			
+				<foreach collection="longitudeLikeListOr" item="longitudeLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{longitudeLikeListOrId}, t_image.longitude), 1, 0)
+				</foreach>
+				as longitude_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(longitudeBeginLikeListOr)">
+			
+				<foreach collection="longitudeBeginLikeListOr" item="longitudeBeginLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{longitudeBeginLikeListOrId}, t_image.longitude), 1, 0)
+				</foreach>
+				 as longitude_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(longitudeEndLikeListOr)">
+				
+				<foreach collection="longitudeEndLikeListOr" item="longitudeEndLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{longitudeEndLikeListOrId}, t_image.longitude), 1, 0)
+				</foreach>
+				 as longitude_advanced_score
+			</if>
+	   <if test="@Ognl@isNotEmpty(latitudeListOr)">
+				
+				<foreach collection="latitudeListOr" item="latitudeListOrId" index="index" open=",(" close=")" separator="+" >
+				if(locate(#{latitudeListOrId}, t_image.latitude), 1, 0)
+				</foreach>
+				 as latitude_advanced_score
+		</if>
+		<if test="@Ognl@isNotEmpty(latitudeLikeListOr)">
+			
+				<foreach collection="latitudeLikeListOr" item="latitudeLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{latitudeLikeListOrId}, t_image.latitude), 1, 0)
+				</foreach>
+				as latitude_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(latitudeBeginLikeListOr)">
+			
+				<foreach collection="latitudeBeginLikeListOr" item="latitudeBeginLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{latitudeBeginLikeListOrId}, t_image.latitude), 1, 0)
+				</foreach>
+				 as latitude_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(latitudeEndLikeListOr)">
+				
+				<foreach collection="latitudeEndLikeListOr" item="latitudeEndLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{latitudeEndLikeListOrId}, t_image.latitude), 1, 0)
+				</foreach>
+				 as latitude_advanced_score
+			</if>
+	   <if test="@Ognl@isNotEmpty(contentListOr)">
+				
+				<foreach collection="contentListOr" item="contentListOrId" index="index" open=",(" close=")" separator="+" >
+				if(locate(#{contentListOrId}, t_image.content), 1, 0)
+				</foreach>
+				 as content_advanced_score
+		</if>
+		<if test="@Ognl@isNotEmpty(contentLikeListOr)">
+			
+				<foreach collection="contentLikeListOr" item="contentLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{contentLikeListOrId}, t_image.content), 1, 0)
+				</foreach>
+				as content_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(contentBeginLikeListOr)">
+			
+				<foreach collection="contentBeginLikeListOr" item="contentBeginLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{contentBeginLikeListOrId}, t_image.content), 1, 0)
+				</foreach>
+				 as content_advanced_score
+			</if>
+			<if test="@Ognl@isNotEmpty(contentEndLikeListOr)">
+				
+				<foreach collection="contentEndLikeListOr" item="contentEndLikeListOrId" index="index" open=", (" close=")" separator="+" >
+				if(locate(#{contentEndLikeListOrId}, t_image.content), 1, 0)
+				</foreach>
+				 as content_advanced_score
+			</if>
+	  
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Image.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_image (
+	        	id
+		     	<if test="@Ognl@isNotNull(bitmapWidth)">
+		        	,bitmap_width
+		      	</if>
+		     	<if test="@Ognl@isNotNull(bitmapHeight)">
+		        	,bitmap_height
+		      	</if>
+		     	<if test="@Ognl@isNotNull(originalUrl)">
+		        	,original_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(compressUrl)">
+		        	,compress_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(locationName)">
+		        	,location_name
+		      	</if>
+		     	<if test="@Ognl@isNotNull(longitude)">
+		        	,longitude
+		      	</if>
+		     	<if test="@Ognl@isNotNull(latitude)">
+		        	,latitude
+		      	</if>
+		     	<if test="@Ognl@isNotNull(content)">
+		        	,content
+		      	</if>
+		     	<if test="@Ognl@isNotNull(userId)">
+		        	,user_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(favoritedCnt)">
+		        	,favorited_cnt
+		      	</if>
+		     	<if test="@Ognl@isNotNull(commentCnt)">
+		        	,comment_cnt
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,created_at
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(bitmapWidth)">
+		        	,#{bitmapWidth}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(bitmapHeight)">
+		        	,#{bitmapHeight}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(originalUrl)">
+		        	,#{originalUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(compressUrl)">
+		        	,#{compressUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(locationName)">
+		        	,#{locationName}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(longitude)">
+		        	,#{longitude}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(latitude)">
+		        	,#{latitude}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(content)">
+		        	,#{content}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(userId)">
+		        	,#{userId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(favoritedCnt)">
+		        	,#{favoritedCnt}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(commentCnt)">
+		        	,#{commentCnt}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,#{createdAt}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="Image.update" >
+    
+        UPDATE t_image 
+			<set>
+		        <if test="@Ognl@isNotNull(bitmapWidth)">
+		        		bitmap_width = #{bitmapWidth},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(bitmapHeight)">
+		        		bitmap_height = #{bitmapHeight},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(originalUrl)">
+		        		original_url = #{originalUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(compressUrl)">
+		        		compress_url = #{compressUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(locationName)">
+		        		location_name = #{locationName},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(longitude)">
+		        		longitude = #{longitude},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(latitude)">
+		        		latitude = #{latitude},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(content)">
+		        		content = #{content},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(userId)">
+		        		user_id = #{userId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(favoritedCnt)">
+		        		favorited_cnt = #{favoritedCnt},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(commentCnt)">
+		        		comment_cnt = #{commentCnt},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(createdAt)">
+		        		created_at = #{createdAt},
+		        	</if>
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+   
+	</update>
+
+    <delete id="Image.delete">
+    <![CDATA[
+        DELETE FROM t_image 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="Image.deleteMultiple">
+
+        DELETE FROM t_image 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="Image.getById" resultMap="Image.RM">
+		SELECT 
+		<include refid="Image.get.columns" />
+		
+	    <![CDATA[
+		    FROM t_image as t_image
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="Image.getByMultipleId" resultMap="Image.RM">
+		SELECT 
+		<include refid="Image.get.columns" />
+		
+		    FROM t_image as t_image
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="Image.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_image.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_image.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_image.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_image.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_image.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_image.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_image.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_image.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+			<if test="@Ognl@isNotEmpty(bitmapWidth)">
+				AND t_image.bitmap_width = #{bitmapWidth}
+			</if>
+			<if test="@Ognl@isNotEmpty(bitmapWidthNotEq)">
+				AND t_image.bitmap_width &lt;&gt; #{bitmapWidthNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(bitmapWidthGT)">
+				AND t_image.bitmap_width &gt; #{bitmapWidthGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(bitmapWidthLT)">
+				AND t_image.bitmap_width &lt; #{bitmapWidthLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(bitmapWidthGE)">
+				AND t_image.bitmap_width &gt;= #{bitmapWidthGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(bitmapWidthLE)">
+				AND t_image.bitmap_width &lt;= #{bitmapWidthLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(bitmapWidthList)">
+				AND t_image.bitmap_width in
+				<foreach collection="bitmapWidthList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(bitmapWidthNotEqList)">
+				AND t_image.bitmap_width not in
+				<foreach collection="bitmapWidthNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+			<if test="@Ognl@isNotEmpty(bitmapHeight)">
+				AND t_image.bitmap_height = #{bitmapHeight}
+			</if>
+			<if test="@Ognl@isNotEmpty(bitmapHeightNotEq)">
+				AND t_image.bitmap_height &lt;&gt; #{bitmapHeightNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(bitmapHeightGT)">
+				AND t_image.bitmap_height &gt; #{bitmapHeightGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(bitmapHeightLT)">
+				AND t_image.bitmap_height &lt; #{bitmapHeightLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(bitmapHeightGE)">
+				AND t_image.bitmap_height &gt;= #{bitmapHeightGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(bitmapHeightLE)">
+				AND t_image.bitmap_height &lt;= #{bitmapHeightLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(bitmapHeightList)">
+				AND t_image.bitmap_height in
+				<foreach collection="bitmapHeightList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(bitmapHeightNotEqList)">
+				AND t_image.bitmap_height not in
+				<foreach collection="bitmapHeightNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+		   <if test="@Ognl@isNotEmpty(originalUrl)">
+				AND t_image.original_url = #{originalUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(originalUrlLike)">
+				AND t_image.original_url like CONCAT('%', CONVERT(#{originalUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(originalUrlBeginLike)">
+				AND t_image.original_url like CONCAT('', CONVERT(#{originalUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(originalUrlEndLike)">
+				AND t_image.original_url like CONCAT('%', CONVERT(#{originalUrlEndLike}, char) ,'') 
+			</if>
+			
+			
+			<if test="@Ognl@isNotEmpty(originalUrlListAnd)">
+				AND 
+				<foreach collection="originalUrlListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.original_url = #{id}
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(originalUrlLikeListAnd)">
+				AND 
+				<foreach collection="originalUrlLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.original_url like CONCAT('%', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(originalUrlBeginLikeListAnd)">
+				AND 
+				<foreach collection="originalUrlBeginLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.original_url like CONCAT('', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(originalUrlEndLikeListAnd)">
+				AND 
+				<foreach collection="originalUrlEndLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.original_url like CONCAT('%', CONVERT(#{id}, char) ,'') 
+				</foreach>
+				 
+			</if>
+			
+			<if test="@Ognl@isNotEmpty(originalUrlListOr)">
+				AND 
+				<foreach collection="originalUrlListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.original_url = #{id}
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(originalUrlLikeListOr)">
+				AND 
+				<foreach collection="originalUrlLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.original_url like CONCAT('%', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(originalUrlBeginLikeListOr)">
+				AND 
+				<foreach collection="originalUrlBeginLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.original_url like CONCAT('', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				 
+			</if>
+			<if test="@Ognl@isNotEmpty(originalUrlEndLikeListOr)">
+				AND 
+				<foreach collection="originalUrlEndLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.original_url like CONCAT('%', CONVERT(#{id}, char) ,'') 
+				</foreach>
+				 
+			</if>
+		   <if test="@Ognl@isNotEmpty(compressUrl)">
+				AND t_image.compress_url = #{compressUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(compressUrlLike)">
+				AND t_image.compress_url like CONCAT('%', CONVERT(#{compressUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(compressUrlBeginLike)">
+				AND t_image.compress_url like CONCAT('', CONVERT(#{compressUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(compressUrlEndLike)">
+				AND t_image.compress_url like CONCAT('%', CONVERT(#{compressUrlEndLike}, char) ,'') 
+			</if>
+			
+			
+			<if test="@Ognl@isNotEmpty(compressUrlListAnd)">
+				AND 
+				<foreach collection="compressUrlListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.compress_url = #{id}
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(compressUrlLikeListAnd)">
+				AND 
+				<foreach collection="compressUrlLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.compress_url like CONCAT('%', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(compressUrlBeginLikeListAnd)">
+				AND 
+				<foreach collection="compressUrlBeginLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.compress_url like CONCAT('', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(compressUrlEndLikeListAnd)">
+				AND 
+				<foreach collection="compressUrlEndLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.compress_url like CONCAT('%', CONVERT(#{id}, char) ,'') 
+				</foreach>
+				 
+			</if>
+			
+			<if test="@Ognl@isNotEmpty(compressUrlListOr)">
+				AND 
+				<foreach collection="compressUrlListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.compress_url = #{id}
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(compressUrlLikeListOr)">
+				AND 
+				<foreach collection="compressUrlLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.compress_url like CONCAT('%', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(compressUrlBeginLikeListOr)">
+				AND 
+				<foreach collection="compressUrlBeginLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.compress_url like CONCAT('', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				 
+			</if>
+			<if test="@Ognl@isNotEmpty(compressUrlEndLikeListOr)">
+				AND 
+				<foreach collection="compressUrlEndLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.compress_url like CONCAT('%', CONVERT(#{id}, char) ,'') 
+				</foreach>
+				 
+			</if>
+		   <if test="@Ognl@isNotEmpty(locationName)">
+				AND t_image.location_name = #{locationName}
+			</if>
+			<if test="@Ognl@isNotEmpty(locationNameLike)">
+				AND t_image.location_name like CONCAT('%', CONVERT(#{locationNameLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(locationNameBeginLike)">
+				AND t_image.location_name like CONCAT('', CONVERT(#{locationNameBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(locationNameEndLike)">
+				AND t_image.location_name like CONCAT('%', CONVERT(#{locationNameEndLike}, char) ,'') 
+			</if>
+			
+			
+			<if test="@Ognl@isNotEmpty(locationNameListAnd)">
+				AND 
+				<foreach collection="locationNameListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.location_name = #{id}
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(locationNameLikeListAnd)">
+				AND 
+				<foreach collection="locationNameLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.location_name like CONCAT('%', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(locationNameBeginLikeListAnd)">
+				AND 
+				<foreach collection="locationNameBeginLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.location_name like CONCAT('', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(locationNameEndLikeListAnd)">
+				AND 
+				<foreach collection="locationNameEndLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.location_name like CONCAT('%', CONVERT(#{id}, char) ,'') 
+				</foreach>
+				 
+			</if>
+			
+			<if test="@Ognl@isNotEmpty(locationNameListOr)">
+				AND 
+				<foreach collection="locationNameListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.location_name = #{id}
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(locationNameLikeListOr)">
+				AND 
+				<foreach collection="locationNameLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.location_name like CONCAT('%', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(locationNameBeginLikeListOr)">
+				AND 
+				<foreach collection="locationNameBeginLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.location_name like CONCAT('', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				 
+			</if>
+			<if test="@Ognl@isNotEmpty(locationNameEndLikeListOr)">
+				AND 
+				<foreach collection="locationNameEndLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.location_name like CONCAT('%', CONVERT(#{id}, char) ,'') 
+				</foreach>
+				 
+			</if>
+		   <if test="@Ognl@isNotEmpty(longitude)">
+				AND t_image.longitude = #{longitude}
+			</if>
+			<if test="@Ognl@isNotEmpty(longitudeLike)">
+				AND t_image.longitude like CONCAT('%', CONVERT(#{longitudeLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(longitudeBeginLike)">
+				AND t_image.longitude like CONCAT('', CONVERT(#{longitudeBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(longitudeEndLike)">
+				AND t_image.longitude like CONCAT('%', CONVERT(#{longitudeEndLike}, char) ,'') 
+			</if>
+			
+			
+			<if test="@Ognl@isNotEmpty(longitudeListAnd)">
+				AND 
+				<foreach collection="longitudeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.longitude = #{id}
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(longitudeLikeListAnd)">
+				AND 
+				<foreach collection="longitudeLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.longitude like CONCAT('%', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(longitudeBeginLikeListAnd)">
+				AND 
+				<foreach collection="longitudeBeginLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.longitude like CONCAT('', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(longitudeEndLikeListAnd)">
+				AND 
+				<foreach collection="longitudeEndLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.longitude like CONCAT('%', CONVERT(#{id}, char) ,'') 
+				</foreach>
+				 
+			</if>
+			
+			<if test="@Ognl@isNotEmpty(longitudeListOr)">
+				AND 
+				<foreach collection="longitudeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.longitude = #{id}
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(longitudeLikeListOr)">
+				AND 
+				<foreach collection="longitudeLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.longitude like CONCAT('%', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(longitudeBeginLikeListOr)">
+				AND 
+				<foreach collection="longitudeBeginLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.longitude like CONCAT('', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				 
+			</if>
+			<if test="@Ognl@isNotEmpty(longitudeEndLikeListOr)">
+				AND 
+				<foreach collection="longitudeEndLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.longitude like CONCAT('%', CONVERT(#{id}, char) ,'') 
+				</foreach>
+				 
+			</if>
+		   <if test="@Ognl@isNotEmpty(latitude)">
+				AND t_image.latitude = #{latitude}
+			</if>
+			<if test="@Ognl@isNotEmpty(latitudeLike)">
+				AND t_image.latitude like CONCAT('%', CONVERT(#{latitudeLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(latitudeBeginLike)">
+				AND t_image.latitude like CONCAT('', CONVERT(#{latitudeBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(latitudeEndLike)">
+				AND t_image.latitude like CONCAT('%', CONVERT(#{latitudeEndLike}, char) ,'') 
+			</if>
+			
+			
+			<if test="@Ognl@isNotEmpty(latitudeListAnd)">
+				AND 
+				<foreach collection="latitudeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.latitude = #{id}
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(latitudeLikeListAnd)">
+				AND 
+				<foreach collection="latitudeLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.latitude like CONCAT('%', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(latitudeBeginLikeListAnd)">
+				AND 
+				<foreach collection="latitudeBeginLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.latitude like CONCAT('', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(latitudeEndLikeListAnd)">
+				AND 
+				<foreach collection="latitudeEndLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.latitude like CONCAT('%', CONVERT(#{id}, char) ,'') 
+				</foreach>
+				 
+			</if>
+			
+			<if test="@Ognl@isNotEmpty(latitudeListOr)">
+				AND 
+				<foreach collection="latitudeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.latitude = #{id}
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(latitudeLikeListOr)">
+				AND 
+				<foreach collection="latitudeLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.latitude like CONCAT('%', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(latitudeBeginLikeListOr)">
+				AND 
+				<foreach collection="latitudeBeginLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.latitude like CONCAT('', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				 
+			</if>
+			<if test="@Ognl@isNotEmpty(latitudeEndLikeListOr)">
+				AND 
+				<foreach collection="latitudeEndLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.latitude like CONCAT('%', CONVERT(#{id}, char) ,'') 
+				</foreach>
+				 
+			</if>
+		   <if test="@Ognl@isNotEmpty(content)">
+				AND t_image.content = #{content}
+			</if>
+			<if test="@Ognl@isNotEmpty(contentLike)">
+				AND t_image.content like CONCAT('%', CONVERT(#{contentLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(contentBeginLike)">
+				AND t_image.content like CONCAT('', CONVERT(#{contentBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(contentEndLike)">
+				AND t_image.content like CONCAT('%', CONVERT(#{contentEndLike}, char) ,'') 
+			</if>
+			
+			
+			<if test="@Ognl@isNotEmpty(contentListAnd)">
+				AND 
+				<foreach collection="contentListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.content = #{id}
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(contentLikeListAnd)">
+				AND 
+				<foreach collection="contentLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.content like CONCAT('%', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(contentBeginLikeListAnd)">
+				AND 
+				<foreach collection="contentBeginLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.content like CONCAT('', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(contentEndLikeListAnd)">
+				AND 
+				<foreach collection="contentEndLikeListAnd" item="id" index="index" open="(" close=")" separator="AND" >
+				t_image.content like CONCAT('%', CONVERT(#{id}, char) ,'') 
+				</foreach>
+				 
+			</if>
+			
+			<if test="@Ognl@isNotEmpty(contentListOr)">
+				AND 
+				<foreach collection="contentListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.content = #{id}
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(contentLikeListOr)">
+				AND 
+				<foreach collection="contentLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.content like CONCAT('%', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				
+			</if>
+			<if test="@Ognl@isNotEmpty(contentBeginLikeListOr)">
+				AND 
+				<foreach collection="contentBeginLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.content like CONCAT('', CONVERT(#{id}, char) ,'%') 
+				</foreach>
+				 
+			</if>
+			<if test="@Ognl@isNotEmpty(contentEndLikeListOr)">
+				AND 
+				<foreach collection="contentEndLikeListOr" item="id" index="index" open="(" close=")" separator="OR" >
+				t_image.content like CONCAT('%', CONVERT(#{id}, char) ,'') 
+				</foreach>
+				 
+			</if>
+			<if test="@Ognl@isNotEmpty(userId)">
+				AND t_image.user_id = #{userId}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdNotEq)">
+				AND t_image.user_id &lt;&gt; #{userIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdGT)">
+				AND t_image.user_id &gt; #{userIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdLT)">
+				AND t_image.user_id &lt; #{userIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdGE)">
+				AND t_image.user_id &gt;= #{userIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdLE)">
+				AND t_image.user_id &lt;= #{userIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(userIdList)">
+				AND t_image.user_id in
+				<foreach collection="userIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(userIdNotEqList)">
+				AND t_image.user_id not in
+				<foreach collection="userIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+			<if test="@Ognl@isNotEmpty(favoritedCnt)">
+				AND t_image.favorited_cnt = #{favoritedCnt}
+			</if>
+			<if test="@Ognl@isNotEmpty(favoritedCntNotEq)">
+				AND t_image.favorited_cnt &lt;&gt; #{favoritedCntNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(favoritedCntGT)">
+				AND t_image.favorited_cnt &gt; #{favoritedCntGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(favoritedCntLT)">
+				AND t_image.favorited_cnt &lt; #{favoritedCntLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(favoritedCntGE)">
+				AND t_image.favorited_cnt &gt;= #{favoritedCntGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(favoritedCntLE)">
+				AND t_image.favorited_cnt &lt;= #{favoritedCntLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(favoritedCntList)">
+				AND t_image.favorited_cnt in
+				<foreach collection="favoritedCntList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(favoritedCntNotEqList)">
+				AND t_image.favorited_cnt not in
+				<foreach collection="favoritedCntNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+			<if test="@Ognl@isNotEmpty(commentCnt)">
+				AND t_image.comment_cnt = #{commentCnt}
+			</if>
+			<if test="@Ognl@isNotEmpty(commentCntNotEq)">
+				AND t_image.comment_cnt &lt;&gt; #{commentCntNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(commentCntGT)">
+				AND t_image.comment_cnt &gt; #{commentCntGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(commentCntLT)">
+				AND t_image.comment_cnt &lt; #{commentCntLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(commentCntGE)">
+				AND t_image.comment_cnt &gt;= #{commentCntGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(commentCntLE)">
+				AND t_image.comment_cnt &lt;= #{commentCntLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(commentCntList)">
+				AND t_image.comment_cnt in
+				<foreach collection="commentCntList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(commentCntNotEqList)">
+				AND t_image.comment_cnt not in
+				<foreach collection="commentCntNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+	       <if test="@Ognl@isNotEmpty(createdAtBegin)">
+				AND t_image.created_at &gt;= #{createdAtBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(createdAtEnd)">
+				AND t_image.created_at &lt;= #{createdAtEnd}
+		   </if>
+
+		</where>
+	</sql>
+		
+    <select id="Image.findPage.count" resultType="long">
+        SELECT count(*) FROM t_image as t_image 
+		<include refid="Image.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Image.findPage" resultMap="Image.RM">
+    	SELECT 
+    	<include refid="Image.query.columns" />
+    	<include refid="Image.query.advanced.columns" />
+    	
+	    FROM t_image as t_image 
+		<include refid="Image.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="Image.findList" resultMap="Image.RM">
+    	SELECT 
+    	<include refid="Image.query.columns" />
+    	<include refid="Image.query.advanced.columns" />
+    	
+	     FROM t_image as t_image 
+		<include refid="Image.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	
+	
+	
+	
+</mapper>
+

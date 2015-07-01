@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="UserFavoriteRelation">
+
+	<resultMap id="UserFavoriteRelation.RM" type="com.gaojiaoyuan.web.model.UserFavoriteRelation">
+        <result property="id" column="id"/>        
+        
+        <result property="userId" column="user_id"/>        
+        
+        <result property="favoriteId" column="favorite_id"/>        
+        
+        <result property="createdAt" column="created_at"/>        
+        
+	</resultMap>
+	
+	<sql id="UserFavoriteRelation.get.columns">
+			 t_user_favorite_relation.id
+			, t_user_favorite_relation.user_id
+			, t_user_favorite_relation.favorite_id
+			, t_user_favorite_relation.created_at
+	</sql>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="UserFavoriteRelation.query.columns">
+			 t_user_favorite_relation.id
+			
+			<if test="@Ognl@isTrue(userIdQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_user_favorite_relation.user_id
+			</if>
+			<if test="@Ognl@isTrue(favoriteIdQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_user_favorite_relation.favorite_id
+			</if>
+			<if test="@Ognl@isTrue(createdAtQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_user_favorite_relation.created_at
+			</if>
+	</sql>
+	
+	
+	<sql id="UserFavoriteRelation.query.advanced.columns">
+	  
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="UserFavoriteRelation.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_user_favorite_relation (
+	        	id
+		     	<if test="@Ognl@isNotNull(userId)">
+		        	,user_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(favoriteId)">
+		        	,favorite_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,created_at
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(userId)">
+		        	,#{userId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(favoriteId)">
+		        	,#{favoriteId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,#{createdAt}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="UserFavoriteRelation.update" >
+    
+        UPDATE t_user_favorite_relation 
+			<set>
+		        <if test="@Ognl@isNotNull(userId)">
+		        		user_id = #{userId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(favoriteId)">
+		        		favorite_id = #{favoriteId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(createdAt)">
+		        		created_at = #{createdAt},
+		        	</if>
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+   
+	</update>
+
+    <delete id="UserFavoriteRelation.delete">
+    <![CDATA[
+        DELETE FROM t_user_favorite_relation 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="UserFavoriteRelation.deleteMultiple">
+
+        DELETE FROM t_user_favorite_relation 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="UserFavoriteRelation.getById" resultMap="UserFavoriteRelation.RM">
+		SELECT 
+		<include refid="UserFavoriteRelation.get.columns" />
+		
+	    <![CDATA[
+		    FROM t_user_favorite_relation as t_user_favorite_relation
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="UserFavoriteRelation.getByMultipleId" resultMap="UserFavoriteRelation.RM">
+		SELECT 
+		<include refid="UserFavoriteRelation.get.columns" />
+		
+		    FROM t_user_favorite_relation as t_user_favorite_relation
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="UserFavoriteRelation.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_user_favorite_relation.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_user_favorite_relation.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_user_favorite_relation.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_user_favorite_relation.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_user_favorite_relation.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_user_favorite_relation.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_user_favorite_relation.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_user_favorite_relation.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+			<if test="@Ognl@isNotEmpty(userId)">
+				AND t_user_favorite_relation.user_id = #{userId}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdNotEq)">
+				AND t_user_favorite_relation.user_id &lt;&gt; #{userIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdGT)">
+				AND t_user_favorite_relation.user_id &gt; #{userIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdLT)">
+				AND t_user_favorite_relation.user_id &lt; #{userIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdGE)">
+				AND t_user_favorite_relation.user_id &gt;= #{userIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdLE)">
+				AND t_user_favorite_relation.user_id &lt;= #{userIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(userIdList)">
+				AND t_user_favorite_relation.user_id in
+				<foreach collection="userIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(userIdNotEqList)">
+				AND t_user_favorite_relation.user_id not in
+				<foreach collection="userIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+			<if test="@Ognl@isNotEmpty(favoriteId)">
+				AND t_user_favorite_relation.favorite_id = #{favoriteId}
+			</if>
+			<if test="@Ognl@isNotEmpty(favoriteIdNotEq)">
+				AND t_user_favorite_relation.favorite_id &lt;&gt; #{favoriteIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(favoriteIdGT)">
+				AND t_user_favorite_relation.favorite_id &gt; #{favoriteIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(favoriteIdLT)">
+				AND t_user_favorite_relation.favorite_id &lt; #{favoriteIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(favoriteIdGE)">
+				AND t_user_favorite_relation.favorite_id &gt;= #{favoriteIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(favoriteIdLE)">
+				AND t_user_favorite_relation.favorite_id &lt;= #{favoriteIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(favoriteIdList)">
+				AND t_user_favorite_relation.favorite_id in
+				<foreach collection="favoriteIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(favoriteIdNotEqList)">
+				AND t_user_favorite_relation.favorite_id not in
+				<foreach collection="favoriteIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+	       <if test="@Ognl@isNotEmpty(createdAtBegin)">
+				AND t_user_favorite_relation.created_at &gt;= #{createdAtBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(createdAtEnd)">
+				AND t_user_favorite_relation.created_at &lt;= #{createdAtEnd}
+		   </if>
+
+		</where>
+	</sql>
+		
+    <select id="UserFavoriteRelation.findPage.count" resultType="long">
+        SELECT count(*) FROM t_user_favorite_relation as t_user_favorite_relation 
+		<include refid="UserFavoriteRelation.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="UserFavoriteRelation.findPage" resultMap="UserFavoriteRelation.RM">
+    	SELECT 
+    	<include refid="UserFavoriteRelation.query.columns" />
+    	<include refid="UserFavoriteRelation.query.advanced.columns" />
+    	
+	    FROM t_user_favorite_relation as t_user_favorite_relation 
+		<include refid="UserFavoriteRelation.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="UserFavoriteRelation.findList" resultMap="UserFavoriteRelation.RM">
+    	SELECT 
+    	<include refid="UserFavoriteRelation.query.columns" />
+    	<include refid="UserFavoriteRelation.query.advanced.columns" />
+    	
+	     FROM t_user_favorite_relation as t_user_favorite_relation 
+		<include refid="UserFavoriteRelation.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	
+	
+	
+	
+</mapper>
+

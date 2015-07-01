@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="MaterialContent">
+
+	<resultMap id="MaterialContent.RM" type="com.mexp.web.model.MaterialContent">
+        <result property="id" column="id"/>        
+        <result property="materialId" column="material_id"/>        
+        <result property="title" column="title"/>        
+        <result property="content" column="content"/>        
+        <result property="url" column="url"/>        
+        <result property="linkUrl" column="link_url"/>        
+        <result property="storagePath" column="storage_path"/>        
+        <result property="modified" column="modified"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="MaterialContent.columns">
+	    <![CDATA[
+		t_material_content.id,t_material_content.material_id,t_material_content.title,t_material_content.content,t_material_content.url,t_material_content.link_url,t_material_content.storage_path,t_material_content.modified
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="MaterialContent.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_material_content (
+	        	id
+		     	<if test="@Ognl@isNotNull(materialId)">
+		        	,material_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(title)">
+		        	,title
+		      	</if>
+		     	<if test="@Ognl@isNotNull(content)">
+		        	,content
+		      	</if>
+		     	<if test="@Ognl@isNotNull(url)">
+		        	,url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(linkUrl)">
+		        	,link_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(storagePath)">
+		        	,storage_path
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(materialId)">
+		        	,#{materialId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(title)">
+		        	,#{title}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(content)">
+		        	,#{content}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(url)">
+		        	,#{url}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(linkUrl)">
+		        	,#{linkUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(storagePath)">
+		        	,#{storagePath}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="MaterialContent.update" >
+    
+        UPDATE t_material_content 
+			<set>
+		        <if test="@Ognl@isNotNull(materialId)">
+		        		material_id = #{materialId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(title)">
+		        		title = #{title},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(content)">
+		        		content = #{content},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(url)">
+		        		url = #{url},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(linkUrl)">
+		        		link_url = #{linkUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(storagePath)">
+		        		storage_path = #{storagePath},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="MaterialContent.delete">
+    <![CDATA[
+        DELETE FROM t_material_content 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="MaterialContent.deleteMultiple">
+
+        DELETE FROM t_material_content 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="MaterialContent.getById" resultMap="MaterialContent.RM">
+		SELECT 
+		<include refid="MaterialContent.columns" />
+	    <![CDATA[
+		    FROM t_material_content as t_material_content
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="MaterialContent.getByMultipleId" resultMap="MaterialContent.RM">
+		SELECT 
+		<include refid="MaterialContent.columns" />
+		    FROM t_material_content as t_material_content
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="MaterialContent.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_material_content.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_material_content.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_material_content.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_material_content.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_material_content.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_material_content.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_material_content.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_material_content.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(materialId)">
+				AND t_material_content.material_id = #{materialId}
+			</if>
+			<if test="@Ognl@isNotEmpty(materialIdNotEq)">
+				AND t_material_content.material_id &lt;&gt; #{materialIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(materialIdGT)">
+				AND t_material_content.material_id &gt; #{materialIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(materialIdLT)">
+				AND t_material_content.material_id &lt; #{materialIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(materialIdGE)">
+				AND t_material_content.material_id &gt;= #{materialIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(materialIdLE)">
+				AND t_material_content.material_id &lt;= #{materialIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(materialIdList)">
+				AND t_material_content.material_id in
+				<foreach collection="materialIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(materialIdNotEqList)">
+				AND t_material_content.material_id not in
+				<foreach collection="materialIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(title)">
+				AND t_material_content.title = #{title}
+			</if>
+			<if test="@Ognl@isNotEmpty(titleLike)">
+				AND t_material_content.title like CONCAT('%', CONVERT(#{titleLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(titleBeginLike)">
+				AND t_material_content.title like CONCAT('', CONVERT(#{titleBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(titleEndLike)">
+				AND t_material_content.title like CONCAT('%', CONVERT(#{titleEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(content)">
+				AND t_material_content.content = #{content}
+			</if>
+			<if test="@Ognl@isNotEmpty(contentLike)">
+				AND t_material_content.content like CONCAT('%', CONVERT(#{contentLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(contentBeginLike)">
+				AND t_material_content.content like CONCAT('', CONVERT(#{contentBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(contentEndLike)">
+				AND t_material_content.content like CONCAT('%', CONVERT(#{contentEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(url)">
+				AND t_material_content.url = #{url}
+			</if>
+			<if test="@Ognl@isNotEmpty(urlLike)">
+				AND t_material_content.url like CONCAT('%', CONVERT(#{urlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(urlBeginLike)">
+				AND t_material_content.url like CONCAT('', CONVERT(#{urlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(urlEndLike)">
+				AND t_material_content.url like CONCAT('%', CONVERT(#{urlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(linkUrl)">
+				AND t_material_content.link_url = #{linkUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(linkUrlLike)">
+				AND t_material_content.link_url like CONCAT('%', CONVERT(#{linkUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(linkUrlBeginLike)">
+				AND t_material_content.link_url like CONCAT('', CONVERT(#{linkUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(linkUrlEndLike)">
+				AND t_material_content.link_url like CONCAT('%', CONVERT(#{linkUrlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(storagePath)">
+				AND t_material_content.storage_path = #{storagePath}
+			</if>
+			<if test="@Ognl@isNotEmpty(storagePathLike)">
+				AND t_material_content.storage_path like CONCAT('%', CONVERT(#{storagePathLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(storagePathBeginLike)">
+				AND t_material_content.storage_path like CONCAT('', CONVERT(#{storagePathBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(storagePathEndLike)">
+				AND t_material_content.storage_path like CONCAT('%', CONVERT(#{storagePathEndLike}, char) ,'') 
+			</if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_material_content.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_material_content.modified &lt;= #{modifiedEnd}
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="MaterialContent.findPage.count" resultType="long">
+        SELECT count(*) FROM t_material_content as t_material_content 
+		<include refid="MaterialContent.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="MaterialContent.findPage" resultMap="MaterialContent.RM">
+    	SELECT 
+    	<include refid="MaterialContent.columns" />
+	    FROM t_material_content as t_material_content 
+		<include refid="MaterialContent.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="MaterialContent.findList" resultMap="MaterialContent.RM">
+    	SELECT 
+    	<include refid="MaterialContent.columns" />
+	     FROM t_material_content as t_material_content 
+		<include refid="MaterialContent.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	<delete id="MaterialContent.deleteByMaterialId">
+
+        DELETE FROM t_material_content 
+        WHERE
+        	material_id = #{materialId}    
+   
+    </delete>
+    
+    <delete id="MaterialContent.deleteMultipleMaterialId">
+
+        DELETE FROM t_material_content 
+        WHERE
+        	material_id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+</mapper>
+

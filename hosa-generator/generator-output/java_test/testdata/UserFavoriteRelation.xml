@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- DBUnit flatXml DataFile -->
+<dataset>
+
+
+	  <t_user_favorite_relation 
+			id='339' 
+			user_id='457' 
+			favorite_id='487' 
+			created_at='2015-06-30 16:12:19.04' 
+	  />	
+  
+</dataset>

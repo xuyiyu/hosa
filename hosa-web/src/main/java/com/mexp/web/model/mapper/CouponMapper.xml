@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Coupon">
+
+	<resultMap id="Coupon.RM" type="com.mexp.web.model.Coupon">
+        <result property="id" column="id"/>        
+        <result property="type" column="type"/>        
+        <result property="departmentId" column="department_id"/>        
+        <result property="name" column="name"/>        
+        <result property="value" column="value"/>        
+        <result property="valid" column="valid"/>        
+        <result property="amount" column="amount"/>        
+        <result property="allowDonation" column="allow_donation"/>        
+        <result property="style" column="style"/>        
+        <result property="code" column="code"/>        
+        <result property="status" column="status"/>        
+        <result property="scope" column="scope"/>        
+        <result property="conditions" column="conditions"/>        
+        <result property="collectNumber" column="collect_number"/>        
+        <result property="usedNumber" column="used_number"/>        
+        <result property="modified" column="modified"/>        
+        <result property="validDays" column="valid_days"/>        
+        <result property="rejectReason" column="reject_reason"/>        
+        <result property="submitTime" column="submit_time"/>        
+        <result property="createdDepartmentId" column="created_department_id"/>        
+        <result property="settleAccountRules" column="settle_account_rules"/>        
+        <result property="grantDepartmentNames" column="grant_department_names"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Coupon.columns">
+	    <![CDATA[
+		t_coupon.id,t_coupon.type,t_coupon.department_id,t_coupon.name,t_coupon.value,t_coupon.valid,t_coupon.amount,t_coupon.allow_donation,t_coupon.style,t_coupon.code,t_coupon.status,t_coupon.scope,t_coupon.conditions,t_coupon.collect_number,t_coupon.used_number,t_coupon.modified,t_coupon.valid_days,t_coupon.reject_reason,t_coupon.submit_time,t_coupon.created_department_id,t_coupon.settle_account_rules,t_coupon.grant_department_names
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Coupon.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_coupon (
+	        	id
+		     	<if test="@Ognl@isNotNull(type)">
+		        	,type
+		      	</if>
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,department_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,name
+		      	</if>
+		     	<if test="@Ognl@isNotNull(value)">
+		        	,value
+		      	</if>
+		     	<if test="@Ognl@isNotNull(valid)">
+		        	,valid
+		      	</if>
+		     	<if test="@Ognl@isNotNull(amount)">
+		        	,amount
+		      	</if>
+		     	<if test="@Ognl@isNotNull(allowDonation)">
+		        	,allow_donation
+		      	</if>
+		     	<if test="@Ognl@isNotNull(style)">
+		        	,style
+		      	</if>
+		     	<if test="@Ognl@isNotNull(code)">
+		        	,code
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,status
+		      	</if>
+		     	<if test="@Ognl@isNotNull(scope)">
+		        	,scope
+		      	</if>
+		     	<if test="@Ognl@isNotNull(conditions)">
+		        	,conditions
+		      	</if>
+		     	<if test="@Ognl@isNotNull(collectNumber)">
+		        	,collect_number
+		      	</if>
+		     	<if test="@Ognl@isNotNull(usedNumber)">
+		        	,used_number
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+		     	<if test="@Ognl@isNotNull(validDays)">
+		        	,valid_days
+		      	</if>
+		     	<if test="@Ognl@isNotNull(rejectReason)">
+		        	,reject_reason
+		      	</if>
+		     	<if test="@Ognl@isNotNull(submitTime)">
+		        	,submit_time
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdDepartmentId)">
+		        	,created_department_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(settleAccountRules)">
+		        	,settle_account_rules
+		      	</if>
+		     	<if test="@Ognl@isNotNull(grantDepartmentNames)">
+		        	,grant_department_names
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(type)">
+		        	,#{type}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,#{departmentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,#{name}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(value)">
+		        	,#{value}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(valid)">
+		        	,#{valid}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(amount)">
+		        	,#{amount}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(allowDonation)">
+		        	,#{allowDonation}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(style)">
+		        	,#{style}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(code)">
+		        	,#{code}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(status)">
+		        	,#{status}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(scope)">
+		        	,#{scope}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(conditions)">
+		        	,#{conditions}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(collectNumber)">
+		        	,#{collectNumber}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(usedNumber)">
+		        	,#{usedNumber}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(validDays)">
+		        	,#{validDays}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(rejectReason)">
+		        	,#{rejectReason}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(submitTime)">
+		        	,#{submitTime}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdDepartmentId)">
+		        	,#{createdDepartmentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(settleAccountRules)">
+		        	,#{settleAccountRules}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(grantDepartmentNames)">
+		        	,#{grantDepartmentNames}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="Coupon.update" >
+    
+        UPDATE t_coupon 
+			<set>
+		        <if test="@Ognl@isNotNull(type)">
+		        		type = #{type},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(departmentId)">
+		        		department_id = #{departmentId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(name)">
+		        		name = #{name},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(value)">
+		        		value = #{value},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(valid)">
+		        		valid = #{valid},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(amount)">
+		        		amount = #{amount},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(allowDonation)">
+		        		allow_donation = #{allowDonation},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(style)">
+		        		style = #{style},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(code)">
+		        		code = #{code},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(status)">
+		        		status = #{status},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(scope)">
+		        		scope = #{scope},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(conditions)">
+		        		conditions = #{conditions},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(collectNumber)">
+		        		collect_number = #{collectNumber},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(usedNumber)">
+		        		used_number = #{usedNumber},
+		        	</if>
+		        	
+		        	
+		        <if test="@Ognl@isNotNull(validDays)">
+		        		valid_days = #{validDays},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(rejectReason)">
+		        		reject_reason = #{rejectReason},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(submitTime)">
+		        		submit_time = #{submitTime},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(createdDepartmentId)">
+		        		created_department_id = #{createdDepartmentId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(settleAccountRules)">
+		        		settle_account_rules = #{settleAccountRules},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(grantDepartmentNames)">
+		        		grant_department_names = #{grantDepartmentNames},
+		        	</if>
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="Coupon.delete">
+    <![CDATA[
+        DELETE FROM t_coupon 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="Coupon.deleteMultiple">
+
+        DELETE FROM t_coupon 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="Coupon.getById" resultMap="Coupon.RM">
+		SELECT 
+		<include refid="Coupon.columns" />
+	    <![CDATA[
+		    FROM t_coupon as t_coupon
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="Coupon.getByMultipleId" resultMap="Coupon.RM">
+		SELECT 
+		<include refid="Coupon.columns" />
+		    FROM t_coupon as t_coupon
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="Coupon.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_coupon.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_coupon.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_coupon.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_coupon.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_coupon.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_coupon.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_coupon.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_coupon.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(type)">
+				AND t_coupon.type = #{type}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeNotEq)">
+				AND t_coupon.type &lt;&gt; #{typeNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeGT)">
+				AND t_coupon.type &gt; #{typeGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeLT)">
+				AND t_coupon.type &lt; #{typeLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeGE)">
+				AND t_coupon.type &gt;= #{typeGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(typeLE)">
+				AND t_coupon.type &lt;= #{typeLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(typeList)">
+				AND t_coupon.type in
+				<foreach collection="typeList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(typeNotEqList)">
+				AND t_coupon.type not in
+				<foreach collection="typeNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(departmentId)">
+				AND t_coupon.department_id = #{departmentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdNotEq)">
+				AND t_coupon.department_id &lt;&gt; #{departmentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGT)">
+				AND t_coupon.department_id &gt; #{departmentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLT)">
+				AND t_coupon.department_id &lt; #{departmentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGE)">
+				AND t_coupon.department_id &gt;= #{departmentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLE)">
+				AND t_coupon.department_id &lt;= #{departmentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(departmentIdList)">
+				AND t_coupon.department_id in
+				<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(departmentIdNotEqList)">
+				AND t_coupon.department_id not in
+				<foreach collection="departmentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(name)">
+				AND t_coupon.name = #{name}
+			</if>
+			<if test="@Ognl@isNotEmpty(nameLike)">
+				AND t_coupon.name like CONCAT('%', CONVERT(#{nameLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameBeginLike)">
+				AND t_coupon.name like CONCAT('', CONVERT(#{nameBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameEndLike)">
+				AND t_coupon.name like CONCAT('%', CONVERT(#{nameEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(value)">
+				AND t_coupon.value = #{value}
+			</if>
+			<if test="@Ognl@isNotEmpty(valueNotEq)">
+				AND t_coupon.value &lt;&gt; #{valueNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(valueGT)">
+				AND t_coupon.value &gt; #{valueGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(valueLT)">
+				AND t_coupon.value &lt; #{valueLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(valueGE)">
+				AND t_coupon.value &gt;= #{valueGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(valueLE)">
+				AND t_coupon.value &lt;= #{valueLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(valueList)">
+				AND t_coupon.value in
+				<foreach collection="valueList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(valueNotEqList)">
+				AND t_coupon.value not in
+				<foreach collection="valueNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(validBegin)">
+				AND t_coupon.valid &gt;= #{validBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(validEnd)">
+				AND t_coupon.valid &lt;= #{validEnd}
+		   </if>
+			<if test="@Ognl@isNotEmpty(amount)">
+				AND t_coupon.amount = #{amount}
+			</if>
+			<if test="@Ognl@isNotEmpty(amountNotEq)">
+				AND t_coupon.amount &lt;&gt; #{amountNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(amountGT)">
+				AND t_coupon.amount &gt; #{amountGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(amountLT)">
+				AND t_coupon.amount &lt; #{amountLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(amountGE)">
+				AND t_coupon.amount &gt;= #{amountGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(amountLE)">
+				AND t_coupon.amount &lt;= #{amountLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(amountList)">
+				AND t_coupon.amount in
+				<foreach collection="amountList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(amountNotEqList)">
+				AND t_coupon.amount not in
+				<foreach collection="amountNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(allowDonation)">
+				AND t_coupon.allow_donation = #{allowDonation}
+			</if>
+			<if test="@Ognl@isNotEmpty(allowDonationNotEq)">
+				AND t_coupon.allow_donation &lt;&gt; #{allowDonationNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(allowDonationGT)">
+				AND t_coupon.allow_donation &gt; #{allowDonationGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(allowDonationLT)">
+				AND t_coupon.allow_donation &lt; #{allowDonationLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(allowDonationGE)">
+				AND t_coupon.allow_donation &gt;= #{allowDonationGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(allowDonationLE)">
+				AND t_coupon.allow_donation &lt;= #{allowDonationLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(allowDonationList)">
+				AND t_coupon.allow_donation in
+				<foreach collection="allowDonationList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(allowDonationNotEqList)">
+				AND t_coupon.allow_donation not in
+				<foreach collection="allowDonationNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(style)">
+				AND t_coupon.style = #{style}
+			</if>
+			<if test="@Ognl@isNotEmpty(styleLike)">
+				AND t_coupon.style like CONCAT('%', CONVERT(#{styleLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(styleBeginLike)">
+				AND t_coupon.style like CONCAT('', CONVERT(#{styleBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(styleEndLike)">
+				AND t_coupon.style like CONCAT('%', CONVERT(#{styleEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(code)">
+				AND t_coupon.code = #{code}
+			</if>
+			<if test="@Ognl@isNotEmpty(codeLike)">
+				AND t_coupon.code like CONCAT('%', CONVERT(#{codeLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(codeBeginLike)">
+				AND t_coupon.code like CONCAT('', CONVERT(#{codeBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(codeEndLike)">
+				AND t_coupon.code like CONCAT('%', CONVERT(#{codeEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(status)">
+				AND t_coupon.status = #{status}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusNotEq)">
+				AND t_coupon.status &lt;&gt; #{statusNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGT)">
+				AND t_coupon.status &gt; #{statusGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLT)">
+				AND t_coupon.status &lt; #{statusLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusGE)">
+				AND t_coupon.status &gt;= #{statusGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(statusLE)">
+				AND t_coupon.status &lt;= #{statusLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(statusList)">
+				AND t_coupon.status in
+				<foreach collection="statusList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(statusNotEqList)">
+				AND t_coupon.status not in
+				<foreach collection="statusNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(scope)">
+				AND t_coupon.scope = #{scope}
+			</if>
+			<if test="@Ognl@isNotEmpty(scopeLike)">
+				AND t_coupon.scope like CONCAT('%', CONVERT(#{scopeLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(scopeBeginLike)">
+				AND t_coupon.scope like CONCAT('', CONVERT(#{scopeBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(scopeEndLike)">
+				AND t_coupon.scope like CONCAT('%', CONVERT(#{scopeEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(conditions)">
+				AND t_coupon.conditions = #{conditions}
+			</if>
+			<if test="@Ognl@isNotEmpty(conditionsLike)">
+				AND t_coupon.conditions like CONCAT('%', CONVERT(#{conditionsLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(conditionsBeginLike)">
+				AND t_coupon.conditions like CONCAT('', CONVERT(#{conditionsBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(conditionsEndLike)">
+				AND t_coupon.conditions like CONCAT('%', CONVERT(#{conditionsEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(collectNumber)">
+				AND t_coupon.collect_number = #{collectNumber}
+			</if>
+			<if test="@Ognl@isNotEmpty(collectNumberNotEq)">
+				AND t_coupon.collect_number &lt;&gt; #{collectNumberNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(collectNumberGT)">
+				AND t_coupon.collect_number &gt; #{collectNumberGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(collectNumberLT)">
+				AND t_coupon.collect_number &lt; #{collectNumberLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(collectNumberGE)">
+				AND t_coupon.collect_number &gt;= #{collectNumberGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(collectNumberLE)">
+				AND t_coupon.collect_number &lt;= #{collectNumberLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(collectNumberList)">
+				AND t_coupon.collect_number in
+				<foreach collection="collectNumberList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(collectNumberNotEqList)">
+				AND t_coupon.collect_number not in
+				<foreach collection="collectNumberNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(usedNumber)">
+				AND t_coupon.used_number = #{usedNumber}
+			</if>
+			<if test="@Ognl@isNotEmpty(usedNumberNotEq)">
+				AND t_coupon.used_number &lt;&gt; #{usedNumberNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(usedNumberGT)">
+				AND t_coupon.used_number &gt; #{usedNumberGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(usedNumberLT)">
+				AND t_coupon.used_number &lt; #{usedNumberLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(usedNumberGE)">
+				AND t_coupon.used_number &gt;= #{usedNumberGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(usedNumberLE)">
+				AND t_coupon.used_number &lt;= #{usedNumberLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(usedNumberList)">
+				AND t_coupon.used_number in
+				<foreach collection="usedNumberList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(usedNumberNotEqList)">
+				AND t_coupon.used_number not in
+				<foreach collection="usedNumberNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_coupon.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_coupon.modified &lt;= #{modifiedEnd}
+		   </if>
+			<if test="@Ognl@isNotEmpty(validDays)">
+				AND t_coupon.valid_days = #{validDays}
+			</if>
+			<if test="@Ognl@isNotEmpty(validDaysNotEq)">
+				AND t_coupon.valid_days &lt;&gt; #{validDaysNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(validDaysGT)">
+				AND t_coupon.valid_days &gt; #{validDaysGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(validDaysLT)">
+				AND t_coupon.valid_days &lt; #{validDaysLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(validDaysGE)">
+				AND t_coupon.valid_days &gt;= #{validDaysGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(validDaysLE)">
+				AND t_coupon.valid_days &lt;= #{validDaysLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(validDaysList)">
+				AND t_coupon.valid_days in
+				<foreach collection="validDaysList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(validDaysNotEqList)">
+				AND t_coupon.valid_days not in
+				<foreach collection="validDaysNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(rejectReason)">
+				AND t_coupon.reject_reason = #{rejectReason}
+			</if>
+			<if test="@Ognl@isNotEmpty(rejectReasonLike)">
+				AND t_coupon.reject_reason like CONCAT('%', CONVERT(#{rejectReasonLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(rejectReasonBeginLike)">
+				AND t_coupon.reject_reason like CONCAT('', CONVERT(#{rejectReasonBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(rejectReasonEndLike)">
+				AND t_coupon.reject_reason like CONCAT('%', CONVERT(#{rejectReasonEndLike}, char) ,'') 
+			</if>
+	       <if test="@Ognl@isNotEmpty(submitTimeBegin)">
+				AND t_coupon.submit_time &gt;= #{submitTimeBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(submitTimeEnd)">
+				AND t_coupon.submit_time &lt;= #{submitTimeEnd}
+		   </if>
+			<if test="@Ognl@isNotEmpty(createdDepartmentId)">
+				AND t_coupon.created_department_id = #{createdDepartmentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(createdDepartmentIdNotEq)">
+				AND t_coupon.created_department_id &lt;&gt; #{createdDepartmentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(createdDepartmentIdGT)">
+				AND t_coupon.created_department_id &gt; #{createdDepartmentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(createdDepartmentIdLT)">
+				AND t_coupon.created_department_id &lt; #{createdDepartmentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(createdDepartmentIdGE)">
+				AND t_coupon.created_department_id &gt;= #{createdDepartmentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(createdDepartmentIdLE)">
+				AND t_coupon.created_department_id &lt;= #{createdDepartmentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(createdDepartmentIdList)">
+				AND t_coupon.created_department_id in
+				<foreach collection="createdDepartmentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(createdDepartmentIdNotEqList)">
+				AND t_coupon.created_department_id not in
+				<foreach collection="createdDepartmentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(settleAccountRules)">
+				AND t_coupon.settle_account_rules = #{settleAccountRules}
+			</if>
+			<if test="@Ognl@isNotEmpty(settleAccountRulesLike)">
+				AND t_coupon.settle_account_rules like CONCAT('%', CONVERT(#{settleAccountRulesLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(settleAccountRulesBeginLike)">
+				AND t_coupon.settle_account_rules like CONCAT('', CONVERT(#{settleAccountRulesBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(settleAccountRulesEndLike)">
+				AND t_coupon.settle_account_rules like CONCAT('%', CONVERT(#{settleAccountRulesEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(grantDepartmentNames)">
+				AND t_coupon.grant_department_names = #{grantDepartmentNames}
+			</if>
+			<if test="@Ognl@isNotEmpty(grantDepartmentNamesLike)">
+				AND t_coupon.grant_department_names like CONCAT('%', CONVERT(#{grantDepartmentNamesLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(grantDepartmentNamesBeginLike)">
+				AND t_coupon.grant_department_names like CONCAT('', CONVERT(#{grantDepartmentNamesBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(grantDepartmentNamesEndLike)">
+				AND t_coupon.grant_department_names like CONCAT('%', CONVERT(#{grantDepartmentNamesEndLike}, char) ,'') 
+			</if>
+		</where>
+	</sql>
+		
+    <select id="Coupon.findPage.count" resultType="long">
+        SELECT count(*) FROM t_coupon as t_coupon 
+		<include refid="Coupon.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Coupon.findPage" resultMap="Coupon.RM">
+    	SELECT 
+    	<include refid="Coupon.columns" />
+	    FROM t_coupon as t_coupon 
+		<include refid="Coupon.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="Coupon.findList" resultMap="Coupon.RM">
+    	SELECT 
+    	<include refid="Coupon.columns" />
+	     FROM t_coupon as t_coupon 
+		<include refid="Coupon.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	<update id="Coupon.updateReceiveStatus">
+		update t_coupon 
+		set 
+		collect_number= collect_number +1 
+		where id=#{id} 
+	</update>
+	
+</mapper>
+

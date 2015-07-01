@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="UserFollowing">
+
+	<resultMap id="UserFollowing.RM" type="com.gaojiaoyuan.web.model.UserFollowing">
+        <result property="id" column="id"/>        
+        
+        <result property="userId" column="user_id"/>        
+        
+        <result property="followerUserId" column="follower_user_id"/>        
+        
+        <result property="createdAt" column="created_at"/>        
+        
+	</resultMap>
+	
+	<sql id="UserFollowing.get.columns">
+			 t_user_following.id
+			, t_user_following.user_id
+			, t_user_following.follower_user_id
+			, t_user_following.created_at
+	</sql>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="UserFollowing.query.columns">
+			 t_user_following.id
+			
+			<if test="@Ognl@isTrue(userIdQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_user_following.user_id
+			</if>
+			<if test="@Ognl@isTrue(followerUserIdQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_user_following.follower_user_id
+			</if>
+			<if test="@Ognl@isTrue(createdAtQueryShow)  or @Ognl@isTrue(queryShowAll)">
+			, t_user_following.created_at
+			</if>
+	</sql>
+	
+	
+	<sql id="UserFollowing.query.advanced.columns">
+	  
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="UserFollowing.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_user_following (
+	        	id
+		     	<if test="@Ognl@isNotNull(userId)">
+		        	,user_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(followerUserId)">
+		        	,follower_user_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,created_at
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(userId)">
+		        	,#{userId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(followerUserId)">
+		        	,#{followerUserId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(createdAt)">
+		        	,#{createdAt}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="UserFollowing.update" >
+    
+        UPDATE t_user_following 
+			<set>
+		        <if test="@Ognl@isNotNull(userId)">
+		        		user_id = #{userId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(followerUserId)">
+		        		follower_user_id = #{followerUserId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(createdAt)">
+		        		created_at = #{createdAt},
+		        	</if>
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+   
+	</update>
+
+    <delete id="UserFollowing.delete">
+    <![CDATA[
+        DELETE FROM t_user_following 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="UserFollowing.deleteMultiple">
+
+        DELETE FROM t_user_following 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="UserFollowing.getById" resultMap="UserFollowing.RM">
+		SELECT 
+		<include refid="UserFollowing.get.columns" />
+		
+	    <![CDATA[
+		    FROM t_user_following as t_user_following
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="UserFollowing.getByMultipleId" resultMap="UserFollowing.RM">
+		SELECT 
+		<include refid="UserFollowing.get.columns" />
+		
+		    FROM t_user_following as t_user_following
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="UserFollowing.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_user_following.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_user_following.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_user_following.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_user_following.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_user_following.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_user_following.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_user_following.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_user_following.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+			<if test="@Ognl@isNotEmpty(userId)">
+				AND t_user_following.user_id = #{userId}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdNotEq)">
+				AND t_user_following.user_id &lt;&gt; #{userIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdGT)">
+				AND t_user_following.user_id &gt; #{userIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdLT)">
+				AND t_user_following.user_id &lt; #{userIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdGE)">
+				AND t_user_following.user_id &gt;= #{userIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(userIdLE)">
+				AND t_user_following.user_id &lt;= #{userIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(userIdList)">
+				AND t_user_following.user_id in
+				<foreach collection="userIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(userIdNotEqList)">
+				AND t_user_following.user_id not in
+				<foreach collection="userIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+			<if test="@Ognl@isNotEmpty(followerUserId)">
+				AND t_user_following.follower_user_id = #{followerUserId}
+			</if>
+			<if test="@Ognl@isNotEmpty(followerUserIdNotEq)">
+				AND t_user_following.follower_user_id &lt;&gt; #{followerUserIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(followerUserIdGT)">
+				AND t_user_following.follower_user_id &gt; #{followerUserIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(followerUserIdLT)">
+				AND t_user_following.follower_user_id &lt; #{followerUserIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(followerUserIdGE)">
+				AND t_user_following.follower_user_id &gt;= #{followerUserIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(followerUserIdLE)">
+				AND t_user_following.follower_user_id &lt;= #{followerUserIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(followerUserIdList)">
+				AND t_user_following.follower_user_id in
+				<foreach collection="followerUserIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(followerUserIdNotEqList)">
+				AND t_user_following.follower_user_id not in
+				<foreach collection="followerUserIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+
+	       <if test="@Ognl@isNotEmpty(createdAtBegin)">
+				AND t_user_following.created_at &gt;= #{createdAtBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(createdAtEnd)">
+				AND t_user_following.created_at &lt;= #{createdAtEnd}
+		   </if>
+
+		</where>
+	</sql>
+		
+    <select id="UserFollowing.findPage.count" resultType="long">
+        SELECT count(*) FROM t_user_following as t_user_following 
+		<include refid="UserFollowing.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="UserFollowing.findPage" resultMap="UserFollowing.RM">
+    	SELECT 
+    	<include refid="UserFollowing.query.columns" />
+    	<include refid="UserFollowing.query.advanced.columns" />
+    	
+	    FROM t_user_following as t_user_following 
+		<include refid="UserFollowing.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="UserFollowing.findList" resultMap="UserFollowing.RM">
+    	SELECT 
+    	<include refid="UserFollowing.query.columns" />
+    	<include refid="UserFollowing.query.advanced.columns" />
+    	
+	     FROM t_user_following as t_user_following 
+		<include refid="UserFollowing.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	
+	
+	
+	
+</mapper>
+

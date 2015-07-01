@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="Car">
+
+	<resultMap id="Car.RM" type="com.mexp.web.model.Car">
+        <result property="id" column="id"/>        
+        <result property="departmentId" column="department_id"/>        
+        <result property="seriesId" column="series_id"/>        
+        <result property="name" column="name"/>        
+        <result property="discountPrice" column="discount_price"/>        
+        <result property="marketPrice" column="market_price"/>        
+        <result property="carrosserie" column="carrosserie"/>        
+        <result property="structure" column="structure"/>        
+        <result property="capacity" column="capacity"/>        
+        <result property="torsion" column="torsion"/>        
+        <result property="speed" column="speed"/>        
+        <result property="speedTime" column="speed_time"/>        
+        <result property="fuel" column="fuel"/>        
+        <result property="dischargeId" column="discharge_id"/>        
+        <result property="engineType" column="engine_type"/>        
+        <result property="gearbox" column="gearbox"/>        
+        <result property="wheelbase" column="wheelbase"/>        
+        <result property="effluent" column="effluent"/>        
+        <result property="tread" column="tread"/>        
+        <result property="manufacturers" column="manufacturers"/>        
+        <result property="level" column="level"/>        
+        <result property="picStoragePath" column="pic_storage_path"/>        
+        <result property="picUrl" column="pic_url"/>        
+        <result property="color" column="color"/>        
+        <result property="discountStatus" column="discount_status"/>        
+        <result property="modified" column="modified"/>        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="Car.columns">
+	    <![CDATA[
+		t_car.id,t_car.department_id,t_car.series_id,t_car.name,t_car.discount_price,t_car.market_price,t_car.carrosserie,t_car.structure,t_car.capacity,t_car.torsion,t_car.speed,t_car.speed_time,t_car.fuel,t_car.discharge_id,t_car.engine_type,t_car.gearbox,t_car.wheelbase,t_car.effluent,t_car.tread,t_car.manufacturers,t_car.level,t_car.pic_storage_path,t_car.pic_url,t_car.color,t_car.discount_status,t_car.modified
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="Car.insert" useGeneratedKeys="true" keyProperty="id">
+   
+        INSERT INTO t_car (
+	        	id
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,department_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(seriesId)">
+		        	,series_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,name
+		      	</if>
+		     	<if test="@Ognl@isNotNull(discountPrice)">
+		        	,discount_price
+		      	</if>
+		     	<if test="@Ognl@isNotNull(marketPrice)">
+		        	,market_price
+		      	</if>
+		     	<if test="@Ognl@isNotNull(carrosserie)">
+		        	,carrosserie
+		      	</if>
+		     	<if test="@Ognl@isNotNull(structure)">
+		        	,structure
+		      	</if>
+		     	<if test="@Ognl@isNotNull(capacity)">
+		        	,capacity
+		      	</if>
+		     	<if test="@Ognl@isNotNull(torsion)">
+		        	,torsion
+		      	</if>
+		     	<if test="@Ognl@isNotNull(speed)">
+		        	,speed
+		      	</if>
+		     	<if test="@Ognl@isNotNull(speedTime)">
+		        	,speed_time
+		      	</if>
+		     	<if test="@Ognl@isNotNull(fuel)">
+		        	,fuel
+		      	</if>
+		     	<if test="@Ognl@isNotNull(dischargeId)">
+		        	,discharge_id
+		      	</if>
+		     	<if test="@Ognl@isNotNull(engineType)">
+		        	,engine_type
+		      	</if>
+		     	<if test="@Ognl@isNotNull(gearbox)">
+		        	,gearbox
+		      	</if>
+		     	<if test="@Ognl@isNotNull(wheelbase)">
+		        	,wheelbase
+		      	</if>
+		     	<if test="@Ognl@isNotNull(effluent)">
+		        	,effluent
+		      	</if>
+		     	<if test="@Ognl@isNotNull(tread)">
+		        	,tread
+		      	</if>
+		     	<if test="@Ognl@isNotNull(manufacturers)">
+		        	,manufacturers
+		      	</if>
+		     	<if test="@Ognl@isNotNull(level)">
+		        	,level
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picStoragePath)">
+		        	,pic_storage_path
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picUrl)">
+		        	,pic_url
+		      	</if>
+		     	<if test="@Ognl@isNotNull(color)">
+		        	,color
+		      	</if>
+		     	<if test="@Ognl@isNotNull(discountStatus)">
+		        	,discount_status
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,modified
+		      	</if>
+        
+        ) VALUES (
+	        	#{id}
+		     	<if test="@Ognl@isNotNull(departmentId)">
+		        	,#{departmentId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(seriesId)">
+		        	,#{seriesId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(name)">
+		        	,#{name}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(discountPrice)">
+		        	,#{discountPrice}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(marketPrice)">
+		        	,#{marketPrice}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(carrosserie)">
+		        	,#{carrosserie}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(structure)">
+		        	,#{structure}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(capacity)">
+		        	,#{capacity}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(torsion)">
+		        	,#{torsion}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(speed)">
+		        	,#{speed}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(speedTime)">
+		        	,#{speedTime}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(fuel)">
+		        	,#{fuel}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(dischargeId)">
+		        	,#{dischargeId}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(engineType)">
+		        	,#{engineType}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(gearbox)">
+		        	,#{gearbox}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(wheelbase)">
+		        	,#{wheelbase}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(effluent)">
+		        	,#{effluent}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(tread)">
+		        	,#{tread}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(manufacturers)">
+		        	,#{manufacturers}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(level)">
+		        	,#{level}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picStoragePath)">
+		        	,#{picStoragePath}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(picUrl)">
+		        	,#{picUrl}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(color)">
+		        	,#{color}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(discountStatus)">
+		        	,#{discountStatus}
+		      	</if>
+		     	<if test="@Ognl@isNotNull(modified)">
+		        	,#{modified}
+		      	</if>
+        )
+    
+		<!--	
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="Car.update" >
+    
+        UPDATE t_car 
+			<set>
+		        <if test="@Ognl@isNotNull(departmentId)">
+		        		department_id = #{departmentId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(seriesId)">
+		        		series_id = #{seriesId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(name)">
+		        		name = #{name},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(discountPrice)">
+		        		discount_price = #{discountPrice},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(marketPrice)">
+		        		market_price = #{marketPrice},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(carrosserie)">
+		        		carrosserie = #{carrosserie},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(structure)">
+		        		structure = #{structure},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(capacity)">
+		        		capacity = #{capacity},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(torsion)">
+		        		torsion = #{torsion},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(speed)">
+		        		speed = #{speed},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(speedTime)">
+		        		speed_time = #{speedTime},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(fuel)">
+		        		fuel = #{fuel},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(dischargeId)">
+		        		discharge_id = #{dischargeId},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(engineType)">
+		        		engine_type = #{engineType},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(gearbox)">
+		        		gearbox = #{gearbox},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(wheelbase)">
+		        		wheelbase = #{wheelbase},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(effluent)">
+		        		effluent = #{effluent},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(tread)">
+		        		tread = #{tread},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(manufacturers)">
+		        		manufacturers = #{manufacturers},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(level)">
+		        		level = #{level},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(picStoragePath)">
+		        		pic_storage_path = #{picStoragePath},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(picUrl)">
+		        		pic_url = #{picUrl},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(color)">
+		        		color = #{color},
+		        	</if>
+		        	
+		        <if test="@Ognl@isNotNull(discountStatus)">
+		        		discount_status = #{discountStatus},
+		        	</if>
+		        	
+		        	
+	        </set>
+        WHERE 
+	        id = #{id} 
+			<if test="@Ognl@isNotNull(modified)">
+		      and 
+   			modified = #{modified}
+		    </if>
+   
+	</update>
+
+    <delete id="Car.delete">
+    <![CDATA[
+        DELETE FROM t_car 
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    <delete id="Car.deleteMultiple">
+
+        DELETE FROM t_car 
+        WHERE
+        	id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+   
+    </delete>
+    <select id="Car.getById" resultMap="Car.RM">
+		SELECT 
+		<include refid="Car.columns" />
+	    <![CDATA[
+		    FROM t_car as t_car
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+	
+	<select id="Car.getByMultipleId" resultMap="Car.RM">
+		SELECT 
+		<include refid="Car.columns" />
+		    FROM t_car as t_car
+	        WHERE 
+		       id in
+        	<foreach collection="list" item="id" index="index" open="(" close=")" separator="," >
+#{id}			</foreach>
+          
+	</select>
+	
+	<sql id="Car.findPage.where">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>	      				
+			<if test="@Ognl@isNotEmpty(id)">
+				AND t_car.id = #{id}
+			</if>
+			<if test="@Ognl@isNotEmpty(idNotEq)">
+				AND t_car.id &lt;&gt; #{idNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGT)">
+				AND t_car.id &gt; #{idGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLT)">
+				AND t_car.id &lt; #{idLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(idGE)">
+				AND t_car.id &gt;= #{idGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(idLE)">
+				AND t_car.id &lt;= #{idLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(idList)">
+				AND t_car.id in
+				<foreach collection="idList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(idNotEqList)">
+				AND t_car.id not in
+				<foreach collection="idNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(departmentId)">
+				AND t_car.department_id = #{departmentId}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdNotEq)">
+				AND t_car.department_id &lt;&gt; #{departmentIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGT)">
+				AND t_car.department_id &gt; #{departmentIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLT)">
+				AND t_car.department_id &lt; #{departmentIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdGE)">
+				AND t_car.department_id &gt;= #{departmentIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(departmentIdLE)">
+				AND t_car.department_id &lt;= #{departmentIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(departmentIdList)">
+				AND t_car.department_id in
+				<foreach collection="departmentIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(departmentIdNotEqList)">
+				AND t_car.department_id not in
+				<foreach collection="departmentIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(seriesId)">
+				AND t_car.series_id = #{seriesId}
+			</if>
+			<if test="@Ognl@isNotEmpty(seriesIdNotEq)">
+				AND t_car.series_id &lt;&gt; #{seriesIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(seriesIdGT)">
+				AND t_car.series_id &gt; #{seriesIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(seriesIdLT)">
+				AND t_car.series_id &lt; #{seriesIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(seriesIdGE)">
+				AND t_car.series_id &gt;= #{seriesIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(seriesIdLE)">
+				AND t_car.series_id &lt;= #{seriesIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(seriesIdList)">
+				AND t_car.series_id in
+				<foreach collection="seriesIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(seriesIdNotEqList)">
+				AND t_car.series_id not in
+				<foreach collection="seriesIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(name)">
+				AND t_car.name = #{name}
+			</if>
+			<if test="@Ognl@isNotEmpty(nameLike)">
+				AND t_car.name like CONCAT('%', CONVERT(#{nameLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameBeginLike)">
+				AND t_car.name like CONCAT('', CONVERT(#{nameBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(nameEndLike)">
+				AND t_car.name like CONCAT('%', CONVERT(#{nameEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(discountPrice)">
+				AND t_car.discount_price = #{discountPrice}
+			</if>
+			<if test="@Ognl@isNotEmpty(discountPriceNotEq)">
+				AND t_car.discount_price &lt;&gt; #{discountPriceNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(discountPriceGT)">
+				AND t_car.discount_price &gt; #{discountPriceGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(discountPriceLT)">
+				AND t_car.discount_price &lt; #{discountPriceLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(discountPriceGE)">
+				AND t_car.discount_price &gt;= #{discountPriceGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(discountPriceLE)">
+				AND t_car.discount_price &lt;= #{discountPriceLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(discountPriceList)">
+				AND t_car.discount_price in
+				<foreach collection="discountPriceList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(discountPriceNotEqList)">
+				AND t_car.discount_price not in
+				<foreach collection="discountPriceNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+			<if test="@Ognl@isNotEmpty(marketPrice)">
+				AND t_car.market_price = #{marketPrice}
+			</if>
+			<if test="@Ognl@isNotEmpty(marketPriceNotEq)">
+				AND t_car.market_price &lt;&gt; #{marketPriceNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(marketPriceGT)">
+				AND t_car.market_price &gt; #{marketPriceGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(marketPriceLT)">
+				AND t_car.market_price &lt; #{marketPriceLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(marketPriceGE)">
+				AND t_car.market_price &gt;= #{marketPriceGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(marketPriceLE)">
+				AND t_car.market_price &lt;= #{marketPriceLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(marketPriceList)">
+				AND t_car.market_price in
+				<foreach collection="marketPriceList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(marketPriceNotEqList)">
+				AND t_car.market_price not in
+				<foreach collection="marketPriceNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(carrosserie)">
+				AND t_car.carrosserie = #{carrosserie}
+			</if>
+			<if test="@Ognl@isNotEmpty(carrosserieLike)">
+				AND t_car.carrosserie like CONCAT('%', CONVERT(#{carrosserieLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(carrosserieBeginLike)">
+				AND t_car.carrosserie like CONCAT('', CONVERT(#{carrosserieBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(carrosserieEndLike)">
+				AND t_car.carrosserie like CONCAT('%', CONVERT(#{carrosserieEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(structure)">
+				AND t_car.structure = #{structure}
+			</if>
+			<if test="@Ognl@isNotEmpty(structureLike)">
+				AND t_car.structure like CONCAT('%', CONVERT(#{structureLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(structureBeginLike)">
+				AND t_car.structure like CONCAT('', CONVERT(#{structureBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(structureEndLike)">
+				AND t_car.structure like CONCAT('%', CONVERT(#{structureEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(capacity)">
+				AND t_car.capacity = #{capacity}
+			</if>
+			<if test="@Ognl@isNotEmpty(capacityLike)">
+				AND t_car.capacity like CONCAT('%', CONVERT(#{capacityLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(capacityBeginLike)">
+				AND t_car.capacity like CONCAT('', CONVERT(#{capacityBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(capacityEndLike)">
+				AND t_car.capacity like CONCAT('%', CONVERT(#{capacityEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(torsion)">
+				AND t_car.torsion = #{torsion}
+			</if>
+			<if test="@Ognl@isNotEmpty(torsionLike)">
+				AND t_car.torsion like CONCAT('%', CONVERT(#{torsionLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(torsionBeginLike)">
+				AND t_car.torsion like CONCAT('', CONVERT(#{torsionBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(torsionEndLike)">
+				AND t_car.torsion like CONCAT('%', CONVERT(#{torsionEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(speed)">
+				AND t_car.speed = #{speed}
+			</if>
+			<if test="@Ognl@isNotEmpty(speedLike)">
+				AND t_car.speed like CONCAT('%', CONVERT(#{speedLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(speedBeginLike)">
+				AND t_car.speed like CONCAT('', CONVERT(#{speedBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(speedEndLike)">
+				AND t_car.speed like CONCAT('%', CONVERT(#{speedEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(speedTime)">
+				AND t_car.speed_time = #{speedTime}
+			</if>
+			<if test="@Ognl@isNotEmpty(speedTimeLike)">
+				AND t_car.speed_time like CONCAT('%', CONVERT(#{speedTimeLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(speedTimeBeginLike)">
+				AND t_car.speed_time like CONCAT('', CONVERT(#{speedTimeBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(speedTimeEndLike)">
+				AND t_car.speed_time like CONCAT('%', CONVERT(#{speedTimeEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(fuel)">
+				AND t_car.fuel = #{fuel}
+			</if>
+			<if test="@Ognl@isNotEmpty(fuelLike)">
+				AND t_car.fuel like CONCAT('%', CONVERT(#{fuelLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(fuelBeginLike)">
+				AND t_car.fuel like CONCAT('', CONVERT(#{fuelBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(fuelEndLike)">
+				AND t_car.fuel like CONCAT('%', CONVERT(#{fuelEndLike}, char) ,'') 
+			</if>
+			<if test="@Ognl@isNotEmpty(dischargeId)">
+				AND t_car.discharge_id = #{dischargeId}
+			</if>
+			<if test="@Ognl@isNotEmpty(dischargeIdNotEq)">
+				AND t_car.discharge_id &lt;&gt; #{dischargeIdNotEq}
+			</if>
+			<if test="@Ognl@isNotEmpty(dischargeIdGT)">
+				AND t_car.discharge_id &gt; #{dischargeIdGT}
+			</if>
+			<if test="@Ognl@isNotEmpty(dischargeIdLT)">
+				AND t_car.discharge_id &lt; #{dischargeIdLT}
+			</if>
+			<if test="@Ognl@isNotEmpty(dischargeIdGE)">
+				AND t_car.discharge_id &gt;= #{dischargeIdGE}
+			</if>
+			<if test="@Ognl@isNotEmpty(dischargeIdLE)">
+				AND t_car.discharge_id &lt;= #{dischargeIdLE}
+			</if>
+	
+			<if test="@Ognl@isNotEmpty(dischargeIdList)">
+				AND t_car.discharge_id in
+				<foreach collection="dischargeIdList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(dischargeIdNotEqList)">
+				AND t_car.discharge_id not in
+				<foreach collection="dischargeIdNotEqList" item="id" index="index" open="(" close=")" separator="," >
+#{id}				</foreach>
+		   </if>
+		   <if test="@Ognl@isNotEmpty(engineType)">
+				AND t_car.engine_type = #{engineType}
+			</if>
+			<if test="@Ognl@isNotEmpty(engineTypeLike)">
+				AND t_car.engine_type like CONCAT('%', CONVERT(#{engineTypeLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(engineTypeBeginLike)">
+				AND t_car.engine_type like CONCAT('', CONVERT(#{engineTypeBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(engineTypeEndLike)">
+				AND t_car.engine_type like CONCAT('%', CONVERT(#{engineTypeEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(gearbox)">
+				AND t_car.gearbox = #{gearbox}
+			</if>
+			<if test="@Ognl@isNotEmpty(gearboxLike)">
+				AND t_car.gearbox like CONCAT('%', CONVERT(#{gearboxLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(gearboxBeginLike)">
+				AND t_car.gearbox like CONCAT('', CONVERT(#{gearboxBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(gearboxEndLike)">
+				AND t_car.gearbox like CONCAT('%', CONVERT(#{gearboxEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(wheelbase)">
+				AND t_car.wheelbase = #{wheelbase}
+			</if>
+			<if test="@Ognl@isNotEmpty(wheelbaseLike)">
+				AND t_car.wheelbase like CONCAT('%', CONVERT(#{wheelbaseLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(wheelbaseBeginLike)">
+				AND t_car.wheelbase like CONCAT('', CONVERT(#{wheelbaseBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(wheelbaseEndLike)">
+				AND t_car.wheelbase like CONCAT('%', CONVERT(#{wheelbaseEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(effluent)">
+				AND t_car.effluent = #{effluent}
+			</if>
+			<if test="@Ognl@isNotEmpty(effluentLike)">
+				AND t_car.effluent like CONCAT('%', CONVERT(#{effluentLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(effluentBeginLike)">
+				AND t_car.effluent like CONCAT('', CONVERT(#{effluentBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(effluentEndLike)">
+				AND t_car.effluent like CONCAT('%', CONVERT(#{effluentEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(tread)">
+				AND t_car.tread = #{tread}
+			</if>
+			<if test="@Ognl@isNotEmpty(treadLike)">
+				AND t_car.tread like CONCAT('%', CONVERT(#{treadLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(treadBeginLike)">
+				AND t_car.tread like CONCAT('', CONVERT(#{treadBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(treadEndLike)">
+				AND t_car.tread like CONCAT('%', CONVERT(#{treadEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(manufacturers)">
+				AND t_car.manufacturers = #{manufacturers}
+			</if>
+			<if test="@Ognl@isNotEmpty(manufacturersLike)">
+				AND t_car.manufacturers like CONCAT('%', CONVERT(#{manufacturersLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(manufacturersBeginLike)">
+				AND t_car.manufacturers like CONCAT('', CONVERT(#{manufacturersBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(manufacturersEndLike)">
+				AND t_car.manufacturers like CONCAT('%', CONVERT(#{manufacturersEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(level)">
+				AND t_car.level = #{level}
+			</if>
+			<if test="@Ognl@isNotEmpty(levelLike)">
+				AND t_car.level like CONCAT('%', CONVERT(#{levelLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(levelBeginLike)">
+				AND t_car.level like CONCAT('', CONVERT(#{levelBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(levelEndLike)">
+				AND t_car.level like CONCAT('%', CONVERT(#{levelEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(picStoragePath)">
+				AND t_car.pic_storage_path = #{picStoragePath}
+			</if>
+			<if test="@Ognl@isNotEmpty(picStoragePathLike)">
+				AND t_car.pic_storage_path like CONCAT('%', CONVERT(#{picStoragePathLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picStoragePathBeginLike)">
+				AND t_car.pic_storage_path like CONCAT('', CONVERT(#{picStoragePathBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picStoragePathEndLike)">
+				AND t_car.pic_storage_path like CONCAT('%', CONVERT(#{picStoragePathEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(picUrl)">
+				AND t_car.pic_url = #{picUrl}
+			</if>
+			<if test="@Ognl@isNotEmpty(picUrlLike)">
+				AND t_car.pic_url like CONCAT('%', CONVERT(#{picUrlLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picUrlBeginLike)">
+				AND t_car.pic_url like CONCAT('', CONVERT(#{picUrlBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(picUrlEndLike)">
+				AND t_car.pic_url like CONCAT('%', CONVERT(#{picUrlEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(color)">
+				AND t_car.color = #{color}
+			</if>
+			<if test="@Ognl@isNotEmpty(colorLike)">
+				AND t_car.color like CONCAT('%', CONVERT(#{colorLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(colorBeginLike)">
+				AND t_car.color like CONCAT('', CONVERT(#{colorBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(colorEndLike)">
+				AND t_car.color like CONCAT('%', CONVERT(#{colorEndLike}, char) ,'') 
+			</if>
+		   <if test="@Ognl@isNotEmpty(discountStatus)">
+				AND t_car.discount_status = #{discountStatus}
+			</if>
+			<if test="@Ognl@isNotEmpty(discountStatusLike)">
+				AND t_car.discount_status like CONCAT('%', CONVERT(#{discountStatusLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(discountStatusBeginLike)">
+				AND t_car.discount_status like CONCAT('', CONVERT(#{discountStatusBeginLike}, char) ,'%') 
+			</if>
+			<if test="@Ognl@isNotEmpty(discountStatusEndLike)">
+				AND t_car.discount_status like CONCAT('%', CONVERT(#{discountStatusEndLike}, char) ,'') 
+			</if>
+	       <if test="@Ognl@isNotEmpty(modifiedBegin)">
+				AND t_car.modified &gt;= #{modifiedBegin}
+		   </if>
+		   <if test="@Ognl@isNotEmpty(modifiedEnd)">
+				AND t_car.modified &lt;= #{modifiedEnd}
+		   </if>
+		</where>
+	</sql>
+		
+    <select id="Car.findPage.count" resultType="long">
+        SELECT count(*) FROM t_car as t_car 
+		<include refid="Car.findPage.where"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="Car.findPage" resultMap="Car.RM">
+    	SELECT 
+    	<include refid="Car.columns" />
+	    FROM t_car as t_car 
+		<include refid="Car.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+    
+    <select id="Car.findList" resultMap="Car.RM">
+    	SELECT 
+    	<include refid="Car.columns" />
+	     FROM t_car as t_car 
+		<include refid="Car.findPage.where"/>
+		
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	
+	
+</mapper>
+
